@@ -40,7 +40,7 @@ Output per project: `platform`, `requirement_tier` (quest2 / quest3 / pcvr / non
 - **Custom hardware:** serial/BLE/OSC → simulated wrist device panel or controller mapping; haptic gloves → controller rumble.
 - **WebXR:** launch in Quest Browser. **Horizon Worlds:** deep link.
 - **Native Swift/RealityKit, Snap Lenses:** Watch mode (demo-video theater).
-- `MuseumReturn` script: hold both menu buttons for 1.5 s → relaunch the museum with `returnTo=<projectId>` and spawn at that painting.
+- `MuseumReturn` script: hold left Menu + right B for 1.5 s (Quest has only one app menu button) → relaunch the museum with `returnTo=<projectId>` and spawn at that painting.
 - Shared branded splash screen in every build to mask OS app-switch transitions.
 
 ## Install / switching model
@@ -65,7 +65,7 @@ Output per project: `platform`, `requirement_tier` (quest2 / quest3 / pcvr / non
 1. **Scraper + classifier → `projects.json`** with real counts per year, platform, and fidelity tier. ← start here
 2. Greybox museum + portal ripple shader + video theater (every project is at least watchable).
 3. Ratings backend. (Supabase schema + RLS tests in `supabase/`, star bars in the client.)
-4. Compat kit + port factory, starting with the top ~20 projects.
+4. Compat kit + port factory, starting with the top ~20 projects. (`kit/`, `factory/`, `python -m rhm.factory`; wave 1 queued in `factory/QUEUE.md`.)
 5. Install/zone system + companion ADB script.
 
 ## Owner

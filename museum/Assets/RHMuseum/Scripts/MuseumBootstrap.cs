@@ -59,13 +59,7 @@ namespace RHMuseum
             PaintingView.PushedThrough += OnPushedThrough;
             _rig.BackPressed += Back;
 
-            string returnTo = LaunchArgs.ReturnTo();
-            if (!string.IsNullOrEmpty(returnTo) && _builder.Paintings.TryGetValue(returnTo, out var painting))
-            {
-                var (pos, yaw) = MuseumBuilder.ViewpointFor(painting);
-                _rig.TeleportTo(pos, yaw);
-            }
-            else _rig.TeleportTo(_builder.SpawnPoint, _builder.SpawnYaw);
+            if (!TryReturnToPainting()) _rig.TeleportTo(_builder.SpawnPoint, _builder.SpawnYaw);
 
             StartCoroutine(StreamLoop());
             yield return _fader.Fade(0, 0.6f);
@@ -74,6 +68,32 @@ namespace RHMuseum
         void OnDestroy()
         {
             PaintingView.PushedThrough -= OnPushedThrough;
+        }
+
+        /// <summary>
+        /// MuseumReturn (kit) relaunches us with returnTo=&lt;id&gt;. Cold start: handled in Start. Warm start (the
+        /// museum was still running in the background): Android delivers a new intent, so check on focus.
+        /// </summary>
+        bool TryReturnToPainting()
+        {
+            string id = LaunchArgs.ReturnTo();
+            if (string.IsNullOrEmpty(id) || _builder == null) return false;
+            LaunchArgs.ClearReturnTo();   // so the next focus change doesn't teleport again
+            if (!_builder.Paintings.TryGetValue(id, out var painting)) return false;
+            if (_inTheater)
+            {
+                _theater.Hide();
+                _theater.gameObject.SetActive(false);
+                _inTheater = false;
+            }
+            var (pos, yaw) = MuseumBuilder.ViewpointFor(painting);
+            _rig.TeleportTo(pos, yaw);
+            return true;
+        }
+
+        void OnApplicationFocus(bool focused)
+        {
+            if (focused && !_busy) TryReturnToPainting();
         }
 
         // ------------------------------------------------------------------ transitions
@@ -216,6 +236,25 @@ namespace RHMuseum
     /// <summary>Reads the returnTo project id: Android intent extra (MuseumReturn) or -returnTo=id on desktop.</summary>
     public static class LaunchArgs
     {
+        static bool _cleared;
+
+        public static void ClearReturnTo()
+        {
+#if UNITY_ANDROID && !UNITY_EDITOR
+            try
+            {
+                using (var player = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
+                using (var activity = player.GetStatic<AndroidJavaObject>("currentActivity"))
+                using (var intent = activity.Call<AndroidJavaObject>("getIntent"))
+                {
+                    intent.Call("removeExtra", "returnTo");
+                }
+            }
+            catch (System.Exception e) { Debug.LogWarning($"[RHMuseum] intent clear failed: {e.Message}"); }
+#endif
+            _cleared = true;
+        }
+
         public static string ReturnTo()
         {
 #if UNITY_ANDROID && !UNITY_EDITOR
@@ -234,6 +273,7 @@ namespace RHMuseum
                 return null;
             }
 #else
+            if (_cleared) return null;
             foreach (var arg in System.Environment.GetCommandLineArgs())
                 if (arg.StartsWith("-returnTo=")) return arg.Substring("-returnTo=".Length);
             return null;

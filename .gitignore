@@ -3,3 +3,6 @@ __pycache__/
 .venv/
 .pytest_cache/
 pipeline/.cache/
+factory/work/
+factory/reports/*/logcat.txt
+factory/reports/*/screenshot.png

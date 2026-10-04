@@ -1,0 +1,8 @@
+{
+  "name": "com.realityhack.museum-kit",
+  "displayName": "Reality Hack Museum Kit",
+  "version": "0.1.0",
+  "description": "Injected into every Reality Hack project ported to Quest: museum return gesture, branded splash/credits overlay, passthrough helper for AR ports, and the batch-mode port recipe.",
+  "author": { "name": "Reality Hack VR Museum" },
+  "keywords": ["quest", "openxr", "museum"]
+}

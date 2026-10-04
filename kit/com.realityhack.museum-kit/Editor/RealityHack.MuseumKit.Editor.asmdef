@@ -1,0 +1,7 @@
+{
+  "name": "RealityHack.MuseumKit.Editor",
+  "rootNamespace": "RealityHack.MuseumKit.Editor",
+  "references": ["RealityHack.MuseumKit"],
+  "includePlatforms": ["Editor"],
+  "autoReferenced": false
+}
