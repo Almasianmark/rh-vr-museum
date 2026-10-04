@@ -27,7 +27,7 @@ def _table(projects, years, key, order=None) -> list[str]:
     return rows
 
 
-def write_summary(doc: dict, path: Path) -> None:
+def write_summary(doc: dict, path: Path, museum: dict | None = None) -> None:
     projects = doc["projects"]
     years = sorted({p["year"] for p in projects})
     L = [
@@ -70,6 +70,14 @@ def write_summary(doc: dict, path: Path) -> None:
         L += ["", "## Winners", "", "| year | title | platform | fidelity | confidence |", "|---|---|---|---|---|"]
         L += [f"| {p['year']} | {p['title']} | {p['platform']} | {p['fidelity']} | {p['confidence']} |"
               for p in sorted(winners, key=lambda p: (p["year"], p["title"].lower()))]
+    if museum:
+        L += ["", f"## Exhibits (device groups, max {museum['max_per_exhibit']} paintings; Watch-only projects in one archive per year)", "",
+              "| year | device exhibits | paintings in device exhibits | archive paintings | exhibits |", "|---|---:|---:|---:|---|"]
+        for w in museum["wings"]:
+            dev = [e for e in w["exhibits"] if e["kind"] == "device"]
+            arc = sum(len(e["project_ids"]) for e in w["exhibits"] if e["kind"] == "archive")
+            names = ", ".join(f"{e['title']} ({len(e['project_ids'])})" for e in w["exhibits"])
+            L.append(f"| {w['year']} | {len(dev)} | {sum(len(e['project_ids']) for e in dev)} | {arc} | {names} |")
     if doc["excluded"]:
         L += ["", "## Excluded", ""] + [f"- {e['year']} · {e['title']} — {e['reason']}" for e in doc["excluded"]]
     path.parent.mkdir(parents=True, exist_ok=True)

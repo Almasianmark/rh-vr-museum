@@ -22,6 +22,7 @@ from .config import YEARS
 from .devpost import DevpostProject, fetch_project, list_gallery
 from .repos import Codeberg, GitHub, RepoInfo, github_host, inspect_repo, link_kind, parse_repo_url
 from .text import names_match, norm, slugify, synopsis
+from .layout import write_museum
 from .summary import write_summary
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -317,9 +318,11 @@ def main(argv=None) -> None:
     ap.add_argument("--limit", type=int, help="max projects per year (live only; for smoke tests)")
     ap.add_argument("--out", type=Path, default=REPO_ROOT / "data" / "projects.json")
     ap.add_argument("--summary", type=Path, default=REPO_ROOT / "data" / "SUMMARY.md")
+    ap.add_argument("--museum", type=Path, default=REPO_ROOT / "data" / "museum.json")
     a = ap.parse_args(argv)
     doc = build(a.source, a.years, a.out, a.limit)
-    write_summary(doc, a.summary)
+    museum = write_museum(doc, a.museum)
+    write_summary(doc, a.summary, museum)
     print(f"wrote {a.out} ({len(doc['projects'])} projects) and {a.summary}", file=sys.stderr)
 
 

@@ -240,6 +240,17 @@ high = manifest/structural evidence · medium = Devpost tags · low = keyword in
 | 2026 | SoundSense | quest | Simulated | low |
 | 2026 | TierSpace | apple-native | Watch | high |
 
+## Exhibits (device groups, max 5 paintings; Watch-only projects in one archive per year)
+
+| year | device exhibits | paintings in device exhibits | archive paintings | exhibits |
+|---|---:|---:|---:|---|
+| 2020 | 16 | 62 | 2 | Meta Quest 1 (5), Meta Quest 2 (5), Meta Quest 3 (4), Meta Quest 4 (4), Meta Quest 5 (4), Magic Leap 1 (4), Magic Leap 2 (4), Magic Leap 3 (3), HoloLens 1 (4), HoloLens 2 (4), PC VR 1 (4), PC VR 2 (3), AR Glasses 1 (3), AR Glasses 2 (3), Web (WebXR) (4), Phone AR (4), 2020 Archive (2) |
+| 2022 | 12 | 44 | 13 | Meta Quest 1 (4), Meta Quest 2 (4), Meta Quest 3 (4), Meta Quest 4 (4), HoloLens 1 (5), HoloLens 2 (5), HoloLens 3 (5), Magic Leap 1 (4), Magic Leap 2 (4), Web (WebXR) (3), PC VR (1), AR Glasses (1), 2022 Archive (13) |
+| 2023 | 15 | 66 | 5 | Meta Quest 1 (5), Meta Quest 2 (5), Meta Quest 3 (5), Meta Quest 4 (5), Meta Quest 5 (5), Meta Quest 6 (5), Meta Quest 7 (4), Meta Quest 8 (4), PC VR 1 (5), PC VR 2 (4), AR Glasses 1 (4), AR Glasses 2 (4), Web (WebXR) (5), HoloLens (3), Phone AR (3), 2023 Archive (5) |
+| 2024 | 21 | 95 | 3 | Meta Quest 1 (5), Meta Quest 2 (5), Meta Quest 3 (5), Meta Quest 4 (5), Meta Quest 5 (5), Meta Quest 6 (5), Meta Quest 7 (5), Meta Quest 8 (5), Meta Quest 9 (5), Meta Quest 10 (5), Meta Quest 11 (5), Meta Quest 12 (5), Meta Quest 13 (5), Meta Quest 14 (5), Meta Quest 15 (4), Web (WebXR) 1 (5), Web (WebXR) 2 (5), AR Glasses 1 (4), AR Glasses 2 (3), PC VR (2), Phone AR (2), 2024 Archive (3) |
+| 2025 | 17 | 68 | 10 | Meta Quest 1 (5), Meta Quest 2 (5), Meta Quest 3 (5), Meta Quest 4 (5), Meta Quest 5 (5), Meta Quest 6 (5), Meta Quest 7 (5), Meta Quest 8 (4), Meta Quest 9 (4), Meta Quest 10 (4), Meta Quest 11 (4), Web (WebXR) 1 (3), Web (WebXR) 2 (3), Phone AR (4), PC VR (3), Horizon Worlds (2), Apple Vision Pro (2), 2025 Archive (10) |
+| 2026 | 14 | 52 | 24 | Meta Quest 1 (5), Meta Quest 2 (5), Meta Quest 3 (4), Meta Quest 4 (4), Meta Quest 5 (4), Meta Quest 6 (4), Android XR 1 (4), Android XR 2 (4), Android XR 3 (4), AR Glasses 1 (3), AR Glasses 2 (3), Web (WebXR) (4), PC VR (3), Custom Hardware (1), 2026 Archive (24) |
+
 ## Excluded
 
 - 2020 · AR Community Garden — duplicate title of 2020-ar-community-garden-2sgw61
