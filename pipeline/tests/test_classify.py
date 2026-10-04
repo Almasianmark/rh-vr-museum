@@ -107,3 +107,10 @@ def test_bare_quest_devpost_tag():
     r = c(built_with=["blender", "oculus-quest", "unity"])
     assert (r.platform, r.confidence) == ("quest", "medium")
     assert c(built_with=["quest", "unity"]).platform == "quest"
+
+
+def test_quest3_mention_alone_is_not_reduced():
+    r = c(packages={"com.meta.xr.sdk.all"}, text="We built this on the Meta Quest 3")
+    assert (r.requirement_tier, r.fidelity) == ("quest2", "Native")
+    r = c(packages={"com.meta.xr.sdk.all", "com.meta.xr.depthapi"})
+    assert (r.requirement_tier, r.fidelity) == ("quest3", "Ported-reduced")

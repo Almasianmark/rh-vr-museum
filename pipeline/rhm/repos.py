@@ -137,6 +137,13 @@ class Codeberg(_Host):
         return out
 
 
+def _decode(b: bytes) -> str:
+    """Repo files are mostly UTF-8, but Windows tools leave UTF-16 READMEs/LICENSEs behind."""
+    if b.startswith((b"\xff\xfe", b"\xfe\xff")):
+        return b.decode("utf-16", errors="replace")
+    return b.decode("utf-8", errors="replace").lstrip("\ufeff")
+
+
 class GitClone(_Host):
     """GitHub via plain git: blob-less shallow clone, then fetch only the files we read.
 
@@ -153,8 +160,10 @@ class GitClone(_Host):
 
     def _git(self, *args, cwd=None, check=True) -> subprocess.CompletedProcess:
         env = {**os.environ, "GIT_TERMINAL_PROMPT": "0", "GIT_ASKPASS": "true"}
-        return subprocess.run(["git", "-c", "credential.helper=", *args], cwd=cwd, env=env,
-                              capture_output=True, text=True, check=check, timeout=600)
+        res = subprocess.run(["git", "-c", "credential.helper=", *args], cwd=cwd, env=env,
+                             capture_output=True, check=check, timeout=600)
+        res.stdout, res.stderr = _decode(res.stdout), _decode(res.stderr)
+        return res
 
     def _dir(self, o, r):
         d = self.root / o / r

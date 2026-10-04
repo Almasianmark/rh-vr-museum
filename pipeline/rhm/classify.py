@@ -70,8 +70,9 @@ QUEST3_FEATURES = [
     ("scene-mesh", r"\bscene mesh\b|\bmesh api\b"),
     ("color-passthrough", r"\bcolou?r passthrough\b"),
     ("passthrough-camera-api", r"\bpassthrough camera api\b|\bpca\b(?= api)"),
-    ("built-for-quest-3", r"\b(?:meta |oculus )?quest 3s?\b"),
 ]
+# Naming the headset isn't a Quest-3-only feature (Meta lent Quest 3s at 2024+ events); note it only.
+QUEST3_MENTION = r"\b(?:meta |oculus )?quest 3s?\b"
 
 # (label, regex, essential). essential=False means Quest can stand in for it
 # (e.g. Ultraleap -> Quest hand tracking), so it doesn't force Simulated.
@@ -334,6 +335,12 @@ def classify(s: Signals) -> Classification:
         if hits:
             q3.append(label)
             evidence.append(f"quest3: '{hits[0].strip()}' -> {label}")
+    depth_pkgs = sorted(p for p in s.packages if "depth" in p.lower())
+    if depth_pkgs and "depth-api" not in q3:
+        q3.append("depth-api")
+        evidence.append(f"quest3: manifest {depth_pkgs[0]} -> depth-api")
+    if not q3 and re.search(QUEST3_MENTION, text + " " + tags):
+        evidence.append("note: built on Quest 3, no Quest-3-only feature found -> runs on Quest 2")
 
     if not found and (s.repo_language or "").lower() in ("javascript", "typescript", "html"):
         found = ["webxr"]
