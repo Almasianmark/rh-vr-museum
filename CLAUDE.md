@@ -64,7 +64,7 @@ Output per project: `platform`, `requirement_tier` (quest2 / quest3 / pcvr / non
 ## Build order
 1. **Scraper + classifier → `projects.json`** with real counts per year, platform, and fidelity tier. ← start here
 2. Greybox museum + portal ripple shader + video theater (every project is at least watchable).
-3. Ratings backend.
+3. Ratings backend. (Supabase schema + RLS tests in `supabase/`, star bars in the client.)
 4. Compat kit + port factory, starting with the top ~20 projects.
 5. Install/zone system + companion ADB script.
 

@@ -56,8 +56,12 @@ def split_balanced(items: list, cap: int = MAX_PER_EXHIBIT) -> list[list]:
     return out
 
 
-def _order(ps: list[dict]) -> list[dict]:
-    return sorted(ps, key=lambda p: (not p["winner"], p["title"].lower()))
+def _order(ps: list[dict], scores: dict[str, dict] | None = None) -> list[dict]:
+    """Highest Bayesian rating first (CLAUDE.md: sort by Bayesian average); ties -> prize winners -> title.
+    Before anyone has rated, every project sits at the prior, so this is winners-first alphabetical."""
+    scores = scores or {}
+    return sorted(ps, key=lambda p: (-(scores.get(p["id"], {}).get("bayes_score") or 0),
+                                     not p["winner"], p["title"].lower()))
 
 
 def youtube_watch_url(embed: str | None) -> str | None:
@@ -84,7 +88,7 @@ def launch_target(p: dict) -> dict:
     return {"kind": "theater", "url": youtube_watch_url(p.get("video_url")) or ""}
 
 
-def build_layout(projects: list[dict], cap: int = MAX_PER_EXHIBIT) -> dict:
+def build_layout(projects: list[dict], cap: int = MAX_PER_EXHIBIT, scores: dict[str, dict] | None = None) -> dict:
     wings = []
     for year in sorted({p["year"] for p in projects}):
         ps = [p for p in projects if p["year"] == year]
@@ -95,7 +99,7 @@ def build_layout(projects: list[dict], cap: int = MAX_PER_EXHIBIT) -> dict:
         devices = sorted(groups, key=lambda d: (-len(groups[d]), DEVICE_ORDER.index(d) if d in DEVICE_ORDER else 99))
         exhibits = []
         for dev in devices:
-            rooms = split_balanced(_order(groups[dev]), cap)
+            rooms = split_balanced(_order(groups[dev], scores), cap)
             label = DEVICE_LABELS.get(dev, dev)
             for i, room in enumerate(rooms, 1):
                 exhibits.append({
@@ -107,7 +111,7 @@ def build_layout(projects: list[dict], cap: int = MAX_PER_EXHIBIT) -> dict:
                                 else f"{len(groups[dev])} project{'s' if len(groups[dev]) != 1 else ''}",
                     "project_ids": [p["id"] for p in room],
                 })
-        archive = _order([p for p in ps if is_inaccessible(p)])
+        archive = _order([p for p in ps if is_inaccessible(p)], scores)
         if archive:
             exhibits.append({
                 "id": f"{year}-archive",
@@ -121,8 +125,9 @@ def build_layout(projects: list[dict], cap: int = MAX_PER_EXHIBIT) -> dict:
     return {"max_per_exhibit": cap, "wings": wings}
 
 
-def museum_doc(doc: dict, cap: int = MAX_PER_EXHIBIT) -> dict:
-    layout = build_layout(doc["projects"], cap)
+def museum_doc(doc: dict, cap: int = MAX_PER_EXHIBIT, scores: dict[str, dict] | None = None) -> dict:
+    layout = build_layout(doc["projects"], cap, scores)
+    scores = scores or {}
     exhibit_of = {pid: ex["id"] for w in layout["wings"] for ex in w["exhibits"] for pid in ex["project_ids"]}
     projects = []
     for p in doc["projects"]:
@@ -147,6 +152,9 @@ def museum_doc(doc: dict, cap: int = MAX_PER_EXHIBIT) -> dict:
             "repo_url": repo.get("url") or "",
             "license_gate": p["license_gate"],
             "launch": launch_target(p),
+            # Snapshot for offline display; the client refreshes live from Supabase.
+            "rating_count": int(scores.get(p["id"], {}).get("rating_count") or 0),
+            "avg_stars": float(scores.get(p["id"], {}).get("avg_stars") or 0),
         })
     return {
         "schema_version": 1,
@@ -156,10 +164,13 @@ def museum_doc(doc: dict, cap: int = MAX_PER_EXHIBIT) -> dict:
     }
 
 
-def write_museum(doc: dict, path, cap: int = MAX_PER_EXHIBIT) -> dict:
+def write_museum(doc: dict, path, cap: int = MAX_PER_EXHIBIT, scores: dict[str, dict] | None = None) -> dict:
     import json
     from pathlib import Path
-    m = museum_doc(doc, cap)
+    if scores is None:
+        from .supabase_sync import scores_from_env
+        scores = scores_from_env()
+    m = museum_doc(doc, cap, scores)
     Path(path).write_text(json.dumps(m, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
     return m
 

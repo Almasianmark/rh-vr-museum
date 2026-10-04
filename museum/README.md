@@ -60,6 +60,16 @@ Current data: 6 wings, 101 exhibits (95 device rooms + 6 archives), 444 painting
 
 Native/ported projects go to the theater until build-order step 5 (APK install and launch) exists. `LaunchArgs.ReturnTo()` already reads the `returnTo` intent extra (or `-returnTo=<id>` on desktop) and spawns you in front of that painting, so the `MuseumReturn` kit script only has to relaunch with the extra.
 
+## Ratings (phase 3)
+
+- **Star bar:** every plaque has a row of 5 stars. Push a star with a fingertip, or click it on desktop, to rate 1–5.
+  - Gold means your own rating; silver means the museum average. The label reads `avg · count`.
+  - The vote shows immediately and syncs within about 1 s.
+  - Offline votes are queued in `PlayerPrefs` and retried.
+- **Top-rated board:** on the lobby's south wall (behind spawn), showing the top 10 by Bayesian average.
+- **Setup:** set `supabaseUrl` and `supabaseAnonKey` on **Museum Bootstrap**. If they're empty, ratings are off and the bars show the snapshot numbers from `museum.json`.
+- Backend setup is in `supabase/README.md`.
+
 ## Code map (`Assets/RHMuseum/`)
 
 | File | Role |
@@ -73,6 +83,8 @@ Native/ported projects go to the theater until build-order step 5 (APK install a
 | `Scripts/TheaterAndFx.cs` | Video theater, touch buttons, screen fader |
 | `Shaders/PortalRipple.shader` | Original ripple + swirl portal effect (damped circular waves, normal displacement, refraction); URP, single-pass-instanced stereo |
 | `Shaders/Greybox.shader` | Unlit fake-lit greybox with a 1 m grid (no realtime lights) |
+| `Scripts/RatingsClient.cs` | Supabase over REST: anonymous sign-in + refresh, `project_scores`, own ratings, `rate_project`, offline queue |
+| `Scripts/StarBar.cs` | Touchable 5-star bar (mesh stars, no font glyphs) + lobby top-rated board |
 | `Editor/MuseumSetup.cs` | The setup menu above |
 
 ## Quest 2 performance choices

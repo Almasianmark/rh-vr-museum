@@ -83,6 +83,8 @@ namespace RHMuseum
         public string repo_url;
         public string license_gate;
         public LaunchTarget launch = new LaunchTarget();
+        public int rating_count;     // snapshot at layout time; RatingsClient has the live numbers
+        public float avg_stars;
     }
 
     /// <summary>

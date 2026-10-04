@@ -19,6 +19,12 @@ namespace RHMuseum
         public float wingActivationMargin = 20f;
         public int maxConcurrentDownloads = 2;
 
+        [Header("Ratings (Supabase). Empty = ratings off")]
+        [Tooltip("https://<project-ref>.supabase.co")]
+        public string supabaseUrl = "";
+        [Tooltip("The project's anon (public) key. Never put the service-role key in the client.")]
+        public string supabaseAnonKey = "";
+
         MuseumDoc _doc;
         MuseumBuilder _builder;
         PlayerRig _rig;
@@ -33,6 +39,7 @@ namespace RHMuseum
             QualitySettings.vSyncCount = 0;
             Application.targetFrameRate = 72;
 
+            RatingsClient.Create(supabaseUrl, supabaseAnonKey);   // null when not configured
             _rig = PlayerRig.Create(Vector3.zero, 0);
             _fader = ScreenFader.Attach(_rig.Head);
             StartCoroutine(_fader.Fade(1, 0.01f, Color.black));

@@ -91,6 +91,9 @@ namespace RHMuseum
             Greybox.Label(t, "<b>Wings</b>\n" + string.Join("\n", dir),
                 new Vector3(LobbyHalf - 0.12f, 1.9f, 0), Quaternion.Euler(0, 90, 0), 1.2f, 7f, Palette.Text, TextAlignmentOptions.TopLeft, 3f);
 
+            // Top-rated board on the south wall (behind spawn), live from the ratings backend.
+            TopRatedBoard.Create(t, _doc, new Vector3(0, 3.3f, -LobbyHalf + 0.12f), Quaternion.Euler(0, 180, 0));
+
             SpawnPoint = new Vector3(0, 0, -LobbyHalf + 3f);
             SpawnYaw = 0;
         }

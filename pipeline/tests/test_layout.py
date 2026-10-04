@@ -48,3 +48,39 @@ def test_museum_doc_every_project_has_exhibit():
     doc = {"generated_at": "x", "projects": [P(1), P(2, "snap", "Watch")]}
     m = museum_doc(doc)
     assert {p["exhibit"] for p in m["projects"]} == {"2024-quest-1", "2024-archive"}
+
+
+def test_bayesian_order_within_device_group():
+    ps = [P(1, winner=True), P(2), P(3)]
+    scores = {"p3": {"bayes_score": 4.2, "rating_count": 9, "avg_stars": 4.4}, "p2": {"bayes_score": 3.9}}
+    ex = build_layout(ps, scores=scores)["wings"][0]["exhibits"]
+    assert ex[0]["project_ids"] == ["p3", "p2", "p1"]
+    assert build_layout(ps)["wings"][0]["exhibits"][0]["project_ids"] == ["p1", "p2", "p3"]   # unrated: winners first
+    m = museum_doc({"generated_at": "x", "projects": ps}, scores=scores)
+    assert next(p for p in m["projects"] if p["id"] == "p3")["rating_count"] == 9
+
+
+def test_supabase_sync_requests():
+    import json
+    from rhm import supabase_sync as ss
+
+    class Resp:
+        def __init__(self, code, body=None): self.status_code, self._b, self.text = code, body, ""
+        def json(self): return self._b
+
+    class Sess:
+        calls = []
+        def post(self, url, data=None, headers=None, timeout=None):
+            self.calls.append((url, json.loads(data), headers))
+            if url.endswith("/rpc/project_scores"):
+                return Resp(200, [{"project_id": "p1", "rating_count": 2, "avg_stars": 4.5, "bayes_score": 3.9}])
+            return Resp(201)
+
+    s = Sess()
+    rows = [{"id": f"p{i}"} for i in range(450)]
+    assert ss.push_projects("https://x.supabase.co/", "svc", rows, session=s) == 450
+    assert len([c for c in s.calls if "projects" in c[0]]) == 3                  # batches of 200
+    url, body, headers = s.calls[0]
+    assert url == "https://x.supabase.co/rest/v1/projects?on_conflict=id"
+    assert "merge-duplicates" in headers["Prefer"] and headers["Authorization"] == "Bearer svc"
+    assert ss.fetch_scores("https://x.supabase.co", "anon", session=s)["p1"]["bayes_score"] == 3.9

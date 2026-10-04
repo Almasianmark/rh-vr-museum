@@ -81,18 +81,24 @@ namespace RHMuseum
             badge.fontStyle = FontStyles.Bold;
 
             // Plaque
-            float plaqueH = compactPlaque ? 0.32f : 0.62f;
+            float plaqueH = compactPlaque ? 0.40f : 0.72f;   // includes the star bar row
             float plaqueY = -size.y / 2 - t - 0.06f - plaqueH / 2;
             Greybox.Box(fr, "Plaque", new Vector3(0, plaqueY, 0.0f), new Vector3(size.x + 2 * t, plaqueH, 0.03f), Palette.Plaque, false);
 
-            string star = info.winner ? "<color=#F2C14E>★</color> " : "";
+            // Plain text, not a glyph: the default TMP font may not include ★.
+            string star = info.winner ? "<color=#F2C14E>WINNER</color>  " : "";
             string prize = info.prizes != null && info.prizes.Count > 0 ? $"\n<size=70%><color=#F2C14E>{Escape(info.prizes[0])}</color></size>" : "";
             string body = compactPlaque
                 ? $"<b>{star}{Escape(info.title)}</b>\n<size=75%>{Escape(info.device_label)}</size>"
                 : $"<b>{star}{Escape(info.title)}</b>{prize}\n<size=72%>{Escape(info.device_label)} · {Palette.FidelityBlurb(info.fidelity)}</size>\n" +
                   $"<size=62%>{Escape(info.synopsis)}</size>";
-            Greybox.Label(fr, body, new Vector3(0, plaqueY, -0.02f), Quaternion.identity,
-                compactPlaque ? 0.55f : 0.62f, size.x + 0.05f, Palette.TextOnDark, TextAlignmentOptions.TopLeft, plaqueH - 0.04f);
+            const float starRow = 0.1f;
+            Greybox.Label(fr, body, new Vector3(0, plaqueY + starRow / 2, -0.02f), Quaternion.identity,
+                compactPlaque ? 0.55f : 0.62f, size.x + 0.05f, Palette.TextOnDark, TextAlignmentOptions.TopLeft, plaqueH - starRow - 0.04f);
+            // Star bar along the bottom-left of the plaque (CLAUDE.md: 1–5 star ratings on every painting).
+            float barLeft = -size.x / 2 - t + 0.04f + 0.075f * 2.5f;
+            StarBar.Create(fr, info, new Vector3(barLeft, plaqueY - plaqueH / 2 + starRow / 2 + 0.01f, -0.02f),
+                size.x + 2 * t - 0.075f * 5 - 0.12f);
 
             EnsureCollider();
         }

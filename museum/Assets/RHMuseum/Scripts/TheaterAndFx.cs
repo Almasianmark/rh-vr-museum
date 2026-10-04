@@ -124,9 +124,9 @@ namespace RHMuseum
 
             _status = Greybox.Label(t, "", new Vector3(0, 1.38f, 0.32f), Quaternion.Euler(35, 0, 0), 0.6f, 1.5f, Palette.TextOnDark,
                 TextAlignmentOptions.Center, 0.2f);
-            TouchButton.Create(t, "▶  Play demo", new Vector3(-0.45f, 1.1f, 0.2f), Quaternion.Euler(35, 0, 0), new Vector2(0.55f, 0.22f),
+            TouchButton.Create(t, "Play demo", new Vector3(-0.45f, 1.1f, 0.2f), Quaternion.Euler(35, 0, 0), new Vector2(0.55f, 0.22f),
                 new Color(0.2f, 0.55f, 0.3f), Play);
-            TouchButton.Create(t, "◀  Back", new Vector3(0.45f, 1.1f, 0.2f), Quaternion.Euler(35, 0, 0), new Vector2(0.55f, 0.22f),
+            TouchButton.Create(t, "Back", new Vector3(0.45f, 1.1f, 0.2f), Quaternion.Euler(35, 0, 0), new Vector2(0.55f, 0.22f),
                 new Color(0.55f, 0.25f, 0.25f), () => ExitRequested?.Invoke());
             Greybox.Box(t, "Podium", new Vector3(0, 0.5f, 0.3f), new Vector3(1.5f, 1.0f, 0.4f), new Color(0.3f, 0.3f, 0.35f));
         }
