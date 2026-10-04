@@ -12,7 +12,7 @@ A Quest VR museum of every MIT Reality Hack project. Walk the halls, touch a pai
 
 ## Architecture
 1. **Pipeline (Python)** — Devpost galleries → GitHub API (README, LICENSE, `Packages/manifest.json`, releases) → hardware classifier → 2–3 sentence synopsis → `projects.json`. Rate-limit politely.
-2. **Museum client (Unity + Meta XR SDK / OpenXR, C#)** — loads `projects.json` at runtime, so adding a year needs no rebuild. One wing per year, rooms by challenge track.
+2. **Museum client (Unity + Meta XR SDK / OpenXR, C#)** — loads `museum.json` (built from `projects.json`) at runtime, so adding a year needs no rebuild. One wing per year; exhibits grouped by the device each project was designed for, **max 5 paintings per exhibit**; every Watch-only (inaccessible) project of a year goes in one large archive exhibit.
 3. **Ratings backend (Supabase)** — `ratings(project_id, user_id, stars)`; sort by Bayesian average.
 
 ## Hardware classifier signals (strongest first)
