@@ -116,6 +116,8 @@ TEXT_PLATFORMS = [
 ]
 
 TEXT_PATTERNS = dict(TEXT_PLATFORMS)
+# A Devpost tag that is just "quest" / "meta quest 2" is unambiguous (unlike "Rehab Quest" in prose).
+QUEST_TAG = r"(?:meta |oculus )?quest(?: ?(?:1|2|3s?|pro))?"
 
 # Generic "it's a headset experience" words. Weak: only used if nothing else matched.
 GENERIC_VR = r"\bvr\b|\bvirtual reality\b|\bimmersive\b"
@@ -273,7 +275,7 @@ def license_gate(spdx: str | None) -> str:
 
 def classify(s: Signals) -> Classification:
     text = s.text.lower()
-    tags = " | ".join(t.lower() for t in s.built_with)
+    tags = " | ".join(t.lower().replace("-", " ").replace("_", " ") for t in s.built_with)
     evidence: list[str] = []
     confidence = "none"
 
@@ -304,6 +306,9 @@ def classify(s: Signals) -> Classification:
     # Tier 3: Devpost built-with tags
     if not found and tags:
         found, ev = _platforms_from_text(tags, "devpost tag")
+        bare = [t for t in tags.split(" | ") if re.fullmatch(QUEST_TAG, t)]
+        if bare and "quest" not in found:
+            found.append("quest"); ev.append(f"devpost tag: '{bare[0]}' -> quest")
         if found:
             confidence = "medium"
             evidence += ev

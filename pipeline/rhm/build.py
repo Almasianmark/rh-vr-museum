@@ -20,7 +20,7 @@ from pathlib import Path
 from .classify import Signals, classify
 from .config import YEARS
 from .devpost import DevpostProject, fetch_project, list_gallery
-from .repos import Codeberg, GitHub, RepoInfo, inspect_repo, link_kind, parse_repo_url
+from .repos import Codeberg, GitHub, RepoInfo, github_host, inspect_repo, link_kind, parse_repo_url
 from .text import names_match, norm, slugify, synopsis
 from .summary import write_summary
 
@@ -118,7 +118,8 @@ def _attach_org_repos(recs: list[Record], pool: list[RepoInfo], aliases: dict) -
 def collect_live(years: list[int], limit: int | None = None) -> tuple[list[Record], list[RepoInfo]]:
     from .http import PoliteSession
     http = PoliteSession()
-    gh = GitHub(http)
+    gh = github_host(http)
+    print(f"GitHub access via {type(gh).__name__}", file=sys.stderr)
     cb = Codeberg(http)
     aliases = {(int(y), norm(t)): full.lower() for y, t, full, *_ in _tsv(SNAP / "github" / "aliases.tsv")}
     records, orphans = [], []
@@ -140,10 +141,18 @@ def collect_live(years: list[int], limit: int | None = None) -> tuple[list[Recor
             recs.append(rec)
             print(f"  {i}/{len(gallery)} {dp.title[:50]} repo={'y' if rec.repo else '-'}", file=sys.stderr)
 
+        if cfg.get("realityhack_api"):
+            _attach_realityhack_api(recs, cfg["realityhack_api"], http, gh)
+
         # Central org: match projects that had no "Try it out" repo, and report the rest as orphans.
         pool_meta = []
         if cfg.get("github_org"):
-            pool_meta = [("github.com", r["full_name"]) for r in gh.org_repos(cfg["github_org"]) if r.get("size", 0) > 0]
+            listed = gh.org_repos(cfg["github_org"])
+            if listed:
+                pool_meta = [("github.com", r["full_name"]) for r in listed if r.get("size", 0) > 0]
+            else:  # git-only access can't list an org; use the listing captured in snapshots/
+                pool_meta = [("github.com", r.full_name) for r in _snapshot_repos().get(year, [])
+                             if r.host == "github" and not r.empty]
         if cfg.get("codeberg_org"):
             pool_meta += [("codeberg.org", r["full_name"]) for r in cb.org_repos(cfg["codeberg_org"]) if not r.get("empty")]
         pool = [RepoInfo(host=h.split(".")[0], full_name=f, url=f"https://{h}/{f}") for h, f in pool_meta]
@@ -154,6 +163,28 @@ def collect_live(years: list[int], limit: int | None = None) -> tuple[list[Recor
         orphans += [r for r in pool if not getattr(r, "_used", False)]
         records += recs
     return records, orphans
+
+
+def _attach_realityhack_api(recs: list[Record], url: str, http, gh) -> None:
+    """realityhack.world lists each team's repo + Devpost link; use it where Devpost had no repo."""
+    rows = http.get_json(url) or []
+    by_slug, by_name = {}, {}
+    for row in rows:
+        sub = row.get("submission_location") or ""
+        m = re.search(r"devpost\.com/software/([^/?#]+)", sub)
+        if m and not m.group(1).isdigit():
+            by_slug[m.group(1)] = row
+        by_name[norm(row.get("name") or "")] = row
+    for rec in recs:
+        row = by_slug.get(rec.dp.slug or "") or by_name.get(norm(rec.dp.title))
+        if not row:
+            continue
+        if row.get("description"):
+            rec.dp.sections.setdefault("realityhack.world", row["description"])
+        repo_url = row.get("repository_location") or ""
+        if not rec.repo and parse_repo_url(repo_url):
+            rec.repo = inspect_repo(repo_url, http, gh)
+            rec.repo_match = "realityhack.world"
 
 
 # --- assembly ----------------------------------------------------------------
@@ -189,7 +220,7 @@ def assemble(rec: Record, pid: str) -> dict:
         "synopsis": synopsis(dp.tagline, dp.sections),
         "devpost_url": dp.url,
         "winner": dp.winner,
-        "tracks": dp.tracks,
+        "prizes": dp.prizes,
         "built_with": dp.built_with,
         "team": dp.team,
         "video_url": dp.video_url,

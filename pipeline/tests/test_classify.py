@@ -101,3 +101,9 @@ def test_license_gate():
     assert license_gate("") == "needs-permission"
     assert license_gate("NOASSERTION") == "review"
     assert license_gate(None) == "unknown"
+
+
+def test_bare_quest_devpost_tag():
+    r = c(built_with=["blender", "oculus-quest", "unity"])
+    assert (r.platform, r.confidence) == ("quest", "medium")
+    assert c(built_with=["quest", "unity"]).platform == "quest"

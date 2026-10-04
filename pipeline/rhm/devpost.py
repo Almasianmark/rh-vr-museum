@@ -20,7 +20,7 @@ class DevpostProject:
     links: list[str] = field(default_factory=list)        # "Try it out" links
     video_url: str | None = None
     sections: dict[str, str] = field(default_factory=dict)  # "What it does" -> text
-    tracks: list[str] = field(default_factory=list)        # prizes won / challenges entered
+    prizes: list[str] = field(default_factory=list)        # prizes won (Devpost doesn't expose tracks entered)
     team: list[str] = field(default_factory=list)
     thumbnail: str | None = None
 
@@ -95,16 +95,27 @@ def parse_project(html: str, p: DevpostProject) -> DevpostProject:
                 buf.append(_text(el))
         if buf:
             p.sections[current] = " ".join(buf).strip()
+        for junk in ("Built With", "Try it out"):
+            p.sections.pop(junk, None)
+        p.sections = {k: v for k, v in p.sections.items() if v}
 
-    tracks = []
-    for li in soup.select("#submissions li, .software-list-content li"):
-        t = _text(li)
-        if t:
-            tracks.append(t)
-    p.tracks = list(dict.fromkeys(tracks))
-    p.team = [_text(a) for a in soup.select("#app-team .user-profile-link") if _text(a)]
-    if soup.select_one("#submissions .winner, .software-list-content .winner"):
+    prizes = []
+    for li in soup.select("#submissions .software-list-content li"):
+        if li.select_one(".winner"):
+            name = re.sub(r"^\s*winner\s*", "", _text(li), flags=re.I)
+            if name:
+                prizes.append(name)
+    p.prizes = list(dict.fromkeys(prizes))
+    if prizes:
         p.winner = True
+    team = []
+    for li in soup.select("#app-team li.software-team-member"):
+        a = next((a for a in li.select("a.user-profile-link") if _text(a)), None)
+        img = li.select_one("img[alt]")
+        name = _text(a) if a else (img["alt"] if img else _text(li.select_one(".columns span, .columns")))
+        if name:
+            team.append(name)
+    p.team = list(dict.fromkeys(team))
     return p
 
 

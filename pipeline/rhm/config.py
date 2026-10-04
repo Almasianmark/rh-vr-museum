@@ -27,6 +27,8 @@ YEARS = {
     2026: {
         "devpost": "https://reality-hack-2026.devpost.com",
         "github_org": None,
+        # Public, current-event only: name, repository_location, submission_location, description.
+        "realityhack_api": "https://api.realityhack.world/projects/",
     },
 }
 

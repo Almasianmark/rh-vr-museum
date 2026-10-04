@@ -29,7 +29,13 @@ PROJECT = """
   <li><a href="https://youtu.be/xyz">Video</a></li>
 </ul></nav>
 <div id="gallery"><iframe class="video-embed" src="https://www.youtube.com/embed/xyz"></iframe></div>
-<div id="submissions"><div class="software-list-content"><ul><li>MIT Reality Hack 2023 · Winner Best of Community</li></ul></div></div>
+<div id="submissions"><div class="software-list-content"><p><a href="#">MIT Reality Hack 2023</a></p>
+<ul class="no-bullet"><li><span class="winner label">Winner</span> Best of Community</li></ul></div></div>
+<section id="app-team"><ul>
+<li class="software-team-member"><div class="bubble"><p>Design</p></div><a class="user-profile-link" href="/a"><img alt="Ada L"></a><a class="user-profile-link" href="/a">Ada L</a></li>
+<li class="software-team-member"><a class="user-profile-link" href="/b"><img alt="Bo K"></a></li>
+<li class="software-team-member"><a class="user-profile-link" href="/a">Ada L</a></li>
+</ul></section>
 """
 
 
@@ -48,7 +54,9 @@ def test_parse_project():
     assert p.video_url.endswith("/embed/xyz")
     assert "immersive multiplayer forest" in p.sections["What it does"]
     assert "unity" not in p.sections["What it does"]
-    assert p.tracks and "Best of Community" in p.tracks[0]
+    assert p.prizes == ["Best of Community"] and p.winner
+    assert p.team == ["Ada L", "Bo K"]
+    assert "Try it out" not in p.sections
 
 
 def test_synopsis_two_to_three_sentences():
@@ -83,3 +91,13 @@ def test_repo_urls():
 def test_android_xr_settings_keys():
     assert _android_in_xr_settings("  Keys: 0100000007000000\n")
     assert not _android_in_xr_settings("  Keys: 01000000\n")
+
+
+def test_detect_license_and_language():
+    from rhm.repos import detect_license, infer_language
+    assert detect_license("MIT License\n\nPermission is hereby granted, free of charge, to any person") == "MIT"
+    assert detect_license("Apache License\n  Version 2.0, January 2004") == "Apache-2.0"
+    assert detect_license("GNU GENERAL PUBLIC LICENSE\n  Version 3, 29 June 2007") == "GPL-3.0"
+    assert detect_license("All rights reserved.") == "NOASSERTION"
+    assert infer_language(["a.cs", "b.cs", "index.html"]) == "C#"
+    assert infer_language(["README.md"]) is None
