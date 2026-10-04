@@ -6,7 +6,7 @@ A Quest VR museum of every MIT Reality Hack project. Walk the halls, touch a pai
 
 ## Where project data lives
 - **2020, 2022, 2023:** central GitHub orgs — `MIT-Reality-Hack-2020` (~42 repos), `Reality-Hack-2022` (~82, mostly `TEAM-XX`), `Reality-Hack-2023` (~114).
-- **2024:** unconfirmed — investigate.
+- **2024:** no GitHub org — central repos are on Codeberg: `codeberg.org/reality-hack-2024` (~100 repos).
 - **2025, 2026:** teams host their own repos (GitHub/Codeberg, sometimes Horizon Worlds links), linked from realityhack.world team pages and Devpost.
 - **Devpost galleries are the master index for every year:** title, pitch, "Built with" tags, "Try it out" repo links, demo video.
 

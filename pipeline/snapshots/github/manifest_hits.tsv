@@ -1,0 +1,63 @@
+# GitHub code search hits across MIT-Reality-Hack-2020, Reality-Hack-2022, Reality-Hack-2023 (2026-10-04).
+# Code search only indexes some repos, so absence of a hit is NOT evidence. Paths under Library/ or build output are skipped.
+# full_name	signal	path
+MIT-Reality-Hack-2020/GhostBustXR	com.unity.xr.oculus	GhostBustXR-VR/Packages/manifest.json
+MIT-Reality-Hack-2020/GhostBustXR	com.unity.xr.arfoundation	GhostBustXR-AR/Packages/manifest.json
+MIT-Reality-Hack-2020/GhostBustXR	com.unity.xr.arkit	GhostBustXR-AR/Packages/manifest.json
+MIT-Reality-Hack-2020/GhostBustXR	com.unity.xr.arcore	GhostBustXR-AR/Packages/manifest.json
+MIT-Reality-Hack-2020/SpellBound	com.unity.xr.oculus	DislexiVR/Packages/manifest.json
+MIT-Reality-Hack-2020/Oasis	com.unity.xr.oculus	Packages/manifest.json
+MIT-Reality-Hack-2020/FocusField	com.unity.xr.oculus	handtest2/Packages/manifest.json
+MIT-Reality-Hack-2020/FocusField	com.unity.xr.windowsmr	handtest2/Packages/manifest.json
+MIT-Reality-Hack-2020/bird	com.unity.xr.oculus	Packages/manifest.json
+MIT-Reality-Hack-2020/Circadian-XR	com.unity.xr.oculus	Packages/manifest.json
+MIT-Reality-Hack-2020/MRSLLS	com.unity.xr.oculus	unity/nreal/Packages/manifest.json
+MIT-Reality-Hack-2020/TheMindsEye	com.unity.xr.oculus	Packages/manifest.json
+MIT-Reality-Hack-2020/PanGu	com.unity.xr.oculus	Packages/manifest.json
+MIT-Reality-Hack-2020/A11YTK-Demo	com.unity.xr.oculus	Packages/manifest.json
+MIT-Reality-Hack-2020/OneBillion	com.unity.xr.oculus	Packages/manifest.json
+MIT-Reality-Hack-2020/YOUtopia	com.unity.xr.oculus	Unity/Packages/manifest.json
+MIT-Reality-Hack-2020/Duet	com.unity.xr.oculus	Packages/manifest.json
+MIT-Reality-Hack-2020/IdeTrae	com.unity.xr.oculus	Packages/manifest.json
+MIT-Reality-Hack-2020/AugmentedRealityBiopsy2	com.unity.xr.windowsmr	Packages/manifest.json
+MIT-Reality-Hack-2020/AugmentedRealityBiopsy2	com.unity.xr.arkit	Packages/manifest.json
+MIT-Reality-Hack-2020/AugmentedRealityBiopsy2	com.unity.xr.arcore	Packages/manifest.json
+MIT-Reality-Hack-2020/HyperViz	com.unity.xr.windowsmr	Packages/manifest.json
+MIT-Reality-Hack-2020/ProgressivelyEnhancedIndoorNavigationWebXR	com.unity.xr.windowsmr	hololensNavigationAnchor/NavigationSpatialAnchor/Packages/manifest.json
+MIT-Reality-Hack-2020/ProgressivelyEnhancedIndoorNavigationWebXR	com.unity.xr.arfoundation	hololensNavigationAnchor/NavigationSpatialAnchor/Packages/manifest.json
+MIT-Reality-Hack-2020/DonoGivingTree	com.unity.xr.arfoundation	Packages/manifest.json
+MIT-Reality-Hack-2020/DonoGivingTree	com.unity.xr.arkit	Packages/manifest.json
+MIT-Reality-Hack-2020/DonoGivingTree	com.unity.xr.arcore	Packages/manifest.json
+MIT-Reality-Hack-2020/AirSpace	com.unity.xr.magicleap	Packages/manifest.json
+MIT-Reality-Hack-2020/DamageCheckAR	com.unity.xr.magicleap	Unity/Packages/manifest.json
+MIT-Reality-Hack-2020/task-transfer	com.unity.xr.magicleap	Packages/manifest.json
+MIT-Reality-Hack-2020/VirtuosoXR	com.unity.xr.magicleap	UnityProject/Packages/manifest.json
+MIT-Reality-Hack-2020/X-Waves	com.unity.xr.magicleap	Packages/manifest.json
+MIT-Reality-Hack-2020/DetectiveTrainar	.lsproj	ChalkOutline/ChalkOutline.lsproj
+Reality-Hack-2022/TEAM-58	com.unity.xr.oculus	HackVerse/Packages/manifest.json
+Reality-Hack-2022/TEAM-57	com.unity.xr.oculus	MultiplayerVR Template/Packages/manifest.json
+Reality-Hack-2022/TEAM-57	com.unity.xr.openxr	MultiplayerVR Template/Packages/manifest.json
+Reality-Hack-2022/TEAM-32-Stik-gam	com.unity.xr.oculus	Packages/manifest.json
+Reality-Hack-2022/TEAM-17	com.unity.xr.oculus	The-Imagination-Machine/Packages/manifest.json
+Reality-Hack-2022/TEAM-30	com.microsoft.mixedreality.openxr	Packages/manifest.json
+Reality-Hack-2022/TEAM-30	com.unity.xr.openxr	Packages/manifest.json
+Reality-Hack-2022/TEAM-45	com.unity.xr.magicleap	Packages/manifest.json
+Reality-Hack-2023/Arcade-Steps	com.unity.xr.oculus	realityhack_2023_unity/Packages/manifest.json
+Reality-Hack-2023/Arcade-Steps	com.unity.xr.openxr	realityhack_2023_unity/Packages/manifest.json
+Reality-Hack-2023/Arcade-Steps	.ino	realityhack_2023_hardware/realityhack_2023_hardware.ino
+Reality-Hack-2023/Edu-AR	com.unity.xr.openxr	Packages/manifest.json
+Reality-Hack-2023/Team-Responsive-Tale	.ino	HardwareFile/ESP32_BLE_Connection/ESP32_BLE_Connection.ino
+Reality-Hack-2023/Haptic-Vision	unity-manifest	Packages/manifest.json
+Reality-Hack-2023/DreamVerse	unity-manifest	Packages/manifest.json
+Reality-Hack-2022/TEAM-19	unity-manifest	CambridgeFashionHouse/Packages/manifest.json
+MIT-Reality-Hack-2020/arjournal	unity-manifest	nreal/Packages/manifest.json
+MIT-Reality-Hack-2020/draft360	unity-manifest	draft360-nreal/Packages/manifest.json
+MIT-Reality-Hack-2020/SeniAR	unity-manifest	Packages/manifest.json
+MIT-Reality-Hack-2020/TheGarden	unity-manifest	Packages/manifest.json
+MIT-Reality-Hack-2020/Icarus	unity-manifest	Packages/manifest.json
+MIT-Reality-Hack-2020/Down-Payment-on-The-Dream	unity-manifest	Packages/manifest.json
+MIT-Reality-Hack-2020/MiXR	steamvr	Config/SteamVRBindings/steamvr_manifest.json
+MIT-Reality-Hack-2020/arjournal	nreal	nreal/Packages/manifest.json (project folder named nreal)
+MIT-Reality-Hack-2020/draft360	nreal	draft360-nreal/Packages/manifest.json (project folder named nreal)
+MIT-Reality-Hack-2020/MRSLLS	nreal	unity/nreal/Packages/manifest.json (project folder named nreal)
+MIT-Reality-Hack-2020/MiXR	unreal	Config/SteamVRBindings/ (Unreal Engine Config/ layout + SteamVR plugin)

@@ -1,0 +1,62 @@
+# Explicit Devpost-title -> repo links where names don't fuzzy-match. Evidence column says why.
+# year	devpost_title	full_name	evidence
+2020	CLEAR - AR Biopsy Guidance System	MIT-Reality-Hack-2020/AugmentedRealityBiopsy2	repo name; both "AR biopsy" HoloLens 2
+2020	Accessibility Toolkit For Unity	MIT-Reality-Hack-2020/A11YTK-Demo	A11Y = accessibility toolkit
+2020	journalAR	MIT-Reality-Hack-2020/arjournal	name reversed
+2020	The Focus Field	MIT-Reality-Hack-2020/FocusField	name
+2020	Ide Træ	MIT-Reality-Hack-2020/IdeTrae	ae transliteration
+2020	Mixed Reality Sign Language Learning Studio	MIT-Reality-Hack-2020/MRSLLS	repo description
+2020	One Billion Lost: Australia's Wildfires VR Experience	MIT-Reality-Hack-2020/OneBillion	name prefix
+2020	DONO: Giving Tree	MIT-Reality-Hack-2020/DonoGivingTree	name
+2020	MiXR - Spatial Synthesizer	MIT-Reality-Hack-2020/MiXR	name
+2020	Pan Gu	MIT-Reality-Hack-2020/PanGu	name
+2022	SolSpace Gallery	Reality-Hack-2022/TEAM-57	repo description
+2022	MetaHack	Reality-Hack-2022/TEAM-62	repo description (Unity<->Web WebRTC library)
+2022	AcupressureAR	Reality-Hack-2022/TEAM-02	repo description
+2022	Cambridge Fashion House	Reality-Hack-2022/TEAM-19	manifest path CambridgeFashionHouse/
+2022	The Imagination Machine	Reality-Hack-2022/TEAM-17	manifest path The-Imagination-Machine/
+2022	MoodSpace	Reality-Hack-2022/TEAM-22-MoodSpace	repo name
+2022	ToABetterWorld	Reality-Hack-2022/TEAM-44	repo description (donate through participation in virtual events)
+2022	Step by Step	Reality-Hack-2022/STEP_BY_STEP	repo name
+2023	LET IT GrOw!	Reality-Hack-2023/Duality	repo description "Project Name: LET IT GrOw"
+2023	AiR by the Leftovers	Reality-Hack-2023/The-Leftovers	team name
+2023	Diminished Reality	Reality-Hack-2023/Team-Diminished-Reality	repo name
+2023	Responsive Tale	Reality-Hack-2023/Team-Responsive-Tale	repo name
+2023	HapticVision	Reality-Hack-2023/Haptic-Vision	repo name
+2023	MindFlow	Reality-Hack-2023/mindflow	repo name
+2023	BeatBlocks	Reality-Hack-2023/Beat-Blocks	repo name
+2023	Furnitrue	Reality-Hack-2023/Furniture	spelling variant
+2023	MoleculAR	Reality-Hack-2023/MoleculAR-Team	repo name
+2023	AI Some one else[Story Scape]	Reality-Hack-2023/AI-Someone	repo name
+2023	ARchi	Reality-Hack-2023/ARChi	repo name
+2023	P.R.A.N.S	Reality-Hack-2023/PRANS	repo name
+2023	Superposed	Reality-Hack-2023/SuperPosed	repo name
+2023	AirDrop XR	Reality-Hack-2023/AirDropXR-	repo name
+2024	Team 71 - Bounce Ball	reality-hack-2024/Bounce	repo name
+2024	A "Fire" Training App	reality-hack-2024/AFireTrainingApp	repo name
+2024	snAIder	reality-hack-2024/SnAIder-CUT-MIT-XR-Hackathon-Winner-2024	repo name
+2024	Dr. Trust	reality-hack-2024/DoctorTurst	repo name (typo)
+2024	Synergy & Survival	reality-hack-2024/SynergySurvived	repo name
+2024	Destiny	reality-hack-2024/DestinyBeaver	repo name
+2024	SensEasy	reality-hack-2024/SenseEasy	repo name
+2024	WeSources	reality-hack-2024/WeSourcesXR	repo name
+2024	Memories of Kumi-Daiko	reality-hack-2024/MemoriesOfKumiDaiko	repo name
+2024	StellarScope: Connecting with the Cosmos	reality-hack-2024/StellarScope	repo name
+2024	Virtual Fantasy Productivity Weapon	reality-hack-2024/VirtualFantasyProductivityWeapons	repo name
+2024	Ever-present	reality-hack-2024/EverPresent	repo name
+2024	DELTA REAL/ation - Empowering Migrant Futures	reality-hack-2024/DeltaRealation	repo name
+2024	In Arm's Reach	reality-hack-2024/InArmsReach	repo name
+2024	Team #42 - Ancestral Apron	reality-hack-2024/AncestralApron	repo name
+2024	Steeped in sereniTEA: From Virtuality to Reality	reality-hack-2024/SereniTea	repo name
+2024	GAL-XR	reality-hack-2024/GalXR	repo name
+2024	SPHERE	reality-hack-2024/Sphere	repo name
+2024	LivelyLens	reality-hack-2024/LovelyLens	repo name (typo)
+2024	MR Fossil	reality-hack-2024/MrFossil	repo name
+2024	Pando	reality-hack-2024/TeamPando	repo name
+2024	the library of beautiful things	reality-hack-2024/TheLibraryOfBeautifulThings	repo description
+2024	WEDGE: Wireless, Ergonomic, Dynamic Gesture Enhancer	reality-hack-2024/WEDGE	repo name
+2024	DelivAR Angel	reality-hack-2024/DelivARAngel	repo name
+2024	RealAccess.VR	reality-hack-2024/RealAccessVR	repo name
+2024	AIRBLOCKS	reality-hack-2024/AirBlocks	repo description
+2024	PinPals	reality-hack-2024/Pinpals	repo name
+2024	Mool	reality-hack-2024/MOOL	repo name

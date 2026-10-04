@@ -1,0 +1,251 @@
+# Central-org repo listings, fetched 2026-10-04 via GitHub search API (GitHub MCP) and codeberg.org org pages (via Exa).
+# Placeholder repos (TEAM-NN / REPO-NNN with no language and no description) are omitted.
+# year	host	full_name	language	description	topics
+2020	github	MIT-Reality-Hack-2020/VSiBL	Swift	A Social Augmented Reality Platform for Spatial Communication.	arkit,multipeerconnectivity,realitykit,swift
+2020	github	MIT-Reality-Hack-2020/AugmentedRealityBiopsy2	C#
+2020	github	MIT-Reality-Hack-2020/AirSpace	C#	RealityHack 2020 (Winner - Volvo Future Mobility: New UX and Interactions Methods) - Augmented Reality for Air Traffic Control
+2020	github	MIT-Reality-Hack-2020/GhostBustXR	C#
+2020	github	MIT-Reality-Hack-2020/DetectiveTrainar	JavaScript	A Snapchat Crime Solving Game using Snapchat Lenses built for MIT Reality Hack
+2020	github	MIT-Reality-Hack-2020/planet-protector	HTML	trash sorting simulator
+2020	github	MIT-Reality-Hack-2020/DamageCheckAR	C++
+2020	github	MIT-Reality-Hack-2020/arjournal	C#
+2020	github	MIT-Reality-Hack-2020/Duet	C#	DUET
+2020	github	MIT-Reality-Hack-2020/ProgressivelyEnhancedIndoorNavigationWebXR	C#
+2020	github	MIT-Reality-Hack-2020/IdeTrae	C#
+2020	github	MIT-Reality-Hack-2020/HyperViz	C#
+2020	github	MIT-Reality-Hack-2020/draft360	C#	A WebXR storyboarding design tool from Team 009 at MIT Reality Hack 2020.
+2020	github	MIT-Reality-Hack-2020/A11YTK-Demo	C#
+2020	github	MIT-Reality-Hack-2020/PanGu	C#
+2020	github	MIT-Reality-Hack-2020/VirtuosoXR	C#
+2020	github	MIT-Reality-Hack-2020/MiXR		team 2 @ MIT Reality Hack 2020
+2020	github	MIT-Reality-Hack-2020/TheMindsEye	C#
+2020	github	MIT-Reality-Hack-2020/Oasis	C#
+2020	github	MIT-Reality-Hack-2020/SpellBound	C#
+2020	github	MIT-Reality-Hack-2020/DonoGivingTree	C#
+2020	github	MIT-Reality-Hack-2020/YOUtopia	C#	Experience the virtual world created by your mind and interact with it.
+2020	github	MIT-Reality-Hack-2020/ARehab
+2020	github	MIT-Reality-Hack-2020/Circadian-XR	C#	Towards Next Generation of Flight Experience
+2020	github	MIT-Reality-Hack-2020/bird	C#	VR painting tool focused on tutorialization
+2020	github	MIT-Reality-Hack-2020/HealthShared
+2020	github	MIT-Reality-Hack-2020/RisingTide		Experience the future effects of climate change as Boston streets flood around you in a hurricane super-storm.
+2020	github	MIT-Reality-Hack-2020/SeniAR	C++	AR experience for family members to better connect with elders in nursing homes through AR memories
+2020	github	MIT-Reality-Hack-2020/To-gather	HTML	To bring people together to form a community through an AR experience.
+2020	github	MIT-Reality-Hack-2020/FocusField	C#	Group 015
+2020	github	MIT-Reality-Hack-2020/MRSLLS	C#	Mixed Realty Sign Language Learning Studio
+2020	github	MIT-Reality-Hack-2020/X-Waves	C#
+2020	github	MIT-Reality-Hack-2020/Life
+2020	github	MIT-Reality-Hack-2020/OneBillion	C#	Project submission for team Brave Little Toasters
+2020	github	MIT-Reality-Hack-2020/LibertyCityVR	ASP	interactive VR experience introducing users to Liberty Square, the first segregated housing project in the United States.
+2020	github	MIT-Reality-Hack-2020/TheGarden	C#
+2020	github	MIT-Reality-Hack-2020/Sonder
+2020	github	MIT-Reality-Hack-2020/Icarus	C#	A Simulation of the Human Anthropocene
+2020	github	MIT-Reality-Hack-2020/task-transfer	C#	MIT Reality Hack project
+2020	github	MIT-Reality-Hack-2020/Down-Payment-on-The-Dream	C#	The story of Frank LeGree and desegregation in Miami (1957).
+2022	github	Reality-Hack-2022/TEAM-30	C++
+2022	github	Reality-Hack-2022/TEAM-17	ShaderLab
+2022	github	Reality-Hack-2022/TEAM-19	C#
+2022	github	Reality-Hack-2022/TEAM-21	JavaScript
+2022	github	Reality-Hack-2022/TEAM-57	C++	SolSpace Gallery is a virtual world that offers NFT collectibles and showcases the winning hack projects each year via VR and WebVR.
+2022	github	Reality-Hack-2022/TEAM-45	C#
+2022	github	Reality-Hack-2022/TEAM-58	C#
+2022	github	Reality-Hack-2022/TEAM-32-Stik-gam	C#
+2022	github	Reality-Hack-2022/TEAM-05	C#
+2022	github	Reality-Hack-2022/TABL3	C#
+2022	github	Reality-Hack-2022/TEAM-62	C#	A way to connect Unity and Web apps through WebRTC	csharp,javascript,unity,web,webrtc,webxr
+2022	github	Reality-Hack-2022/TEAM-10	ShaderLab
+2022	github	Reality-Hack-2022/TEAM-11	JavaScript	RealityHack Submission for SnapLens track
+2022	github	Reality-Hack-2022/TEAM-22-MoodSpace	Java
+2022	github	Reality-Hack-2022/TEAM-56	JavaScript
+2022	github	Reality-Hack-2022/TEAM-26	C#
+2022	github	Reality-Hack-2022/TEAM-15	C#
+2022	github	Reality-Hack-2022/TEAM-51	C#
+2022	github	Reality-Hack-2022/TEAM-54	C#
+2022	github	Reality-Hack-2022/TEAM-52	C#
+2022	github	Reality-Hack-2022/TEAM-03	C#
+2022	github	Reality-Hack-2022/TEAM-23	C#
+2022	github	Reality-Hack-2022/TEAM-39	C#
+2022	github	Reality-Hack-2022/STEP_BY_STEP	JavaScript
+2022	github	Reality-Hack-2022/TEAM-27	C#
+2022	github	Reality-Hack-2022/TEAM-16	C#
+2022	github	Reality-Hack-2022/TEAM-41	JavaScript
+2022	github	Reality-Hack-2022/TEAM-04	ShaderLab
+2022	github	Reality-Hack-2022/TEAM-60	C#
+2022	github	Reality-Hack-2022/TEAM-35	C#
+2022	github	Reality-Hack-2022/TEAM-20	ShaderLab
+2022	github	Reality-Hack-2022/TEAM-12	C#
+2022	github	Reality-Hack-2022/TEAM-02	C#	AcupressureAR	augmented-reality
+2022	github	Reality-Hack-2022/TEAM-14	C#
+2022	github	Reality-Hack-2022/TEAM-37	C#
+2022	github	Reality-Hack-2022/TEAM-25	TypeScript
+2022	github	Reality-Hack-2022/TEAM-08	C++
+2022	github	Reality-Hack-2022/TEAM-42	C#
+2022	github	Reality-Hack-2022/TEAM-44	C#	A solution for the challenge in peace and unity. We propose an interactive way for donate trough interactions and participation in virtual events.
+2022	github	Reality-Hack-2022/TEAM-06	JavaScript
+2022	github	Reality-Hack-2022/TEAM-38	C#
+2022	github	Reality-Hack-2022/TEAM-43	ShaderLab
+2022	github	Reality-Hack-2022/TEAM-28
+2023	github	Reality-Hack-2023/Haptic-Vision	C#	Made at MIT. Using haptic gloves(haptx) to interract with mixed reality mesh colliders via SRworks' Camera Vision API hence delivering tactile and haptic feedback without Physical touch	force-feedback,haptic-feedback,mixed-reality,unity
+2023	github	Reality-Hack-2023/Imagination-I-Land	JavaScript
+2023	github	Reality-Hack-2023/Failtopia	C#
+2023	github	Reality-Hack-2023/AirDropXR-	C#
+2023	github	Reality-Hack-2023/mindflow	C#	A personalized VR meditation experience
+2023	github	Reality-Hack-2023/DigitalDusk
+2023	github	Reality-Hack-2023/AR-Geocaching	C#
+2023	github	Reality-Hack-2023/Spatial-Memories	C#
+2023	github	Reality-Hack-2023/REPO-011	JavaScript
+2023	github	Reality-Hack-2023/Table-88	C#
+2023	github	Reality-Hack-2023/Sight	C#
+2023	github	Reality-Hack-2023/Arcade-Steps	C++
+2023	github	Reality-Hack-2023/Super-Chicks	C#
+2023	github	Reality-Hack-2023/ViveHack	Python
+2023	github	Reality-Hack-2023/FeelReal	C#
+2023	github	Reality-Hack-2023/StoneSoup	ShaderLab
+2023	github	Reality-Hack-2023/Team-IDM	C#
+2023	github	Reality-Hack-2023/ARChi	GLSL
+2023	github	Reality-Hack-2023/DreamVerse	C#
+2023	github	Reality-Hack-2023/GROW-XR	C#
+2023	github	Reality-Hack-2023/Amadeus	C#
+2023	github	Reality-Hack-2023/Duality	C#	Project Name: LET IT GrOw
+2023	github	Reality-Hack-2023/Salmon	C#
+2023	github	Reality-Hack-2023/The-Fantastics	C#
+2023	github	Reality-Hack-2023/Hack-Ninjas
+2023	github	Reality-Hack-2023/LiveCellXR
+2023	github	Reality-Hack-2023/Alone-Together
+2023	github	Reality-Hack-2023/Changers	C++
+2023	github	Reality-Hack-2023/Gym-Class-Heroes	C++
+2023	github	Reality-Hack-2023/MoleculAR-Team
+2023	github	Reality-Hack-2023/MoveIT	C#
+2023	github	Reality-Hack-2023/Office-Oasis	C#
+2023	github	Reality-Hack-2023/Forest-Walkers	C#
+2023	github	Reality-Hack-2023/Edu-AR	C#
+2023	github	Reality-Hack-2023/Furniture	C++
+2023	github	Reality-Hack-2023/Beat-Blocks	C#	Beat Blocks
+2023	github	Reality-Hack-2023/Marshmallows	GLSL
+2023	github	Reality-Hack-2023/jARvis	C#
+2023	github	Reality-Hack-2023/Team-Kitchen
+2023	github	Reality-Hack-2023/Skully	C#
+2023	github	Reality-Hack-2023/Freebird
+2023	github	Reality-Hack-2023/Needs-a-Lynx	C#
+2023	github	Reality-Hack-2023/VRLingo	C#
+2023	github	Reality-Hack-2023/Almost-Asynchronous	C++
+2023	github	Reality-Hack-2023/2025	C#
+2023	github	Reality-Hack-2023/Flower-Power	C#
+2023	github	Reality-Hack-2023/Force-ARMor
+2023	github	Reality-Hack-2023/AI-Someone	JavaScript
+2023	github	Reality-Hack-2023/Presence
+2023	github	Reality-Hack-2023/Panda-Wheels
+2023	github	Reality-Hack-2023/Fashion-For-All	C#
+2023	github	Reality-Hack-2023/Team-Memary
+2023	github	Reality-Hack-2023/Memento-Mori
+2023	github	Reality-Hack-2023/PoisonDartFrogs	C++
+2023	github	Reality-Hack-2023/PRANS	GLSL
+2023	github	Reality-Hack-2023/SuperPosed	C++
+2023	github	Reality-Hack-2023/Focus-Fungus
+2023	github	Reality-Hack-2023/Musicality
+2023	github	Reality-Hack-2023/Medical-Robot
+2023	github	Reality-Hack-2023/InTouch	C#
+2023	github	Reality-Hack-2023/Team-North	C++
+2023	github	Reality-Hack-2023/Team-Responsive-Tale	C++
+2023	github	Reality-Hack-2023/Pulse	C#
+2023	github	Reality-Hack-2023/BrainStorm
+2023	github	Reality-Hack-2023/PainPal	C#
+2023	github	Reality-Hack-2023/Dunkin	C#
+2023	github	Reality-Hack-2023/Anecdotist	C#
+2023	github	Reality-Hack-2023/REPO-045	ShaderLab
+2023	github	Reality-Hack-2023/GoFigure
+2023	github	Reality-Hack-2023/Team-Diminished-Reality	C#
+2023	github	Reality-Hack-2023/The-Leftovers	C#
+2024	codeberg	reality-hack-2024/SnAIder-CUT-MIT-XR-Hackathon-Winner-2024	C#
+2024	codeberg	reality-hack-2024/SafeDishCertified	C#
+2024	codeberg	reality-hack-2024/BrailleXR	C#
+2024	codeberg	reality-hack-2024/SuperSmashTrash	C#
+2024	codeberg	reality-hack-2024/Relive
+2024	codeberg	reality-hack-2024/SynergySurvived	ShaderLab
+2024	codeberg	reality-hack-2024/CodeHero	C++
+2024	codeberg	reality-hack-2024/Bounce	C#
+2024	codeberg	reality-hack-2024/EmpoweredAR	C#
+2024	codeberg	reality-hack-2024/DestinyBeaver	Text
+2024	codeberg	reality-hack-2024/SenseEasy	C#
+2024	codeberg	reality-hack-2024/WeSourcesXR	C#
+2024	codeberg	reality-hack-2024/WaveGoodbye	C#
+2024	codeberg	reality-hack-2024/Beesper	C#
+2024	codeberg	reality-hack-2024/CommunityCanvas	C++
+2024	codeberg	reality-hack-2024/ReadyXR	C++
+2024	codeberg	reality-hack-2024/FarMR	C#
+2024	codeberg	reality-hack-2024/MemoriesOfKumiDaiko	ShaderLab
+2024	codeberg	reality-hack-2024/StellarScope	C#
+2024	codeberg	reality-hack-2024/Penpals	C#
+2024	codeberg	reality-hack-2024/UnityEnzo	C#
+2024	codeberg	reality-hack-2024/VirtualFantasyProductivityWeapons	ShaderLab
+2024	codeberg	reality-hack-2024/CollageMR	C#
+2024	codeberg	reality-hack-2024/Pinpals	C#
+2024	codeberg	reality-hack-2024/Cycle	C#
+2024	codeberg	reality-hack-2024/TheLibraryOfBeautifulThings	C#	The Library of Beautiful Things
+2024	codeberg	reality-hack-2024/Sublynk	C#
+2024	codeberg	reality-hack-2024/GeoQuestAR	C#
+2024	codeberg	reality-hack-2024/HeaVR	C#
+2024	codeberg	reality-hack-2024/EchoesOfSilence	C#
+2024	codeberg	reality-hack-2024/AgriCommandXR	C#
+2024	codeberg	reality-hack-2024/Starscape	C#
+2024	codeberg	reality-hack-2024/AFireTrainingApp	ShaderLab
+2024	codeberg	reality-hack-2024/JumpOnIt	C#
+2024	codeberg	reality-hack-2024/FireDrillXR	yaml
+2024	codeberg	reality-hack-2024/EverPresent	C#
+2024	codeberg	reality-hack-2024/DigitalQiangGarden
+2024	codeberg	reality-hack-2024/Operator	C#
+2024	codeberg	reality-hack-2024/63Galleria	C#
+2024	codeberg	reality-hack-2024/MOOL	PureBasic
+2024	codeberg	reality-hack-2024/MentorReality	PureBasic
+2024	codeberg	reality-hack-2024/Moji	C#
+2024	codeberg	reality-hack-2024/Visclude	C#	Visclude : A Developer Tool for Visual Accessibility Design in XR 2024 MIT Reality Hack
+2024	codeberg	reality-hack-2024/DeltaRealation	C#
+2024	codeberg	reality-hack-2024/ThriveHive	HTML
+2024	codeberg	reality-hack-2024/Voyagery	C#
+2024	codeberg	reality-hack-2024/InArmsReach	TypeScript
+2024	codeberg	reality-hack-2024/DoctorTurst	C#
+2024	codeberg	reality-hack-2024/PocketFest	C#
+2024	codeberg	reality-hack-2024/BlockParty	C#
+2024	codeberg	reality-hack-2024/PlantAR	C++
+2024	codeberg	reality-hack-2024/QuantumRealities	Jupyter Notebook
+2024	codeberg	reality-hack-2024/RatInTheHat	C#
+2024	codeberg	reality-hack-2024/RecordReality	C#
+2024	codeberg	reality-hack-2024/RealAccessVR	Wavefront Material
+2024	codeberg	reality-hack-2024/MemoryMingle	C#
+2024	codeberg	reality-hack-2024/AncestralApron	C#
+2024	codeberg	reality-hack-2024/SereniTea	C#
+2024	codeberg	reality-hack-2024/SwingCoach	Jupyter Notebook
+2024	codeberg	reality-hack-2024/GalXR	C++
+2024	codeberg	reality-hack-2024/SupportXR	C#
+2024	codeberg	reality-hack-2024/SKYWARD	GLSL
+2024	codeberg	reality-hack-2024/MindToBoard	C++
+2024	codeberg	reality-hack-2024/VerseVerse	C#
+2024	codeberg	reality-hack-2024/3Datalyze	C#
+2024	codeberg	reality-hack-2024/TABLE_76	C#
+2024	codeberg	reality-hack-2024/Sphere	C#
+2024	codeberg	reality-hack-2024/Legacy	C#
+2024	codeberg	reality-hack-2024/LovelyLens	ShaderLab
+2024	codeberg	reality-hack-2024/SunshineCove	C++
+2024	codeberg	reality-hack-2024/Mushin	C#
+2024	codeberg	reality-hack-2024/ADaysBlurVR	C#
+2024	codeberg	reality-hack-2024/Echo	C#
+2024	codeberg	reality-hack-2024/FlexVRWellness	C#
+2024	codeberg	reality-hack-2024/EduVision	C#
+2024	codeberg	reality-hack-2024/GenZen	C#
+2024	codeberg	reality-hack-2024/HealMotion	C#
+2024	codeberg	reality-hack-2024/MindfulStride	C#
+2024	codeberg	reality-hack-2024/DelivARAngel	Text
+2024	codeberg	reality-hack-2024/MrFossil	C#
+2024	codeberg	reality-hack-2024/TeamPando	C#
+2024	codeberg	reality-hack-2024/NetConnect	C#
+2024	codeberg	reality-hack-2024/XRWildernessAcademy	C#
+2024	codeberg	reality-hack-2024/PastVista
+2024	codeberg	reality-hack-2024/StageFlow	ShaderLab
+2024	codeberg	reality-hack-2024/AirBlocks	C#	The mixed reality experience enabling a new age of interactive, collaborative learning
+2024	codeberg	reality-hack-2024/TreasureTrove	C#
+2024	codeberg	reality-hack-2024/HappyBalloonFunTime	C#
+2024	codeberg	reality-hack-2024/WEDGE	C#	Wireless Ergonomics
+2024	codeberg	reality-hack-2024/MemoryLane	C#
+2024	codeberg	reality-hack-2024/RECOVR	C#
+2024	codeberg	reality-hack-2024/BallLightning	C#
+2024	codeberg	reality-hack-2024/Adulting101	C#
+2024	codeberg	reality-hack-2024/NetwARk	Python
