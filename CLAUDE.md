@@ -66,7 +66,7 @@ Output per project: `platform`, `requirement_tier` (quest2 / quest3 / pcvr / non
 2. Greybox museum + portal ripple shader + video theater (every project is at least watchable).
 3. Ratings backend. (Supabase schema + RLS tests in `supabase/`, star bars in the client.)
 4. Compat kit + port factory, starting with the top ~20 projects. (`kit/`, `factory/`, `python -m rhm.factory`; wave 1 queued in `factory/QUEUE.md`.)
-5. Install/zone system + companion ADB script.
+5. Install/zone system + companion ADB script. (`museum/…/Scripts/Apps/`, `Plugins/Android/RHInstaller.java`, `companion/rh_companion.py`.)
 
 ## Owner
 Mark (GitHub: Almasianmark). Prefers structured, direct, numbers-first communication.

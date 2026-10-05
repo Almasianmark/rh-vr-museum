@@ -94,6 +94,7 @@ namespace RHMuseum
     {
         public static readonly Vector3 Origin = new Vector3(0, 0, -400);
         public PaintingView Screen { get; private set; }
+        public ProjectInfo Current => _current;
         public Vector3 ViewPoint => Origin + new Vector3(0, 0, -1.5f);
         public event Action ExitRequested;
 

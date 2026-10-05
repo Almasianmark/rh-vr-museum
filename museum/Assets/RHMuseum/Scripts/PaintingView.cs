@@ -155,6 +155,21 @@ namespace RHMuseum
             ApplyBlock(tex, Color.white);
         }
 
+        TMPro.TextMeshPro _appBadge;
+
+        /// <summary>Install-state line above the frame (top-left), for paintings with a playable port.</summary>
+        public void SetAppBadge(string text, Color color)
+        {
+            if (_appBadge == null)
+            {
+                _appBadge = Greybox.Label(transform, "", new Vector3(-size.x / 2 + 0.6f, size.y / 2 + 0.13f, -0.03f),
+                    Quaternion.identity, 0.42f, 1.2f, color, TextAlignmentOptions.Left, 0.12f);
+                _appBadge.fontStyle = FontStyles.Bold;
+            }
+            _appBadge.text = text;
+            _appBadge.color = color;
+        }
+
         public void ReleaseThumbnail()
         {
             if (Thumbnail != null) Destroy(Thumbnail);

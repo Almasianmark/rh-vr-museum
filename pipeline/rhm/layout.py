@@ -125,9 +125,45 @@ def build_layout(projects: list[dict], cap: int = MAX_PER_EXHIBIT, scores: dict[
     return {"max_per_exhibit": cap, "wings": wings}
 
 
-def museum_doc(doc: dict, cap: int = MAX_PER_EXHIBIT, scores: dict[str, dict] | None = None) -> dict:
+APK_BASE_URL = "https://github.com/Almasianmark/rh-vr-museum/releases/download/ports-wave1/"
+
+
+def load_apps(status_path=None, base_url: str | None = None, include_untested: bool = False) -> dict[str, dict]:
+    """Installable ports from data/port_status.json (written by `rhm.factory triage`).
+
+    Only smoke-tested ports (`ready`) ship by default; RHM_INCLUDE_UNTESTED=1 also ships `built` ones.
+    APKs are expected at <base_url><package>.apk (a GitHub release by default) unless the status row
+    carries its own apk_url.
+    """
+    import json
+    import os
+    from pathlib import Path
+    status_path = Path(status_path) if status_path else Path(__file__).resolve().parents[2] / "data" / "port_status.json"
+    if not status_path.exists():
+        return {}
+    base_url = base_url or os.environ.get("APK_BASE_URL") or APK_BASE_URL
+    include_untested = include_untested or os.environ.get("RHM_INCLUDE_UNTESTED") == "1"
+    apps = {}
+    for pid, s in json.loads(status_path.read_text(encoding="utf-8")).get("ports", {}).items():
+        ok = s.get("state") == "ready" or (include_untested and s.get("state") == "built")
+        if not ok or not s.get("apk_sha256") or not s.get("package_id"):
+            continue
+        apps[pid] = {
+            "package": s["package_id"],
+            "apk_url": s.get("apk_url") or f"{base_url.rstrip('/')}/{s['package_id']}.apk",
+            "sha256": s["apk_sha256"],
+            "bytes": int(s.get("apk_bytes") or 0),
+            "recipe": s.get("recipe") or "",
+            "tested": s.get("state") == "ready",
+        }
+    return apps
+
+
+def museum_doc(doc: dict, cap: int = MAX_PER_EXHIBIT, scores: dict[str, dict] | None = None,
+               apps: dict[str, dict] | None = None) -> dict:
     layout = build_layout(doc["projects"], cap, scores)
     scores = scores or {}
+    apps = load_apps() if apps is None else apps
     exhibit_of = {pid: ex["id"] for w in layout["wings"] for ex in w["exhibits"] for pid in ex["project_ids"]}
     projects = []
     for p in doc["projects"]:
@@ -151,7 +187,9 @@ def museum_doc(doc: dict, cap: int = MAX_PER_EXHIBIT, scores: dict[str, dict] | 
             "devpost_url": p.get("devpost_url") or "",
             "repo_url": repo.get("url") or "",
             "license_gate": p["license_gate"],
-            "launch": launch_target(p),
+            # Installed ports launch as apps; everything else keeps its browser/horizon/theater target.
+            "launch": {"kind": "app", "url": ""} if p["id"] in apps else launch_target(p),
+            "app": apps.get(p["id"]),
             # Snapshot for offline display; the client refreshes live from Supabase.
             "rating_count": int(scores.get(p["id"], {}).get("rating_count") or 0),
             "avg_stars": float(scores.get(p["id"], {}).get("avg_stars") or 0),

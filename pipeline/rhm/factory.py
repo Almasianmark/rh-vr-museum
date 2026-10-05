@@ -394,7 +394,8 @@ def triage(work: Path | None = None) -> dict:
         else:
             state = "queued"
         status[e["id"]] = {"state": state, "package_id": e["package_id"], "recipe": e["recipe"],
-                           "apk_sha256": (sm or {}).get("apk_sha256"), "fps_median": (sm or {}).get("fps_median"),
+                           "apk_sha256": (sm or {}).get("apk_sha256"), "apk_bytes": (sm or {}).get("apk_bytes"),
+                           "fps_median": (sm or {}).get("fps_median"),
                            "manual_steps": e["manual_steps"]}
     STATUS_JSON.write_text(json.dumps({"generated_at": _now(), "ports": status}, indent=2) + "\n")
     L = ["# Port triage", "", "| # | project | recipe | state | FPS | manual steps |", "|---:|---|---|---|---:|---|"]

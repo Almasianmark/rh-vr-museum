@@ -84,3 +84,21 @@ def test_supabase_sync_requests():
     assert url == "https://x.supabase.co/rest/v1/projects?on_conflict=id"
     assert "merge-duplicates" in headers["Prefer"] and headers["Authorization"] == "Bearer svc"
     assert ss.fetch_scores("https://x.supabase.co", "anon", session=s)["p1"]["bayes_score"] == 3.9
+
+
+def test_apps_from_port_status(tmp_path):
+    import json
+    from rhm.layout import load_apps
+    st = tmp_path / "port_status.json"
+    st.write_text(json.dumps({"ports": {
+        "p1": {"state": "ready", "package_id": "world.realityhack.p2024.a", "apk_sha256": "ab", "apk_bytes": 123, "recipe": "native"},
+        "p2": {"state": "built", "package_id": "world.realityhack.p2024.b", "apk_sha256": "cd"},
+        "p3": {"state": "triage:crash", "package_id": "c", "apk_sha256": "ef"},
+    }}))
+    apps = load_apps(st, base_url="https://x/rel/")
+    assert list(apps) == ["p1"] and apps["p1"]["apk_url"] == "https://x/rel/world.realityhack.p2024.a.apk"
+    assert set(load_apps(st, base_url="https://x/", include_untested=True)) == {"p1", "p2"}
+    m = museum_doc({"generated_at": "x", "projects": [P(1), P(2)]}, apps={"p1": apps["p1"]})
+    by = {p["id"]: p for p in m["projects"]}
+    assert by["p1"]["launch"]["kind"] == "app" and by["p1"]["app"]["sha256"] == "ab"
+    assert by["p2"]["app"] is None and by["p2"]["launch"]["kind"] == "theater"

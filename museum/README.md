@@ -70,6 +70,31 @@ Native/ported projects go to the theater until build-order step 5 (APK install a
 - **Setup:** set `supabaseUrl` and `supabaseAnonKey` on **Museum Bootstrap**. If they're empty, ratings are off and the bars show the snapshot numbers from `museum.json`.
 - Backend setup is in `supabase/README.md`.
 
+## Installs & zones (phase 5)
+
+Ports that passed the factory smoke test show up in `museum.json` as `app` (package, APK URL, SHA-256, bytes). For those paintings:
+
+| Where you are | What happens |
+|---|---|
+| **Approach zone:** spine within 16 m of a wing's opening, or anywhere inside the wing | That wing's APKs download in the background, one at a time. They're **SHA-256 verified** on a worker thread, and a mismatch is discarded. |
+| **Entrance zone:** first 4 m of the wing corridor | Everything downloaded installs in a batch. **Standalone:** Android shows one prompt per app; cancelling one skips the rest of the batch. **Companion:** the request goes to the PC or Pi, which installs silently. |
+| **Push through an installed painting** | The app launches. The kit's return gesture (left Menu + right B, 1.5 s) brings you back to this painting. |
+| **Push through a port that isn't installed yet** | You land in the theater, which shows the install state and has an **Install & play** button. |
+
+- **Badges:** each painting with a port shows its state above the frame (playable port / downloading 42% / ready / installed / error). A sign at each wing entrance summarizes the wing.
+- **Lobby kiosk:** next to spawn. Sets the install mode (Standalone / Companion), the storage budget (±2 GB, default 8 GB) and **Preload** (best-rated ports that fit).
+- **Storage manager:**
+  - Before installing, it uninstalls the least-recently-played ports first, weighted by rating: `hours since played × (6 − rating) / 3`.
+  - It never evicts the batch being installed, or anything played in the last 15 minutes.
+  - Installed size is estimated at 1.6× the APK size, and each APK is deleted once installed.
+  - A download needs free disk for the APK, its installed size, and a 1 GB reserve.
+  - The policy is pure C#: `dotnet test museum/Tests` (9 tests).
+- **Android:**
+  - `Assets/Plugins/Android/RHInstaller.java` installs through PackageInstaller sessions, with a dynamically registered status receiver that starts the confirmation prompt and reports back through `UnitySendMessage`.
+  - `Editor/AndroidManifestPatch.cs` adds `REQUEST_INSTALL_PACKAGES`, `REQUEST_DELETE_PACKAGES` and `QUERY_ALL_PACKAGES` to the generated manifest. The museum is sideloaded, never Store-listed.
+  - The first standalone install opens **Install unknown apps** for the museum. The visitor flips it once.
+- **Editor / desktop:** installs are simulated (they finish after 1 s), so the zone flow can be walked without a headset.
+
 ## Code map (`Assets/RHMuseum/`)
 
 | File | Role |
@@ -85,6 +110,12 @@ Native/ported projects go to the theater until build-order step 5 (APK install a
 | `Shaders/Greybox.shader` | Unlit fake-lit greybox with a 1 m grid (no realtime lights) |
 | `Scripts/RatingsClient.cs` | Supabase over REST: anonymous sign-in + refresh, `project_scores`, own ratings, `rate_project`, offline queue |
 | `Scripts/StarBar.cs` | Touchable 5-star bar (mesh stars, no font glyphs) + lobby top-rated board |
+| `Scripts/Apps/AppManager.cs` | Zones, download queue + SHA-256, install batches, evictions, launch, companion file bridge |
+| `Scripts/Apps/StoragePlanner.cs` | Pure eviction / preload / free-space policy (unit-tested with dotnet) |
+| `Scripts/Apps/AndroidApps.cs` | JNI wrapper over `RHInstaller.java`; simulated in the editor |
+| `Scripts/Apps/AppUi.cs` | Painting badges, wing entrance signs, lobby kiosk, theater Install button |
+| `../Plugins/Android/RHInstaller.java` | PackageInstaller install/uninstall, launch, free space |
+| `Editor/AndroidManifestPatch.cs` | Install permissions in the generated Android manifest |
 | `Editor/MuseumSetup.cs` | The setup menu above |
 
 ## Quest 2 performance choices

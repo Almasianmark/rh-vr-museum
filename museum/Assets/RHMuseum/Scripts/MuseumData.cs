@@ -54,6 +54,18 @@ namespace RHMuseum
         public bool IsArchive => kind == "archive";
     }
 
+    /// <summary>A smoke-tested Quest port (pipeline: data/port_status.json -> museum.json "app").</summary>
+    [Serializable]
+    public class AppInfo
+    {
+        public string package;
+        public string apk_url;
+        public string sha256;
+        public long bytes;
+        public string recipe;
+        public bool tested;
+    }
+
     [Serializable]
     public class LaunchTarget
     {
@@ -83,6 +95,7 @@ namespace RHMuseum
         public string repo_url;
         public string license_gate;
         public LaunchTarget launch = new LaunchTarget();
+        public AppInfo app;          // null / empty package when there is no playable port yet
         public int rating_count;     // snapshot at layout time; RatingsClient has the live numbers
         public float avg_stars;
     }

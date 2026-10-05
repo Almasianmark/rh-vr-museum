@@ -33,6 +33,7 @@ namespace RHMuseum
         bool _busy, _inTheater;
         (Vector3 pos, float yaw) _returnPose;
         int _downloads;
+        Apps.AppUi _appUi;
 
         IEnumerator Start()
         {
@@ -58,6 +59,10 @@ namespace RHMuseum
 
             PaintingView.PushedThrough += OnPushedThrough;
             _rig.BackPressed += Back;
+
+            // Install / zone system: downloads near a wing, installs at its entrance, lobby kiosk.
+            Apps.AppManager.Create(_doc, _builder.Wings, _rig.Head.transform);
+            _appUi = Apps.AppUi.Create(_builder, _theater, root.Find("Lobby"));
 
             if (!TryReturnToPainting()) _rig.TeleportTo(_builder.SpawnPoint, _builder.SpawnYaw);
 
@@ -118,7 +123,13 @@ namespace RHMuseum
 
             string kind = info.launch != null ? info.launch.kind : "theater";
             string url = info.launch != null ? info.launch.url : "";
-            if ((kind == "browser" || kind == "horizon") && !string.IsNullOrEmpty(url))
+            if (kind == "app" && Apps.AppManager.Instance != null && Apps.AppManager.Instance.Launch(info))
+            {
+                // Installed port: Quest switches apps; the kit's return gesture brings the visitor back here.
+                view.SetEnter(0, uv);
+                yield return _fader.Fade(0, 0.5f);
+            }
+            else if ((kind == "browser" || kind == "horizon") && !string.IsNullOrEmpty(url))
             {
                 // Quest switches to Browser / Horizon; when the user comes back they're still at this painting.
                 Application.OpenURL(url);
@@ -127,11 +138,11 @@ namespace RHMuseum
             }
             else
             {
-                // Native / ported builds aren't installed yet (build-order step 5), so everything else
-                // goes to the theater for now.
+                // Watch-only projects, and ports not installed yet (the theater offers "Install & play").
                 _returnPose = MuseumBuilder.ViewpointFor(view);
                 _theater.gameObject.SetActive(true);
                 _theater.Show(info);
+                if (_appUi != null) _appUi.OnTheaterShown();
                 _rig.TeleportTo(_theater.ViewPoint, 0);
                 _inTheater = true;
                 view.SetEnter(0, uv);

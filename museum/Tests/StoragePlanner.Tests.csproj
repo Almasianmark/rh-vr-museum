@@ -1,0 +1,16 @@
+<!-- Pure-C# tests for the storage policy (no Unity needed):  dotnet test museum/Tests -->
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>9.0</LangVersion>
+    <IsPackable>false</IsPackable>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="xunit" Version="2.9.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" />
+    <Compile Include="../Assets/RHMuseum/Scripts/Apps/StoragePlanner.cs" />
+    <Compile Include="StoragePlannerTests.cs" />
+  </ItemGroup>
+</Project>
