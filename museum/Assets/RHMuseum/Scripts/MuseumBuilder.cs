@@ -28,6 +28,16 @@ namespace RHMuseum
             public GameObject root;
             public Bounds bounds;   // world space
             public readonly List<PaintingView> paintings = new List<PaintingView>();
+            public readonly List<RoomInfo> rooms = new List<RoomInfo>();
+        }
+
+        /// <summary>A room you can only see into through one doorway. 2D, in wing-local XZ (Vector2 = x, z).</summary>
+        public class RoomInfo
+        {
+            public Vector2 doorA, doorB;   // doorway edges
+            public Vector2 inward;         // unit normal from the doorway into the room
+            public Rect area;              // room floor (x, z)
+            public readonly List<PaintingView> paintings = new List<PaintingView>();
         }
 
         readonly MuseumDoc _doc;
@@ -209,6 +219,15 @@ namespace RHMuseum
             float zFront = s * CorridorW / 2, zBack = s * (CorridorW / 2 + RoomD);
             var room = new GameObject($"Exhibit {ex.id}").transform;
             room.SetParent(wing, false);
+            const float doorHalf = 1.2f;   // WallX's default door width / 2
+            var cell = new RoomInfo
+            {
+                doorA = new Vector2(x0 + RoomW / 2 - doorHalf, zFront),
+                doorB = new Vector2(x0 + RoomW / 2 + doorHalf, zFront),
+                inward = new Vector2(0, s),
+                area = Rect.MinMaxRect(x0, Mathf.Min(zFront, zBack), x0 + RoomW, Mathf.Max(zFront, zBack)),
+            };
+            info.rooms.Add(cell);
 
             Greybox.WallX(room, x0, x0 + RoomW, zBack, WallH, Palette.Wall);
             float za = Mathf.Min(zFront, zBack), zb = Mathf.Max(zFront, zBack);
@@ -232,7 +251,7 @@ namespace RHMuseum
                 (new Vector3(x0 + RoomW - WallInset, midY, zFront + s * RoomD * 0.30f), Quaternion.Euler(0, 90, 0)),
             };
             for (int i = 0; i < ex.project_ids.Count && i < slots.Count; i++)
-                AddPainting(room, info, ex.project_ids[i], slots[i].pos, slots[i].rot, 1.6f, false);
+                AddPainting(room, info, cell, ex.project_ids[i], slots[i].pos, slots[i].rot, 1.6f, false);
         }
 
         void BuildArchive(Transform wing, WingInfo info, Exhibit ex, float x0, float side)
@@ -240,6 +259,14 @@ namespace RHMuseum
             var room = new GameObject($"Exhibit {ex.id}").transform;
             room.SetParent(wing, false);
             float h = side / 2, x1 = x0 + side, zc = CorridorW / 2;
+            var cell = new RoomInfo
+            {
+                doorA = new Vector2(x0, -zc),
+                doorB = new Vector2(x0, zc),
+                inward = new Vector2(1, 0),
+                area = Rect.MinMaxRect(x0, -h, x1, h),
+            };
+            info.rooms.Add(cell);
 
             Greybox.WallZ(room, -h, h, x1, WallH, Palette.ArchiveWall);              // back
             Greybox.WallX(room, x0, x1, h, WallH, Palette.ArchiveWall);              // north
@@ -267,18 +294,20 @@ namespace RHMuseum
                     for (int i = 0; i < n && k < ex.project_ids.Count; i++, k++)
                     {
                         Vector3 pos = run.start + run.dir * (ArchiveMargin + i * ArchivePitch) + Vector3.up * y;
-                        AddPainting(room, info, ex.project_ids[k], pos, run.rot, 1.1f, true);
+                        AddPainting(room, info, cell, ex.project_ids[k], pos, run.rot, 1.1f, true);
                     }
                 }
         }
 
-        void AddPainting(Transform parent, WingInfo info, string projectId, Vector3 localPos, Quaternion rot, float width, bool compact)
+        void AddPainting(Transform parent, WingInfo info, RoomInfo cell, string projectId, Vector3 localPos, Quaternion rot,
+                         float width, bool compact)
         {
             var p = _doc.Project(projectId);
             if (p == null) return;
             var view = PaintingView.Create(parent, p, localPos, rot, width, compact);
             Paintings[p.id] = view;
             info.paintings.Add(view);
+            cell.paintings.Add(view);
         }
 
         /// <summary>Where to stand to look at a painting: 1.6 m in front of it.</summary>

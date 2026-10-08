@@ -98,7 +98,9 @@ namespace RHMuseum
         public Vector3 ViewPoint => Origin + new Vector3(0, 0, -1.5f);
         public event Action ExitRequested;
 
-        TextMeshPro _status;
+        TextMeshPro _status, _cardText;
+        Transform _card;
+        StarBar _cardStars;
         VideoPlayer _player;
         RenderTexture _rt;
         ProjectInfo _current;
@@ -130,6 +132,19 @@ namespace RHMuseum
             TouchButton.Create(t, "Back", new Vector3(0.45f, 1.1f, 0.2f), Quaternion.Euler(35, 0, 0), new Vector2(0.55f, 0.22f),
                 new Color(0.55f, 0.25f, 0.25f), () => ExitRequested?.Invoke());
             Greybox.Box(t, "Podium", new Vector3(0, 0.5f, 0.3f), new Vector3(1.5f, 1.0f, 0.4f), new Color(0.3f, 0.3f, 0.35f));
+            // Lectern card, front-left, angled at the viewpoint (~2 m away): the screen is 7 m away, so its own
+            // plaque would be unreadable. Title, prize, device, synopsis and the star bar live here instead.
+            Greybox.Box(t, "Lectern", new Vector3(-1.5f, 0.5f, 0.1f), new Vector3(0.5f, 1.0f, 0.4f), new Color(0.3f, 0.3f, 0.35f));
+            _card = new GameObject("Card").transform;
+            _card.SetParent(t, false);
+            _card.localPosition = new Vector3(-1.5f, 1.5f, 0.1f);
+            _card.localRotation = Quaternion.Euler(20, -43, 0);   // -Z (the readable side) faces the viewpoint
+            Greybox.Box(_card, "CardBack", new Vector3(0, 0, 0.02f), new Vector3(1.25f, 0.95f, 0.03f), Palette.Plaque, false);
+            _cardText = Greybox.Label(_card, "", new Vector3(0, 0.05f, 0), Quaternion.identity, 0.8f, 1.15f,
+                Palette.TextOnDark, TextAlignmentOptions.TopLeft, 0.78f);
+            _cardText.enableAutoSizing = true;
+            _cardText.fontSizeMin = 0.45f;
+            _cardText.fontSizeMax = 0.8f;
         }
 
         public void Show(ProjectInfo info)
@@ -137,7 +152,11 @@ namespace RHMuseum
             _current = info;
             if (Screen != null) Destroy(Screen.gameObject);
             // The screen is just a big painting: same ripple surface, full plaque underneath.
-            Screen = PaintingView.Create(transform, info, new Vector3(0, 2.75f, 5.8f), Quaternion.identity, 4.8f, false);
+            Screen = PaintingView.Create(transform, info, new Vector3(0, 2.75f, 5.8f), Quaternion.identity, 4.8f,
+                PaintingView.Plaque.None);
+            _cardText.text = PaintingView.PlaqueText(info, false);
+            if (_cardStars != null) Destroy(_cardStars.gameObject);
+            _cardStars = StarBar.Create(_card, info, new Vector3(-0.62f + 0.075f * 2.5f, -0.4f, -0.005f), 0.6f);
             _status.text = string.IsNullOrEmpty(info.video_url)
                 ? "No demo video for this project."
                 : IsDirectVideo(info.video_url) ? "Touch Play to start the video." : "Play opens the demo video in Quest Browser.";
@@ -150,6 +169,8 @@ namespace RHMuseum
             if (Screen != null) Destroy(Screen.gameObject);
             Screen = null;
             _current = null;
+            if (_cardStars != null) Destroy(_cardStars.gameObject);
+            _cardStars = null;
         }
 
         static bool IsDirectVideo(string url)

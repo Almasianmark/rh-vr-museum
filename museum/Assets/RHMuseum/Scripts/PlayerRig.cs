@@ -13,7 +13,8 @@ namespace RHMuseum
     /// <summary>
     /// Minimal rig with no XR Interaction Toolkit dependency. Head and hands come from UnityEngine.XR.InputDevices
     /// (works with the OpenXR plugin on Quest). Left stick moves, right stick snap-turns, B/Y = back,
-    /// fingertips touch paintings. Without a headset: WASD + right-drag mouse look, click to touch, Esc = back.
+    /// fingertips touch paintings, left stick click = perf mode (PerfModes). Without a headset: WASD + right-drag
+    /// mouse look, click to touch, Esc = back, P = perf mode.
     /// </summary>
     public class PlayerRig : MonoBehaviour
     {
@@ -265,6 +266,12 @@ namespace RHMuseum
             return k != null && (k.escapeKey.wasPressedThisFrame || k.backspaceKey.wasPressedThisFrame);
         }
 
+        public static bool PerfPressed()
+        {
+            var k = Keyboard.current;
+            return k != null && k.pKey.wasPressedThisFrame;
+        }
+
         public static bool ClickPressed(out Vector2 screen)
         {
             var m = Mouse.current;
@@ -275,6 +282,7 @@ namespace RHMuseum
         public static Vector2 Move() => new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         public static Vector2 LookDelta() => Input.GetMouseButton(1) ? new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")) * 10f : Vector2.zero;
         public static bool BackPressed() => Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Backspace);
+        public static bool PerfPressed() => Input.GetKeyDown(KeyCode.P);
         public static bool ClickPressed(out Vector2 screen)
         {
             screen = Input.mousePosition;

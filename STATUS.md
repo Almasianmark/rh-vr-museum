@@ -6,19 +6,17 @@ Where the project stands after the first local Unity and Quest 2 sessions, and w
 
 - All five build-order phases are written (commits `75b7514` … `cbc2d3c`).
 - The museum client compiles, runs in the editor, builds for Android, and runs on a real Quest 2.
-- **It does not hold frame rate on Quest 2**: 53 fps average against a 72 fps target. This is the next thing to fix.
+- **It did not hold frame rate on Quest 2**: 53 fps average against a 72 fps target. A perf pass with an in-headset A/B switch is now on `claude/busy-ride-2qcbjl` and needs one headset session to measure (see "Perf pass" below).
 - Ratings, the port factory and the install/zone flow have not been exercised end to end.
 
 ## Where the code is
 
 | Item | State |
 |---|---|
-| Branch | `claude/busy-ride-2qcbjl` holds everything |
-| `main` | Only `CLAUDE.md` until PR #1 is merged |
-| PR | [#1](https://github.com/Almasianmark/rh-vr-museum/pull/1), open, no conflicts |
+| `main` | Phases 1–5 (PR [#1](https://github.com/Almasianmark/rh-vr-museum/pull/1), merged) |
+| Branch | `claude/busy-ride-2qcbjl`: `main` + the perf pass, not merged yet |
 | Local clone | `C:\Users\almas\rh-vr-museum` on Mark's Windows PC |
 
-A cloud session started from the web begins on the default branch. Until PR #1 is merged, pick `claude/busy-ride-2qcbjl` explicitly or the session sees an empty repo.
 
 ## What was verified locally
 
@@ -69,15 +67,52 @@ A cloud session started from the web begins on the default branch. Until PR #1 i
 4. Reduce text overdraw: cull or disable plaque text beyond reading distance.
 5. Re-capture after each change. The test must be run by Mark on the headset; a cloud session cannot reach it.
 
+## Perf pass (2026-10-08, cloud session, not yet measured)
+
+Every fix can be toggled in the headset, so one session measures all of them. **Click the left thumbstick** (desktop: **P**) to cycle 8 modes; a yellow label shows the mode for 3 s. The app starts in `shipping`.
+
+| # | Mode | What's on |
+|---|---|---|
+| 1 | `shipping` | Fixes A–E (the intended default) |
+| 2 | `legacy` | None: should reproduce the 53 fps build (except the theater card and CJK font) |
+| 3 | `foveation` | A only |
+| 4 | `msaa2x` | B only |
+| 5 | `ripple-idle` | C only |
+| 6 | `text-cull` | D only |
+| 7 | `room-cull` | E only |
+| 8 | `shipping+gpu-boost` | A–E + F |
+
+| Fix | Change | Files |
+|---|---|---|
+| A. Foveation | OpenXR **Foveated Rendering** feature enabled for Android (API: SRP Foveation, eye tracking off); `XRDisplaySubsystem.foveatedRenderingLevel = 1` (Quest: high) | `OpenXR Package Settings.asset`, `Perf/XRPlatform.cs` |
+| B. MSAA 2× | URP asset's `msaaSampleCount` set at runtime (URP 17.2 pushes it to the XR display every frame); restored on exit so the asset on disk stays 4× | `Perf/PerfModes.cs` |
+| C. Ripple idle | Untouched paintings draw a 4-vertex quad with a one-texture-fetch shader variant; touched/entered ones switch to the 1,500-vertex grid + wave variant (`RHM_RIPPLE_ON`) for 4.5 s | `PortalRipple.shader`, `PaintingView.cs` |
+| D. Text | Painting text (plaque, badges, star label) hidden beyond 6 m (shown again under 6 m, hidden past 7.5 m); all labels use TMP's **Mobile** SDF shader | `Perf/MuseumCulling.cs`, `Greybox.cs`, `Resources/RHM_TextMobile.mat` |
+| E. Room culling | A room's paintings draw only if their wall segment is inside the 2D wedge from the eye through the room's doorway. Walls always draw, so nothing shows a hole. Unit-tested (`museum/Tests/DoorwayTests.cs`) | `Perf/Doorway.cs`, `Perf/MuseumCulling.cs`, `MuseumBuilder.cs` |
+| F. GPU boost | OpenXR **XR Performance Settings** feature enabled; GPU hint Boost vs Sustained High. Not in `shipping`: Boost can throttle when hot | `Perf/XRPlatform.cs` |
+
+**Logcat lines** (tag `Unity`, already in the capture filter):
+- `[RHPerf] start …`: device, graphics API, refresh rate, eye-texture size, MSAA. Foveation needs Vulkan.
+- `[RHPerf] mode=… foveation=… msaa=… gpuHint=…` on every switch.
+- `[RHPerf] stats mode=… fps=… min=… slow=n/frames gpu=…ms pos=x,z` every 2 s. GPU ms may read `n/a`; VrApi's `App=` has it either way.
+
+Remove the switch once the numbers are in: keep the winning fixes as plain settings.
+
+**Also in this pass:**
+- **Theater:** the project's details and star bar are now on a lectern card about 2 m from the viewpoint. The screen has no plaque.
+- **CJK:** on Android, the system Noto CJK font is added as a dynamic TMP fallback. Only one project (Chado XR) needs it.
+- **Emoji:** `layout.py` strips emoji from titles, taglines, synopses and prizes. TMP SDF can't draw color emoji.
+- **Compile check:** the cloud check now stubs the Input System `InputDevice` and `CommonUsages`, and it reproduces the CS0104 error when `using UnityEngine.InputSystem;` is added.
+- **Not compile-checked:** the two `foveatedRendering*` lines. The reference DLLs predate them, so they were checked against the 6000.2 scripting docs instead.
+
 ## Known issues
 
 | Issue | Severity | Notes |
 |---|---|---|
-| Frame rate below 72 on Quest 2 | High | See above |
-| Theater plaque unreadable | Medium | Same ~6 cm text as wall plaques, viewed from about 7 m. Needs the screen and plaque rebalanced in `VideoTheater.BuildRoom` / `PaintingView.Build`. |
+| Frame rate below 72 on Quest 2 | High | Perf pass written; needs the A/B capture above |
+| Theater plaque unreadable | Medium | Replaced by a lectern card; not yet seen in the headset |
 | Wall plaque body text small | Low | Not yet judged in the headset |
-| Missing glyphs | Low | CJK characters and emoji in project names render as boxes; LiberationSans SDF has no fallback font |
-| `remote museum.json unavailable (404)` | Low | Clears when PR #1 is merged; the bundled copy is used meanwhile |
+| Missing glyphs | Low | Emoji stripped by the pipeline; CJK uses the system font on Android (untested). In the editor CJK still shows boxes. |
 | TMP Essentials import in `MuseumSetup.ImportTmpEssentials` | Low | Logs "Import TMP Essentials manually" and throws `ArgumentNullException` inside TMP's importer, but the resources are imported. Now committed, so new clones skip this path. |
 
 ## Not yet tested
@@ -114,4 +149,4 @@ $adb = "C:\Program Files\Unity\Hub\Editor\6000.2.7f2\Editor\Data\PlaybackEngines
 & $adb logcat -v time -s VrApi Unity
 ```
 
-Stop with Ctrl+C after 60 seconds. `FPS=a/b` is achieved/target, `App=` is GPU time per frame, and `GPU%` / `CPU%` are utilisation.
+Stop with Ctrl+C after 60 seconds (about 3 minutes for the 8-mode A/B run). To keep a copy, add `| Tee-Object perf.txt` to the second command. `FPS=a/b` is achieved/target, `App=` is GPU time per frame, and `GPU%` / `CPU%` are utilisation.

@@ -159,6 +159,17 @@ def load_apps(status_path=None, base_url: str | None = None, include_untested: b
     return apps
 
 
+# Emoji and pictographs: TMP's SDF fonts can't draw them (color bitmaps), so they render as boxes in the headset.
+_EMOJI = re.compile("[\U0001F000-\U0001FAFF\U00002600-\U000027BF\U0000FE0F\U0000200D\U000020E3\U0001F1E6-\U0001F1FF]")
+
+
+def display_text(s: str | None) -> str:
+    """Text as the headset shows it: emoji removed, the spaces they leave collapsed."""
+    if not s:
+        return ""
+    return re.sub(r"[ \t]{2,}", " ", _EMOJI.sub("", s)).strip()
+
+
 def museum_doc(doc: dict, cap: int = MAX_PER_EXHIBIT, scores: dict[str, dict] | None = None,
                apps: dict[str, dict] | None = None) -> dict:
     layout = build_layout(doc["projects"], cap, scores)
@@ -172,16 +183,16 @@ def museum_doc(doc: dict, cap: int = MAX_PER_EXHIBIT, scores: dict[str, dict] | 
             "id": p["id"],
             "year": p["year"],
             "exhibit": exhibit_of[p["id"]],
-            "title": p["title"],
-            "tagline": p["tagline"],
-            "synopsis": p["synopsis"],
+            "title": display_text(p["title"]),
+            "tagline": display_text(p["tagline"]),
+            "synopsis": display_text(p["synopsis"]),
             "platform": p["platform"],
             "device_label": DEVICE_LABELS.get(p["platform"], p["platform"]),
             "requirement_tier": p["requirement_tier"],
             "fidelity": p["fidelity"],
             "extra_hardware": p["extra_hardware"],
             "winner": p["winner"],
-            "prizes": p.get("prizes", []),
+            "prizes": [display_text(x) for x in p.get("prizes", [])],
             "thumbnail": p.get("thumbnail") or "",
             "video_url": youtube_watch_url(p.get("video_url")) or "",
             "devpost_url": p.get("devpost_url") or "",

@@ -77,6 +77,37 @@ namespace RHMuseum
     {
         public const float WallThickness = 0.2f;
 
+        /// <summary>Every label made by <see cref="Label"/>, so a perf mode can swap the text shader.</summary>
+        public static readonly List<TextMeshPro> Labels = new List<TextMeshPro>();
+        static Material _liteText;
+
+        /// <summary>
+        /// The font's own material with TMP's mobile SDF shader (no outline/underlay/bevel math). Falls back to the
+        /// font's default material if the shader isn't in the build.
+        /// </summary>
+        public static Material TextMaterial(TMP_FontAsset font, bool lite)
+        {
+            if (font == null) return null;
+            if (!lite) return font.material;
+            if (_liteText == null)
+            {
+                var res = Resources.Load<Material>("RHM_TextMobile");
+                if (res == null || res.shader == null || !res.shader.isSupported) return font.material;
+                _liteText = new Material(font.material) { name = font.material.name + " (mobile)", shader = res.shader };
+            }
+            return _liteText;
+        }
+
+        public static void SetLiteText(bool lite)
+        {
+            Labels.RemoveAll(l => l == null);
+            foreach (var l in Labels)
+            {
+                var m = TextMaterial(l.font, lite);
+                if (m != null && l.fontSharedMaterial != m) l.fontSharedMaterial = m;
+            }
+        }
+
         public static GameObject Box(Transform parent, string name, Vector3 localCenter, Vector3 size, Color color, bool collider = true)
         {
             var go = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -150,6 +181,12 @@ namespace RHMuseum
             tmp.textWrappingMode = TextWrappingModes.Normal;
             tmp.overflowMode = TextOverflowModes.Ellipsis;
             tmp.rectTransform.sizeDelta = new Vector2(width, height);
+            if (PerfModes.Has(PerfFix.TextCull))
+            {
+                var m = TextMaterial(tmp.font, true);
+                if (m != null) tmp.fontSharedMaterial = m;
+            }
+            Labels.Add(tmp);
             return tmp;
         }
     }

@@ -41,6 +41,7 @@ namespace RHMuseum
             Application.targetFrameRate = 72;
 
             RatingsClient.Create(supabaseUrl, supabaseAnonKey);   // null when not configured
+            FontFallback.Install();   // before any text is laid out
             _rig = PlayerRig.Create(Vector3.zero, 0);
             _fader = ScreenFader.Attach(_rig.Head);
             StartCoroutine(_fader.Fade(1, 0.01f, Color.black));
@@ -63,6 +64,10 @@ namespace RHMuseum
             // Install / zone system: downloads near a wing, installs at its entrance, lobby kiosk.
             Apps.AppManager.Create(_doc, _builder.Wings, _rig.Head.transform);
             _appUi = Apps.AppUi.Create(_builder, _theater, root.Find("Lobby"));
+
+            // Quest 2 frame rate: doorway/text culling every frame, plus the A/B switch (left stick click).
+            MuseumCulling.Create(_builder, _rig.Head.transform);
+            PerfModes.Create(_rig.Head);
 
             if (!TryReturnToPainting()) _rig.TeleportTo(_builder.SpawnPoint, _builder.SpawnYaw);
 

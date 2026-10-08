@@ -1,6 +1,8 @@
 // Painting surface: touch ripples + "jump in" swirl. Original effect (concentric damped
 // waves displaced along the normal, with refraction and slope shading); no third-party assets.
 // URP, single-pass-instanced stereo safe, unlit (cheap on Quest 2).
+// Two variants: RHM_RIPPLE_ON runs the wave and swirl math; without it the surface is a plain textured
+// quad. PaintingView switches a painting to the ripple variant only while it's touched or entered.
 Shader "RHMuseum/PortalRipple"
 {
     Properties
@@ -30,6 +32,7 @@ Shader "RHMuseum/PortalRipple"
             #pragma vertex vert
             #pragma fragment frag
             #pragma multi_compile_instancing
+            #pragma multi_compile_local _ RHM_RIPPLE_ON
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 
             #define MAX_RIPPLES 4
@@ -102,11 +105,13 @@ Shader "RHMuseum/PortalRipple"
                 UNITY_SETUP_INSTANCE_ID(v);
                 UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
 
+                float3 pos = v.positionOS.xyz;
+            #if defined(RHM_RIPPLE_ON)
                 float2 grad;
                 float h = RippleHeight(v.uv, grad);
-                float3 pos = v.positionOS.xyz;
                 // The mesh normal faces the viewer; push "into" the wall.
                 pos -= v.normalOS * (h * _Depth + _Enter * EnterFalloff(v.uv) * _Depth * 6);
+            #endif
 
                 o.positionCS = TransformObjectToHClip(pos);
                 o.uv = v.uv;   // raw 0..1: ripples/touch live here; the crop is applied when sampling
@@ -117,6 +122,7 @@ Shader "RHMuseum/PortalRipple"
             {
                 UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(i);
 
+            #if defined(RHM_RIPPLE_ON)
                 float2 grad;
                 RippleHeight(i.uv, grad);
                 float2 uv = i.uv + grad * 0.0025;                     // refraction
@@ -134,6 +140,10 @@ Shader "RHMuseum/PortalRipple"
                 half4 col = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, uv * _MainTex_ST.xy + _MainTex_ST.zw) * _Tint;
                 col.rgb *= 1 + clamp(grad.x * 0.004 + grad.y * 0.006, -0.25, 0.35);   // slope shading
                 col.rgb = lerp(col.rgb, half3(1, 1, 1), saturate(_Enter * 0.8 * fall));
+            #else
+                // Idle: one texture fetch, nothing else.
+                half4 col = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv * _MainTex_ST.xy + _MainTex_ST.zw) * _Tint;
+            #endif
                 col.a = 1;
                 return col;
             }

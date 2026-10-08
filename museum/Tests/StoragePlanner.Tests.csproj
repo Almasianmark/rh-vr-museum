@@ -1,4 +1,4 @@
-<!-- Pure-C# tests for the storage policy (no Unity needed):  dotnet test museum/Tests -->
+<!-- Pure-C# tests for the storage policy and doorway culling math (no Unity editor needed):  dotnet test museum/Tests -->
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -12,5 +12,10 @@
     <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" />
     <Compile Include="../Assets/RHMuseum/Scripts/Apps/StoragePlanner.cs" />
     <Compile Include="StoragePlannerTests.cs" />
+    <!-- Doorway.cs uses UnityEngine.Vector2/Rect/Mathf. The NuGet Unity DLLs are reference-only (bodies throw),
+         so UnityShim.cs reimplements just those members with Unity's semantics. -->
+    <Compile Include="UnityShim.cs" />
+    <Compile Include="../Assets/RHMuseum/Scripts/Perf/Doorway.cs" />
+    <Compile Include="DoorwayTests.cs" />
   </ItemGroup>
 </Project>

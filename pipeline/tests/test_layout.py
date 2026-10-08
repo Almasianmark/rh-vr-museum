@@ -102,3 +102,11 @@ def test_apps_from_port_status(tmp_path):
     by = {p["id"]: p for p in m["projects"]}
     assert by["p1"]["launch"]["kind"] == "app" and by["p1"]["app"]["sha256"] == "ab"
     assert by["p2"]["app"] is None and by["p2"]["launch"]["kind"] == "theater"
+
+
+def test_display_text_strips_emoji_keeps_cjk():
+    from rhm.layout import display_text
+    assert display_text("Hello 👋🏽 world ✨ VR") == "Hello world VR"
+    assert display_text("茶道 XR ☕️") == "茶道 XR"
+    assert display_text("🇺🇸 Flag") == "Flag"
+    assert display_text(None) == ""

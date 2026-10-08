@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -12,6 +13,11 @@ namespace RHMuseum
     /// </summary>
     public class PaintingView : TouchTarget
     {
+        public enum Plaque { Full, Compact, None }
+
+        /// <summary>Every live painting (for perf modes and culling).</summary>
+        public static readonly List<PaintingView> All = new List<PaintingView>();
+
         public ProjectInfo Info { get; private set; }
         public Texture2D Thumbnail { get; private set; }
         public bool WantsThumbnail => !string.IsNullOrEmpty(Info?.thumbnail);
@@ -21,7 +27,9 @@ namespace RHMuseum
         public static event Action<PaintingView, Vector2> PushedThrough;
 
         const int MaxRipples = 4;
-        static Mesh _sharedGrid;
+        // exp(-1.4 * 4.5) ≈ 0.002: a ripple this old is invisible, so the painting can go back to the idle variant.
+        const float RippleLifetime = 4.5f;
+        static Mesh _sharedGrid, _sharedQuad;
         static Texture2D _placeholder;
         static readonly int RipplesId = Shader.PropertyToID("_Ripples");
         static readonly int MainTexId = Shader.PropertyToID("_MainTex");
@@ -34,24 +42,36 @@ namespace RHMuseum
         int _nextRipple;
         MaterialPropertyBlock _mpb;
         MeshRenderer _canvas;
+        MeshFilter _canvasMesh;
+        float _hotUntil = -1;          // ripple variant until this time (Time.timeSinceLevelLoad)
+        bool _surfaceActive;
+        readonly List<Renderer> _bodyRenderers = new List<Renderer>();
+        readonly List<Renderer> _textRenderers = new List<Renderer>();
+        bool _rendered = true, _textRendered = true;
+        public bool TextRendered => _textRendered;
         float _enter;
         Vector2 _enterOrigin = new Vector2(0.5f, 0.5f);
 
         /// <summary>Builds the painting under parent at a wall position.</summary>
         public static PaintingView Create(Transform parent, ProjectInfo info, Vector3 localPos, Quaternion localRot,
-                                          float width, bool compactPlaque)
+                                          float width, bool compactPlaque) =>
+            Create(parent, info, localPos, localRot, width, compactPlaque ? Plaque.Compact : Plaque.Full);
+
+        public static PaintingView Create(Transform parent, ProjectInfo info, Vector3 localPos, Quaternion localRot,
+                                          float width, Plaque plaque)
         {
             var go = new GameObject($"Painting {info.id}");
             go.transform.SetParent(parent, false);
             go.transform.localPosition = localPos;
             go.transform.localRotation = localRot;
             var view = go.AddComponent<PaintingView>();
-            view.Build(info, width, compactPlaque);
+            view.Build(info, width, plaque);
             return view;
         }
 
-        void Build(ProjectInfo info, float width, bool compactPlaque)
+        void Build(ProjectInfo info, float width, Plaque plaque)
         {
+            bool compactPlaque = plaque == Plaque.Compact;
             Info = info;
             size = new Vector2(width, width / 1.6f);
             _mpb = new MaterialPropertyBlock();
@@ -59,9 +79,9 @@ namespace RHMuseum
             // Canvas
             var canvasGo = new GameObject("Canvas");
             canvasGo.transform.SetParent(transform, false);
-            canvasGo.AddComponent<MeshFilter>().sharedMesh = Grid();
+            _canvasMesh = canvasGo.AddComponent<MeshFilter>();
             _canvas = canvasGo.AddComponent<MeshRenderer>();
-            _canvas.sharedMaterial = SharedRippleMaterial();
+            UpdateSurface(force: true);
             _canvas.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
             canvasGo.transform.localScale = new Vector3(size.x, size.y, 1);
             ApplyBlock(Placeholder(), Color.Lerp(Palette.Fidelity(info.fidelity), Color.black, 0.35f));
@@ -80,18 +100,19 @@ namespace RHMuseum
                 compactPlaque ? 0.55f : 0.7f, 0.9f, frame, TextAlignmentOptions.Right, 0.15f);
             badge.fontStyle = FontStyles.Bold;
 
+            if (plaque == Plaque.None)
+            {
+                EnsureCollider();
+                CacheRenderers();
+                return;
+            }
+
             // Plaque
             float plaqueH = compactPlaque ? 0.40f : 0.72f;   // includes the star bar row
             float plaqueY = -size.y / 2 - t - 0.06f - plaqueH / 2;
             Greybox.Box(fr, "Plaque", new Vector3(0, plaqueY, 0.0f), new Vector3(size.x + 2 * t, plaqueH, 0.03f), Palette.Plaque, false);
 
-            // Plain text, not a glyph: the default TMP font may not include ★.
-            string star = info.winner ? "<color=#F2C14E>WINNER</color>  " : "";
-            string prize = info.prizes != null && info.prizes.Count > 0 ? $"\n<size=70%><color=#F2C14E>{Escape(info.prizes[0])}</color></size>" : "";
-            string body = compactPlaque
-                ? $"<b>{star}{Escape(info.title)}</b>\n<size=75%>{Escape(info.device_label)}</size>"
-                : $"<b>{star}{Escape(info.title)}</b>{prize}\n<size=72%>{Escape(info.device_label)} · {Palette.FidelityBlurb(info.fidelity)}</size>\n" +
-                  $"<size=62%>{Escape(info.synopsis)}</size>";
+            string body = PlaqueText(info, compactPlaque);
             const float starRow = 0.1f;
             Greybox.Label(fr, body, new Vector3(0, plaqueY + starRow / 2, -0.02f), Quaternion.identity,
                 compactPlaque ? 0.55f : 0.62f, size.x + 0.05f, Palette.TextOnDark, TextAlignmentOptions.TopLeft, plaqueH - starRow - 0.04f);
@@ -101,6 +122,27 @@ namespace RHMuseum
                 size.x + 2 * t - 0.075f * 5 - 0.12f);
 
             EnsureCollider();
+            CacheRenderers();
+        }
+
+        void CacheRenderers()
+        {
+            _bodyRenderers.Clear();
+            _textRenderers.Clear();
+            foreach (var r in GetComponentsInChildren<Renderer>(true))
+                (r.GetComponent<TMP_Text>() != null ? _textRenderers : _bodyRenderers).Add(r);
+        }
+
+        /// <summary>Plaque rich text (also used by the theater's lectern card).</summary>
+        public static string PlaqueText(ProjectInfo info, bool compact)
+        {
+            // Plain text, not a glyph: the default TMP font may not include ★.
+            string star = info.winner ? "<color=#F2C14E>WINNER</color>  " : "";
+            string prize = info.prizes != null && info.prizes.Count > 0 ? $"\n<size=70%><color=#F2C14E>{Escape(info.prizes[0])}</color></size>" : "";
+            return compact
+                ? $"<b>{star}{Escape(info.title)}</b>\n<size=75%>{Escape(info.device_label)}</size>"
+                : $"<b>{star}{Escape(info.title)}</b>{prize}\n<size=72%>{Escape(info.device_label)} · {Palette.FidelityBlurb(info.fidelity)}</size>\n" +
+                  $"<size=62%>{Escape(info.synopsis)}</size>";
         }
 
         static string Escape(string s) => string.IsNullOrEmpty(s) ? "" : s.Replace("<", "&lt;");
@@ -119,6 +161,8 @@ namespace RHMuseum
         {
             _ripples[_nextRipple] = new Vector4(uv.x, uv.y, Time.timeSinceLevelLoad, amplitude);
             _nextRipple = (_nextRipple + 1) % MaxRipples;
+            _hotUntil = Time.timeSinceLevelLoad + RippleLifetime;
+            UpdateSurface();
             PushBlock();
         }
 
@@ -127,7 +171,56 @@ namespace RHMuseum
         {
             _enter = amount;
             _enterOrigin = origin;
+            if (amount > 0) _hotUntil = Mathf.Max(_hotUntil, Time.timeSinceLevelLoad + 0.5f);
+            UpdateSurface();
             PushBlock();
+        }
+
+        // ---------- idle / ripple surface ----------
+
+        /// <summary>
+        /// Idle paintings draw a 4-vertex quad with the cheap shader variant; touched or entered ones switch to
+        /// the 1,500-vertex grid with the wave math until their ripples have died out. With the RippleIdle perf
+        /// fix off, every painting uses the ripple variant (the old behavior).
+        /// </summary>
+        void UpdateSurface(bool force = false)
+        {
+            bool active = !PerfModes.Has(PerfFix.RippleIdle) || _enter > 0 || Time.timeSinceLevelLoad < _hotUntil;
+            if (active == _surfaceActive && !force) return;
+            _surfaceActive = active;
+            _canvasMesh.sharedMesh = active ? Grid() : Quad();
+            _canvas.sharedMaterial = SurfaceMaterial(active);
+        }
+
+        /// <summary>Called once per frame (MuseumCulling): returns paintings whose ripples have finished to idle.</summary>
+        public static void UpdateAllSurfaces()
+        {
+            for (int i = 0; i < All.Count; i++)
+                if (All[i]._surfaceActive) All[i].UpdateSurface();
+        }
+
+        /// <summary>After a perf-mode change.</summary>
+        public static void RefreshAllSurfaces()
+        {
+            for (int i = 0; i < All.Count; i++) All[i].UpdateSurface(force: true);
+        }
+
+        // ---------- culling ----------
+
+        /// <summary>Show or hide the whole painting and, separately, its text. Only touches renderers that change.</summary>
+        public void SetRendered(bool rendered, bool textRendered)
+        {
+            textRendered &= rendered;
+            if (rendered != _rendered)
+            {
+                _rendered = rendered;
+                foreach (var r in _bodyRenderers) if (r != null) r.enabled = rendered;
+            }
+            if (textRendered != _textRendered)
+            {
+                _textRendered = textRendered;
+                foreach (var r in _textRenderers) if (r != null) r.enabled = textRendered;
+            }
         }
 
         // ---------- texture ----------
@@ -165,6 +258,8 @@ namespace RHMuseum
                 _appBadge = Greybox.Label(transform, "", new Vector3(-size.x / 2 + 0.6f, size.y / 2 + 0.13f, -0.03f),
                     Quaternion.identity, 0.42f, 1.2f, color, TextAlignmentOptions.Left, 0.12f);
                 _appBadge.fontStyle = FontStyles.Bold;
+                _textRenderers.Add(_appBadge.GetComponent<Renderer>());
+                _appBadge.GetComponent<Renderer>().enabled = _textRendered;
             }
             _appBadge.text = text;
             _appBadge.color = color;
@@ -204,23 +299,45 @@ namespace RHMuseum
             _canvas.SetPropertyBlock(_mpb);
         }
 
+        void Awake() => All.Add(this);
+
         void OnDestroy()
         {
+            All.Remove(this);
             if (Thumbnail != null) Destroy(Thumbnail);
         }
 
         // ---------- shared assets ----------
 
-        static Material _rippleMat;
+        static Material _idleMat, _rippleMat;
 
-        static Material SharedRippleMaterial()
+        static Material SurfaceMaterial(bool ripple)
         {
             if (_rippleMat == null)
             {
+                // Copies, so toggling keywords never edits the asset in Resources.
                 var res = Resources.Load<Material>("RHM_Ripple");
-                _rippleMat = res != null ? res : new Material(MuseumMaterials.RippleShader);
+                _idleMat = res != null ? new Material(res) : new Material(MuseumMaterials.RippleShader);
+                _idleMat.name = "RHM_Ripple (idle)";
+                _idleMat.DisableKeyword("RHM_RIPPLE_ON");
+                _rippleMat = new Material(_idleMat) { name = "RHM_Ripple (active)" };
+                _rippleMat.EnableKeyword("RHM_RIPPLE_ON");
             }
-            return _rippleMat;
+            return ripple ? _rippleMat : _idleMat;
+        }
+
+        static Mesh Quad()
+        {
+            if (_sharedQuad != null) return _sharedQuad;
+            _sharedQuad = new Mesh
+            {
+                name = "PaintingQuad",
+                vertices = new[] { new Vector3(-0.5f, -0.5f, 0), new Vector3(0.5f, -0.5f, 0), new Vector3(-0.5f, 0.5f, 0), new Vector3(0.5f, 0.5f, 0) },
+                uv = new[] { new Vector2(0, 0), new Vector2(1, 0), new Vector2(0, 1), new Vector2(1, 1) },
+                normals = new[] { Vector3.back, Vector3.back, Vector3.back, Vector3.back },
+                triangles = new[] { 0, 2, 1, 1, 2, 3 },   // clockwise seen from -Z, same as Grid()
+            };
+            return _sharedQuad;
         }
 
         static Texture2D Placeholder()
