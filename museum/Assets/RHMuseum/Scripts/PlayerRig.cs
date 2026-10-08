@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
 #if ENABLE_INPUT_SYSTEM
-using UnityEngine.InputSystem;
+// Aliases, not the whole namespace: InputSystem's InputDevice and CommonUsages collide with UnityEngine.XR's.
+using Keyboard = UnityEngine.InputSystem.Keyboard;
+using Mouse = UnityEngine.InputSystem.Mouse;
 #endif
 
 namespace RHMuseum
