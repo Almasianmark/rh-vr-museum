@@ -1,0 +1,768 @@
+{
+  "generated_at": "2026-10-04T11:59:07+00:00",
+  "wave": 1,
+  "entries": [
+    {
+      "rank": 1,
+      "id": "2026-memory-tree-i2lsr9",
+      "title": "Memory Tree",
+      "year": 2026,
+      "winner": true,
+      "platform": "quest",
+      "fidelity": "Native",
+      "recipe": "native",
+      "repo_url": "https://github.com/NickKauf/MemoryTree",
+      "project_path": ".",
+      "unity_version": "6000.3.2f1",
+      "image": "unityci/editor:ubuntu-6000.3.2f1-android-3",
+      "add_packages": {
+        "com.unity.xr.management": "4.7.0",
+        "com.unity.xr.openxr": "1.18.0"
+      },
+      "min_versions": {
+        "com.unity.xr.management": "4.7.0",
+        "com.unity.xr.openxr": "1.18.0",
+        "com.unity.xr.core-utils": "2.3.0",
+        "com.unity.xr.legacyinputhelpers": "2.1.11",
+        "com.unity.inputsystem": "1.6.3"
+      },
+      "package_id": "world.realityhack.p2026.memory_tree",
+      "license": "MIT",
+      "team": [
+        "M Pettersen",
+        "Tinashe Chinamasa",
+        "Joy Fennell",
+        "Marsha Fabiola",
+        "Nick Kaufmann"
+      ],
+      "extra_hardware": [],
+      "manual_steps": []
+    },
+    {
+      "rank": 2,
+      "id": "2026-battlefish",
+      "title": "BattleFish",
+      "year": 2026,
+      "winner": true,
+      "platform": "quest",
+      "fidelity": "Native",
+      "recipe": "native",
+      "repo_url": "https://github.com/CadeXR/RealityObscura",
+      "project_path": ".",
+      "unity_version": "6000.0.33f1",
+      "image": "unityci/editor:ubuntu-6000.0.33f1-android-3",
+      "add_packages": {
+        "com.unity.xr.management": "4.7.0",
+        "com.unity.xr.openxr": "1.18.0"
+      },
+      "min_versions": {
+        "com.unity.xr.management": "4.7.0",
+        "com.unity.xr.openxr": "1.18.0",
+        "com.unity.xr.core-utils": "2.3.0",
+        "com.unity.xr.legacyinputhelpers": "2.1.11",
+        "com.unity.inputsystem": "1.6.3"
+      },
+      "package_id": "world.realityhack.p2026.battlefish",
+      "license": "MIT",
+      "team": [
+        "Miguel Santos",
+        "Cade Gilbert",
+        "Jacob Mandelbrot",
+        "Daniel Cardona",
+        "Dylan Kreisberg"
+      ],
+      "extra_hardware": [],
+      "manual_steps": []
+    },
+    {
+      "rank": 3,
+      "id": "2025-onbook-6ek87a",
+      "title": "OnBook",
+      "year": 2025,
+      "winner": true,
+      "platform": "quest",
+      "fidelity": "Native",
+      "recipe": "native",
+      "repo_url": "https://github.com/srcJin/OnBook",
+      "project_path": ".",
+      "unity_version": "6000.0.34f1",
+      "image": "unityci/editor:ubuntu-6000.0.34f1-android-3",
+      "add_packages": {
+        "com.unity.xr.management": "4.7.0",
+        "com.unity.xr.openxr": "1.18.0"
+      },
+      "min_versions": {
+        "com.unity.xr.management": "4.7.0",
+        "com.unity.xr.openxr": "1.18.0",
+        "com.unity.xr.core-utils": "2.3.0",
+        "com.unity.xr.legacyinputhelpers": "2.1.11",
+        "com.unity.inputsystem": "1.6.3"
+      },
+      "package_id": "world.realityhack.p2025.onbook",
+      "license": "MIT",
+      "team": [
+        "Jin Gao",
+        "Yutong Ren",
+        "Ally Tsao",
+        "Michael Morran",
+        "Huy Le"
+      ],
+      "extra_hardware": [],
+      "manual_steps": []
+    },
+    {
+      "rank": 4,
+      "id": "2024-a-fire-training-app",
+      "title": "A \"Fire\" Training App",
+      "year": 2024,
+      "winner": true,
+      "platform": "quest",
+      "fidelity": "Ported-reduced",
+      "recipe": "native",
+      "repo_url": "https://codeberg.org/reality-hack-2024/TABLE_32",
+      "project_path": ".",
+      "unity_version": "2022.3.18f1",
+      "image": "unityci/editor:ubuntu-2022.3.18f1-android-3",
+      "add_packages": {
+        "com.unity.xr.management": "4.7.0",
+        "com.unity.xr.openxr": "1.17.1"
+      },
+      "min_versions": {
+        "com.unity.xr.management": "4.7.0",
+        "com.unity.xr.openxr": "1.17.1",
+        "com.unity.xr.core-utils": "2.3.0",
+        "com.unity.xr.legacyinputhelpers": "2.1.11",
+        "com.unity.inputsystem": "1.6.3"
+      },
+      "package_id": "world.realityhack.p2024.a_fire_training_app",
+      "license": "MIT",
+      "team": [
+        "Jack English",
+        "Chase Johnson",
+        "D.J. Figueroa",
+        "Ian Morrill",
+        "Samuel Wiggins"
+      ],
+      "extra_hardware": [],
+      "manual_steps": [
+        "Quest-3-only feature in use: gate it or provide a Quest 2 fallback."
+      ]
+    },
+    {
+      "rank": 5,
+      "id": "2024-beesper",
+      "title": "Beesper",
+      "year": 2024,
+      "winner": true,
+      "platform": "quest",
+      "fidelity": "Native",
+      "recipe": "native",
+      "repo_url": "https://codeberg.org/reality-hack-2024/TABLE_105",
+      "project_path": ".",
+      "unity_version": "2022.3.12f1",
+      "image": "unityci/editor:ubuntu-2022.3.12f1-android-3",
+      "add_packages": {
+        "com.unity.xr.management": "4.7.0",
+        "com.unity.xr.openxr": "1.17.1"
+      },
+      "min_versions": {
+        "com.unity.xr.management": "4.7.0",
+        "com.unity.xr.openxr": "1.17.1",
+        "com.unity.xr.core-utils": "2.3.0",
+        "com.unity.xr.legacyinputhelpers": "2.1.11",
+        "com.unity.inputsystem": "1.6.3"
+      },
+      "package_id": "world.realityhack.p2024.beesper",
+      "license": "MIT",
+      "team": [
+        "Linnette Martinez",
+        "ke wang",
+        "leon kipkoech",
+        "Jingfei Huang",
+        "John Luis Estrada"
+      ],
+      "extra_hardware": [
+        "ultraleap"
+      ],
+      "manual_steps": []
+    },
+    {
+      "rank": 6,
+      "id": "2025-caregivr-tzmqkg",
+      "title": "CAREGIVR",
+      "year": 2025,
+      "winner": true,
+      "platform": "quest",
+      "fidelity": "Native",
+      "recipe": "native",
+      "repo_url": "https://github.com/stevenharmongames/Dula",
+      "project_path": ".",
+      "unity_version": "2022.3.19f1",
+      "image": "unityci/editor:ubuntu-2022.3.19f1-android-3",
+      "add_packages": {
+        "com.unity.xr.management": "4.7.0",
+        "com.unity.xr.openxr": "1.17.1"
+      },
+      "min_versions": {
+        "com.unity.xr.management": "4.7.0",
+        "com.unity.xr.openxr": "1.17.1",
+        "com.unity.xr.core-utils": "2.3.0",
+        "com.unity.xr.legacyinputhelpers": "2.1.11",
+        "com.unity.inputsystem": "1.6.3"
+      },
+      "package_id": "world.realityhack.p2025.caregivr",
+      "license": "MIT",
+      "team": [
+        "Macarena Peralta",
+        "Peggy Yin",
+        "Steven Harmon",
+        "Jason Webb",
+        "Tiago Silva"
+      ],
+      "extra_hardware": [],
+      "manual_steps": []
+    },
+    {
+      "rank": 7,
+      "id": "2025-gaze-groove",
+      "title": "Gaze Groove",
+      "year": 2025,
+      "winner": true,
+      "platform": "quest",
+      "fidelity": "Native",
+      "recipe": "native",
+      "repo_url": "https://github.com/Dominic-Roser/MitRealityHack2025TeamEEG",
+      "project_path": ".",
+      "unity_version": "2022.3.56f1",
+      "image": "unityci/editor:ubuntu-2022.3.56f1-android-3",
+      "add_packages": {
+        "com.unity.xr.management": "4.7.0",
+        "com.unity.xr.openxr": "1.17.1"
+      },
+      "min_versions": {
+        "com.unity.xr.management": "4.7.0",
+        "com.unity.xr.openxr": "1.17.1",
+        "com.unity.xr.core-utils": "2.3.0",
+        "com.unity.xr.legacyinputhelpers": "2.1.11",
+        "com.unity.inputsystem": "1.6.3"
+      },
+      "package_id": "world.realityhack.p2025.gaze_groove",
+      "license": "MIT",
+      "team": [
+        "Cristi Gonzalez",
+        "Dalton Brockett",
+        "Azra Karatan",
+        "Dominic Roser",
+        "Hanqi Wu"
+      ],
+      "extra_hardware": [],
+      "manual_steps": []
+    },
+    {
+      "rank": 8,
+      "id": "2024-heavr",
+      "title": "HeaVR",
+      "year": 2024,
+      "winner": true,
+      "platform": "quest",
+      "fidelity": "Native",
+      "recipe": "native",
+      "repo_url": "https://codeberg.org/reality-hack-2024/HeaVR",
+      "project_path": "Unity_VR_MIT_Hackathon_Hardware",
+      "unity_version": "2022.3.10f1",
+      "image": "unityci/editor:ubuntu-2022.3.10f1-android-3",
+      "add_packages": {
+        "com.unity.xr.management": "4.7.0",
+        "com.unity.xr.openxr": "1.17.1"
+      },
+      "min_versions": {
+        "com.unity.xr.management": "4.7.0",
+        "com.unity.xr.openxr": "1.17.1",
+        "com.unity.xr.core-utils": "2.3.0",
+        "com.unity.xr.legacyinputhelpers": "2.1.11",
+        "com.unity.inputsystem": "1.6.3"
+      },
+      "package_id": "world.realityhack.p2024.heavr",
+      "license": "MIT",
+      "team": [
+        "Daoxin Chen",
+        "Zihao Zhang",
+        "Daniel Lopez",
+        "Skult\u00e9ty Bendeg\u00faz",
+        "Austin Graves"
+      ],
+      "extra_hardware": [],
+      "manual_steps": []
+    },
+    {
+      "rank": 9,
+      "id": "2024-legacy-q9dmvf",
+      "title": "Legacy",
+      "year": 2024,
+      "winner": true,
+      "platform": "quest",
+      "fidelity": "Native",
+      "recipe": "native",
+      "repo_url": "https://codeberg.org/reality-hack-2024/Legacy",
+      "project_path": ".",
+      "unity_version": "2022.3.18f1",
+      "image": "unityci/editor:ubuntu-2022.3.18f1-android-3",
+      "add_packages": {
+        "com.unity.xr.management": "4.7.0",
+        "com.unity.xr.openxr": "1.17.1"
+      },
+      "min_versions": {
+        "com.unity.xr.management": "4.7.0",
+        "com.unity.xr.openxr": "1.17.1",
+        "com.unity.xr.core-utils": "2.3.0",
+        "com.unity.xr.legacyinputhelpers": "2.1.11",
+        "com.unity.inputsystem": "1.6.3"
+      },
+      "package_id": "world.realityhack.p2024.legacy",
+      "license": "MIT",
+      "team": [
+        "Jamie Dee",
+        "Aaditya Vaze",
+        "Louise Royer",
+        "Samuel Tang",
+        "Sunrui Lu"
+      ],
+      "extra_hardware": [],
+      "manual_steps": []
+    },
+    {
+      "rank": 10,
+      "id": "2026-ourlife",
+      "title": "OurLife : A Second Brain for Those Who Need It Most",
+      "year": 2026,
+      "winner": true,
+      "platform": "quest",
+      "fidelity": "Native",
+      "recipe": "native",
+      "repo_url": "https://github.com/VictorChenCA/RealityHacks26-OurLife",
+      "project_path": "Memory Visualizer (Quest)/Query-Streamer",
+      "unity_version": "2022.3.62f3",
+      "image": "unityci/editor:ubuntu-2022.3.62f3-android-3",
+      "add_packages": {
+        "com.unity.xr.management": "4.7.0",
+        "com.unity.xr.openxr": "1.17.1"
+      },
+      "min_versions": {
+        "com.unity.xr.management": "4.7.0",
+        "com.unity.xr.openxr": "1.17.1",
+        "com.unity.xr.core-utils": "2.3.0",
+        "com.unity.xr.legacyinputhelpers": "2.1.11",
+        "com.unity.inputsystem": "1.6.3"
+      },
+      "package_id": "world.realityhack.p2026.ourlife",
+      "license": "MIT",
+      "team": [
+        "Chen Po-Lin",
+        "Jiaxin Aurora Shen",
+        "Chenghao He",
+        "Sheila Wang",
+        "Victor Chen"
+      ],
+      "extra_hardware": [],
+      "manual_steps": []
+    },
+    {
+      "rank": 11,
+      "id": "2025-chase-against-time",
+      "title": "Race Against Time",
+      "year": 2025,
+      "winner": true,
+      "platform": "quest",
+      "fidelity": "Native",
+      "recipe": "native",
+      "repo_url": "https://github.com/DannyHYM/Race-Against-Time-MITRH25-",
+      "project_path": ".",
+      "unity_version": "2022.3.44f1",
+      "image": "unityci/editor:ubuntu-2022.3.44f1-android-3",
+      "add_packages": {
+        "com.unity.xr.management": "4.7.0",
+        "com.unity.xr.openxr": "1.17.1"
+      },
+      "min_versions": {
+        "com.unity.xr.management": "4.7.0",
+        "com.unity.xr.openxr": "1.17.1",
+        "com.unity.xr.core-utils": "2.3.0",
+        "com.unity.xr.legacyinputhelpers": "2.1.11",
+        "com.unity.inputsystem": "1.6.3"
+      },
+      "package_id": "world.realityhack.p2025.race_against_time",
+      "license": "MIT",
+      "team": [
+        "Elle Zhou",
+        "Yiming (Danny) Huang",
+        "Xuefei Wang",
+        "Andy Yu",
+        "Ruby Wang"
+      ],
+      "extra_hardware": [],
+      "manual_steps": []
+    },
+    {
+      "rank": 12,
+      "id": "2024-c-r-a-s-h-critical-runway-assistance-for-safe-handling",
+      "title": "SKYWARD",
+      "year": 2024,
+      "winner": true,
+      "platform": "quest",
+      "fidelity": "Native",
+      "recipe": "native",
+      "repo_url": "https://codeberg.org/reality-hack-2024/TABLE_58",
+      "project_path": ".",
+      "unity_version": "2022.3.18f1",
+      "image": "unityci/editor:ubuntu-2022.3.18f1-android-3",
+      "add_packages": {
+        "com.unity.xr.management": "4.7.0",
+        "com.unity.xr.openxr": "1.17.1"
+      },
+      "min_versions": {
+        "com.unity.xr.management": "4.7.0",
+        "com.unity.xr.openxr": "1.17.1",
+        "com.unity.xr.core-utils": "2.3.0",
+        "com.unity.xr.legacyinputhelpers": "2.1.11",
+        "com.unity.inputsystem": "1.6.3"
+      },
+      "package_id": "world.realityhack.p2024.skyward",
+      "license": "MIT",
+      "team": [
+        "Steph Ng",
+        "Binh Minh Herbst",
+        "Rylan Pozniak Daniels",
+        "Arthur Bouffard",
+        "Pratik Suketu Shah"
+      ],
+      "extra_hardware": [],
+      "manual_steps": []
+    },
+    {
+      "rank": 13,
+      "id": "2024-snaider",
+      "title": "snAIder",
+      "year": 2024,
+      "winner": true,
+      "platform": "quest",
+      "fidelity": "Native",
+      "recipe": "native",
+      "repo_url": "https://codeberg.org/reality-hack-2024/SnAIder-CUT-MIT-XR-Hackathon-Winner-2024",
+      "project_path": ".",
+      "unity_version": "2022.3.18f1",
+      "image": "unityci/editor:ubuntu-2022.3.18f1-android-3",
+      "add_packages": {
+        "com.unity.xr.management": "4.7.0",
+        "com.unity.xr.openxr": "1.17.1"
+      },
+      "min_versions": {
+        "com.unity.xr.management": "4.7.0",
+        "com.unity.xr.openxr": "1.17.1",
+        "com.unity.xr.core-utils": "2.3.0",
+        "com.unity.xr.legacyinputhelpers": "2.1.11",
+        "com.unity.inputsystem": "1.6.3"
+      },
+      "package_id": "world.realityhack.p2024.snaider",
+      "license": "MIT",
+      "team": [
+        "Elan Grossman",
+        "Edgar Lopez",
+        "Siddhant Shirguppe",
+        "Pranav Mishra",
+        "Sourav Singh"
+      ],
+      "extra_hardware": [],
+      "manual_steps": []
+    },
+    {
+      "rank": 14,
+      "id": "2024-talk-to-me-a8ow0x",
+      "title": "Talk to Me",
+      "year": 2024,
+      "winner": true,
+      "platform": "quest",
+      "fidelity": "Native",
+      "recipe": "native",
+      "repo_url": "https://codeberg.org/reality-hack-2024/TABLE_56",
+      "project_path": ".",
+      "unity_version": "2022.3.7f1",
+      "image": "unityci/editor:ubuntu-2022.3.7f1-android-3",
+      "add_packages": {
+        "com.unity.xr.management": "4.7.0",
+        "com.unity.xr.openxr": "1.17.1"
+      },
+      "min_versions": {
+        "com.unity.xr.management": "4.7.0",
+        "com.unity.xr.openxr": "1.17.1",
+        "com.unity.xr.core-utils": "2.3.0",
+        "com.unity.xr.legacyinputhelpers": "2.1.11",
+        "com.unity.inputsystem": "1.6.3"
+      },
+      "package_id": "world.realityhack.p2024.talk_to_me",
+      "license": "MIT",
+      "team": [
+        "Ananth Nayak",
+        "Kathy Zhuang",
+        "Rui Sun",
+        "ybchen97",
+        "Yukun Song"
+      ],
+      "extra_hardware": [],
+      "manual_steps": []
+    },
+    {
+      "rank": 15,
+      "id": "2026-dream-field-gateways",
+      "title": "Dream Field Gateways",
+      "year": 2026,
+      "winner": true,
+      "platform": "android-xr",
+      "fidelity": "Ported",
+      "recipe": "openxr",
+      "repo_url": "https://github.com/dulce303/dream-field-gateways",
+      "project_path": "Dream Field Gateways",
+      "unity_version": "6000.3.5f1",
+      "image": "unityci/editor:ubuntu-6000.3.5f1-android-3",
+      "add_packages": {
+        "com.unity.xr.management": "4.7.0",
+        "com.unity.xr.openxr": "1.18.0"
+      },
+      "min_versions": {
+        "com.unity.xr.management": "4.7.0",
+        "com.unity.xr.openxr": "1.18.0",
+        "com.unity.xr.core-utils": "2.3.0",
+        "com.unity.xr.legacyinputhelpers": "2.1.11",
+        "com.unity.inputsystem": "1.6.3"
+      },
+      "package_id": "world.realityhack.p2026.dream_field_gateways",
+      "license": "MIT",
+      "team": [
+        "Akeemi Martinez",
+        "Jada McMulllen",
+        "Dulce Baerga"
+      ],
+      "extra_hardware": [],
+      "manual_steps": [
+        "Check the camera rig follows the headset (SteamVR/WMR rigs may need swapping for an XR Origin).",
+        "Mobile perf pass if FPS < 65: URP mobile settings, no post-processing, fixed foveation."
+      ]
+    },
+    {
+      "rank": 16,
+      "id": "2026-love-hate-and-robot",
+      "title": "Love, Hate and Robot",
+      "year": 2026,
+      "winner": true,
+      "platform": "android-xr",
+      "fidelity": "Ported",
+      "recipe": "openxr",
+      "repo_url": "https://github.com/crazycatseven/Reality-Hack-2026",
+      "project_path": ".",
+      "unity_version": "6000.3.4f1",
+      "image": "unityci/editor:ubuntu-6000.3.4f1-android-3",
+      "add_packages": {
+        "com.unity.xr.management": "4.7.0",
+        "com.unity.xr.openxr": "1.18.0"
+      },
+      "min_versions": {
+        "com.unity.xr.management": "4.7.0",
+        "com.unity.xr.openxr": "1.18.0",
+        "com.unity.xr.core-utils": "2.3.0",
+        "com.unity.xr.legacyinputhelpers": "2.1.11",
+        "com.unity.inputsystem": "1.6.3"
+      },
+      "package_id": "world.realityhack.p2026.love_hate_and_robot",
+      "license": "Apache-2.0",
+      "team": [
+        "Barnabas Lee",
+        "Pamela Estefania Ch\u00e1vez L\u00f3pez",
+        "Qingxuan Yan",
+        "Jimoon Jeong",
+        "Shu Wei"
+      ],
+      "extra_hardware": [],
+      "manual_steps": [
+        "Check the camera rig follows the headset (SteamVR/WMR rigs may need swapping for an XR Origin).",
+        "Mobile perf pass if FPS < 65: URP mobile settings, no post-processing, fixed foveation."
+      ]
+    },
+    {
+      "rank": 17,
+      "id": "2026-forget-me-not-90me1k",
+      "title": "Forget Me Not",
+      "year": 2026,
+      "winner": true,
+      "platform": "pcvr",
+      "fidelity": "Ported",
+      "recipe": "openxr",
+      "repo_url": "https://github.com/Spencer-L/forget-me-not",
+      "project_path": ".",
+      "unity_version": "2022.3.20f1",
+      "image": "unityci/editor:ubuntu-2022.3.20f1-android-3",
+      "add_packages": {
+        "com.unity.xr.management": "4.7.0",
+        "com.unity.xr.openxr": "1.17.1"
+      },
+      "min_versions": {
+        "com.unity.xr.management": "4.7.0",
+        "com.unity.xr.openxr": "1.17.1",
+        "com.unity.xr.core-utils": "2.3.0",
+        "com.unity.xr.legacyinputhelpers": "2.1.11",
+        "com.unity.inputsystem": "1.6.3"
+      },
+      "package_id": "world.realityhack.p2026.forget_me_not",
+      "license": "MIT",
+      "team": [
+        "Tracy (Xinran) Li",
+        "Kai Feng Wu",
+        "Spencer Lin",
+        "Stanley Lin"
+      ],
+      "extra_hardware": [],
+      "manual_steps": [
+        "Check the camera rig follows the headset (SteamVR/WMR rigs may need swapping for an XR Origin).",
+        "Mobile perf pass if FPS < 65: URP mobile settings, no post-processing, fixed foveation."
+      ]
+    },
+    {
+      "rank": 18,
+      "id": "2025-paw-pals-connect",
+      "title": "Paw Pals Connect",
+      "year": 2025,
+      "winner": true,
+      "platform": "vision-pro",
+      "fidelity": "Ported",
+      "recipe": "passthrough",
+      "repo_url": "https://github.com/Spencer-L/barabara",
+      "project_path": ".",
+      "unity_version": "6000.0.34f1",
+      "image": "unityci/editor:ubuntu-6000.0.34f1-android-3",
+      "add_packages": {
+        "com.unity.xr.management": "4.7.0",
+        "com.unity.xr.openxr": "1.18.0",
+        "com.unity.xr.arfoundation": "6.6.2",
+        "com.unity.xr.meta-openxr": "2.6.1"
+      },
+      "min_versions": {
+        "com.unity.xr.management": "4.7.0",
+        "com.unity.xr.openxr": "1.18.0",
+        "com.unity.xr.arfoundation": "6.6.2",
+        "com.unity.xr.meta-openxr": "2.6.1",
+        "com.unity.xr.core-utils": "2.6.0",
+        "com.unity.xr.legacyinputhelpers": "2.1.11",
+        "com.unity.inputsystem": "1.6.3",
+        "com.unity.mathematics": "1.2.6",
+        "com.unity.editorcoroutines": "1.0.0",
+        "com.unity.xr.compositionlayers": "2.4.0"
+      },
+      "package_id": "world.realityhack.p2025.paw_pals_connect",
+      "license": "MIT",
+      "team": [
+        "erinmitt123 Mittmann",
+        "Spencer Lin",
+        "starchung7",
+        "Johans",
+        "Brenda Padilla De Jes\u00fas"
+      ],
+      "extra_hardware": [],
+      "manual_steps": [
+        "Replace the AR/HMD rig with an XR Origin; map screen taps / air-taps to trigger or pinch.",
+        "Check content reads well on passthrough (Quest 2 passthrough is grayscale).",
+        "Image/marker tracking: add a hand-placed anchor (no camera access on Quest 2)."
+      ]
+    },
+    {
+      "rank": 19,
+      "id": "2024-geoquest-ar",
+      "title": "GEOQUEST AR",
+      "year": 2024,
+      "winner": true,
+      "platform": "ar-glasses",
+      "fidelity": "Ported",
+      "recipe": "passthrough",
+      "repo_url": "https://codeberg.org/reality-hack-2024/TABLE_89",
+      "project_path": ".",
+      "unity_version": "2022.3.18f1",
+      "image": "unityci/editor:ubuntu-2022.3.18f1-android-3",
+      "add_packages": {
+        "com.unity.xr.management": "4.7.0",
+        "com.unity.xr.openxr": "1.17.1",
+        "com.unity.xr.arfoundation": "5.2.2",
+        "com.unity.xr.meta-openxr": "1.0.4"
+      },
+      "min_versions": {
+        "com.unity.xr.management": "4.7.0",
+        "com.unity.xr.openxr": "1.17.1",
+        "com.unity.xr.arfoundation": "5.2.2",
+        "com.unity.xr.meta-openxr": "1.0.4",
+        "com.unity.xr.core-utils": "2.3.0",
+        "com.unity.xr.legacyinputhelpers": "2.1.11",
+        "com.unity.inputsystem": "1.6.3",
+        "com.unity.mathematics": "1.2.5",
+        "com.unity.editorcoroutines": "1.0.0"
+      },
+      "package_id": "world.realityhack.p2024.geoquest_ar",
+      "license": "MIT",
+      "team": [
+        "Seri Park",
+        "Saul Pena Gamero",
+        "Dhruv Sabharwal",
+        "Oren Nelson",
+        "Shuang Bi"
+      ],
+      "extra_hardware": [],
+      "manual_steps": [
+        "Replace the AR/HMD rig with an XR Origin; map screen taps / air-taps to trigger or pinch.",
+        "Check content reads well on passthrough (Quest 2 passthrough is grayscale).",
+        "Image/marker tracking: add a hand-placed anchor (no camera access on Quest 2)."
+      ]
+    },
+    {
+      "rank": 20,
+      "id": "2023-avatar-room",
+      "title": "Avatar Room",
+      "year": 2023,
+      "winner": true,
+      "platform": "phone-ar",
+      "fidelity": "Ported",
+      "recipe": "passthrough",
+      "repo_url": "https://github.com/Reality-Hack-2023/REPO-032",
+      "project_path": "arapp",
+      "unity_version": "2021.3.16f1",
+      "image": "unityci/editor:ubuntu-2021.3.16f1-android-3",
+      "add_packages": {
+        "com.unity.xr.management": "4.5.2",
+        "com.unity.xr.openxr": "1.15.1",
+        "com.unity.xr.arfoundation": "5.2.2",
+        "com.unity.xr.meta-openxr": "0.1.2"
+      },
+      "min_versions": {
+        "com.unity.xr.management": "4.5.2",
+        "com.unity.xr.openxr": "1.15.1",
+        "com.unity.xr.arfoundation": "5.2.2",
+        "com.unity.xr.meta-openxr": "0.1.2",
+        "com.unity.xr.core-utils": "2.3.0",
+        "com.unity.xr.legacyinputhelpers": "2.1.11",
+        "com.unity.inputsystem": "1.6.3",
+        "com.unity.mathematics": "1.2.5",
+        "com.unity.editorcoroutines": "1.0.0"
+      },
+      "package_id": "world.realityhack.p2023.avatar_room",
+      "license": "MIT",
+      "team": [
+        "Yixuan Liu",
+        "Sanjana Pendharkar",
+        "PRETTI MEDIA",
+        "Amritpal Chera",
+        "Genggeng Wu",
+        "yixuan liu design"
+      ],
+      "extra_hardware": [],
+      "manual_steps": [
+        "Replace the AR/HMD rig with an XR Origin; map screen taps / air-taps to trigger or pinch.",
+        "Check content reads well on passthrough (Quest 2 passthrough is grayscale).",
+        "Image/marker tracking: add a hand-placed anchor (no camera access on Quest 2)."
+      ]
+    }
+  ]
+}

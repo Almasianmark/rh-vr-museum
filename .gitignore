@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+pipeline/.cache/
+factory/work/
+factory/reports/*/logcat.txt
+factory/reports/*/screenshot.png
+museum/Tests/bin/
+museum/Tests/obj/

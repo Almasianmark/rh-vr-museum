@@ -6,13 +6,13 @@ A Quest VR museum of every MIT Reality Hack project. Walk the halls, touch a pai
 
 ## Where project data lives
 - **2020, 2022, 2023:** central GitHub orgs — `MIT-Reality-Hack-2020` (~42 repos), `Reality-Hack-2022` (~82, mostly `TEAM-XX`), `Reality-Hack-2023` (~114).
-- **2024:** unconfirmed — investigate.
+- **2024:** no GitHub org — central repos are on Codeberg: `codeberg.org/reality-hack-2024` (~100 repos).
 - **2025, 2026:** teams host their own repos (GitHub/Codeberg, sometimes Horizon Worlds links), linked from realityhack.world team pages and Devpost.
 - **Devpost galleries are the master index for every year:** title, pitch, "Built with" tags, "Try it out" repo links, demo video.
 
 ## Architecture
 1. **Pipeline (Python)** — Devpost galleries → GitHub API (README, LICENSE, `Packages/manifest.json`, releases) → hardware classifier → 2–3 sentence synopsis → `projects.json`. Rate-limit politely.
-2. **Museum client (Unity + Meta XR SDK / OpenXR, C#)** — loads `projects.json` at runtime, so adding a year needs no rebuild. One wing per year, rooms by challenge track.
+2. **Museum client (Unity + Meta XR SDK / OpenXR, C#)** — loads `museum.json` (built from `projects.json`) at runtime, so adding a year needs no rebuild. One wing per year; exhibits grouped by the device each project was designed for, **max 5 paintings per exhibit**; every Watch-only (inaccessible) project of a year goes in one large archive exhibit.
 3. **Ratings backend (Supabase)** — `ratings(project_id, user_id, stars)`; sort by Bayesian average.
 
 ## Hardware classifier signals (strongest first)
@@ -40,7 +40,7 @@ Output per project: `platform`, `requirement_tier` (quest2 / quest3 / pcvr / non
 - **Custom hardware:** serial/BLE/OSC → simulated wrist device panel or controller mapping; haptic gloves → controller rumble.
 - **WebXR:** launch in Quest Browser. **Horizon Worlds:** deep link.
 - **Native Swift/RealityKit, Snap Lenses:** Watch mode (demo-video theater).
-- `MuseumReturn` script: hold both menu buttons for 1.5 s → relaunch the museum with `returnTo=<projectId>` and spawn at that painting.
+- `MuseumReturn` script: hold left Menu + right B for 1.5 s (Quest has only one app menu button) → relaunch the museum with `returnTo=<projectId>` and spawn at that painting.
 - Shared branded splash screen in every build to mask OS app-switch transitions.
 
 ## Install / switching model
@@ -64,9 +64,12 @@ Output per project: `platform`, `requirement_tier` (quest2 / quest3 / pcvr / non
 ## Build order
 1. **Scraper + classifier → `projects.json`** with real counts per year, platform, and fidelity tier. ← start here
 2. Greybox museum + portal ripple shader + video theater (every project is at least watchable).
-3. Ratings backend.
-4. Compat kit + port factory, starting with the top ~20 projects.
-5. Install/zone system + companion ADB script.
+3. Ratings backend. (Supabase schema + RLS tests in `supabase/`, star bars in the client.)
+4. Compat kit + port factory, starting with the top ~20 projects. (`kit/`, `factory/`, `python -m rhm.factory`; wave 1 queued in `factory/QUEUE.md`.)
+5. Install/zone system + companion ADB script. (`museum/…/Scripts/Apps/`, `Plugins/Android/RHInstaller.java`, `companion/rh_companion.py`.)
+
+## Current status
+Read `STATUS.md` before starting work: what has been verified on a real Quest 2, known issues, and the next task (frame rate). The project is on Unity 6000.2.7f2.
 
 ## Owner
 Mark (GitHub: Almasianmark). Prefers structured, direct, numbers-first communication.
