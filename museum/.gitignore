@@ -13,3 +13,5 @@
 *.aab
 /Assets/StreamingAssets/museum.json
 /Assets/StreamingAssets/museum.json.meta
+/.utmp/
+/*_BurstDebugInformation_DoNotShip/

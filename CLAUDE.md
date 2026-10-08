@@ -68,5 +68,8 @@ Output per project: `platform`, `requirement_tier` (quest2 / quest3 / pcvr / non
 4. Compat kit + port factory, starting with the top ~20 projects. (`kit/`, `factory/`, `python -m rhm.factory`; wave 1 queued in `factory/QUEUE.md`.)
 5. Install/zone system + companion ADB script. (`museum/…/Scripts/Apps/`, `Plugins/Android/RHInstaller.java`, `companion/rh_companion.py`.)
 
+## Current status
+Read `STATUS.md` before starting work: what has been verified on a real Quest 2, known issues, and the next task (frame rate). The project is on Unity 6000.2.7f2.
+
 ## Owner
 Mark (GitHub: Almasianmark). Prefers structured, direct, numbers-first communication.
