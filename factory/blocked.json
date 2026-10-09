@@ -1,0 +1,14 @@
+{
+  "_note": "Projects the port factory skips, with the reason. LFS entries: every Git LFS object was fetched on 2026-10-09 and the host answered 'Not Found' (the 2024 Codeberg mirrors were imported without some repos' LFS objects). Remove an entry when the files come back.",
+  "2024-a-fire-training-app": "Git LFS: 17 of 19 objects missing on Codeberg (audio, textures, meshes); also Quest 3 Depth API",
+  "2024-beesper": "Git LFS: 56 of 58 objects missing on Codeberg (models)",
+  "2024-c-r-a-s-h-critical-runway-assistance-for-safe-handling": "Git LFS: 174 of 176 objects missing on Codeberg (UI textures)",
+  "2024-geoquest-ar": "Git LFS: 719 of 727 objects missing on Codeberg (sprites, models)",
+  "2024-team-71-bounce-ball": "Git LFS: 168 of 170 objects missing on Codeberg (models, sprites)",
+  "2024-community-canvas": "Git LFS: 202 of 205 objects missing on Codeberg (models)",
+  "2024-cycle-j4mrpa": "Git LFS: 28 of 31 objects missing on Codeberg, e.g. Assets/Images/App Logo.png",
+  "2024-mindtoboard": "Git LFS: 896 of 1815 objects missing on Codeberg, e.g. DragonHack/Assets/Img/bg.png",
+  "2024-pando": "Git LFS: 441 of 1051 objects missing on Codeberg, e.g. Assets/Samples/Snapdragon Spaces Dual Render Fusion (Experimental)/0.19.1/Fusion Samples/Textures/drawable-night-hdpi/SpacesControllerImage.jpg",
+  "2024-code-hero-a0x7bu": "Git LFS: 756 of 1702 objects missing on Codeberg, e.g. CodeHero/Assets/Samples/Snapdragon Spaces Dual Render Fusion (Experimental)/0.19.1/Fusion Samples/Scenes/background.jpeg",
+  "2024-pinpals": "Git LFS: 72 of 74 objects missing on Codeberg, e.g. Assets/Bulletin Street/Images/App Logo.png"
+}

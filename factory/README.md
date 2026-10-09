@@ -9,21 +9,63 @@ data/projects.json ─► queue ─► prepare (clone + inject) ─► GameCI bu
 
 ## Wave 1: 20 projects (`QUEUE.md`)
 
-- **Who qualifies:** the repo exists and is a Unity project with a known version, the license allows rebuilding (MIT etc.; 170 projects qualify), and fidelity isn't Watch.
+- **Who qualifies:** the repo exists and is a Unity project with a known version, the license allows rebuilding (MIT etc.; 170 projects qualify), fidelity isn't Watch, and it isn't in `blocked.json`.
 - **Ranking:**
   1. Bayesian rating (no ratings exist yet)
   2. prize winner
-  3. ease: `native` < `openxr` < `passthrough` < custom hardware
-  4. newer Unity
+  3. Quest 2 before Quest 3-only (Depth API etc.), since Quest 2 is the minimum target
+  4. ease: `native` < `openxr` < `passthrough` < custom hardware
+  5. newer Unity
 - **Quotas:** 3 `openxr` and 3 `passthrough` slots are reserved so wave 1 exercises every recipe.
 - **Result:** 14 Quest-native winners, 3 OpenXR swaps (2 Android XR, 1 PC VR) and 3 passthrough ports (Vision Pro, AR glasses, phone AR). Unity versions range from 2021.3 to 6000.3.
 - **Per project, the queue resolves:**
   - the exact **GameCI image**, checked against Docker Hub
+  - the editor **changeset**, so Unity Hub's CLI can install that exact version
   - **XR package versions** from the Unity registry: the highest release compatible with that project's Unity
   - the **minimum versions** those packages need
   - an Android **package ID** of the form `world.realityhack.p<year>.<title>`
 
 Regenerate with `cd pipeline && python -m rhm.factory queue [--size N]`. With `SUPABASE_URL` and `SUPABASE_ANON_KEY` set, ratings drive the ranking.
+
+### Git LFS: many repos lost their assets (`blocked.json`)
+
+Many hackathon repos keep models, textures and audio in Git LFS. A port built from LFS pointer files compiles but ships broken assets. So `prepare` now runs `git lfs pull` and fails if anything an Android build reads is still a pointer. It ignores PDFs, zips and desktop-only plugins.
+
+`python -m rhm.factory lfscheck` fetches every LFS object of the wave's candidates in rank order. Projects whose host answers "Not Found" go into `blocked.json`; projects that pass are cached in `lfs_ok.json`. It repeats until the wave is full.
+
+**Found 2026-10-09:** 11 of the 2024 Codeberg repos are missing most of their LFS objects (for example Beesper 56/58, GEOQUEST 719/727). The 2024 mirror was imported without them. Codeberg serves LFS fine for the repos that have it (HeaVR, Legacy, snAIder).
+
+**Not yet verified:** GitHub-hosted repos. The cloud sandbox's git proxy refuses LFS for repos outside the session, so those checks are inconclusive there and nothing was blocked on that basis. Run `lfscheck` from a normal machine, or let `prepare` catch them.
+
+## First ports: BattleFish, CAREGIVR, Memory Tree
+
+All three are prize winners and Quest 2 natives with no LFS. Each was prepared and inspected in the cloud.
+
+| Port | Unity | Entry scene | Notes |
+|---|---|---|---|
+| BattleFish | 6000.0.33f1 | `FinalScenes/FinalScene` | Meta SDK 83 + OpenXR loader |
+| CAREGIVR | 2022.3.19f1 | `IntroScene` → 4 more | Oculus XR loader; Movement SDK from a git URL. The team's own APK is on itch.io for comparison. |
+| Memory Tree | 6000.3.2f1 | `SampleScene` | The other 3 scenes are empty 8 KB stubs |
+
+**Skipped:**
+- **OnBook (#3):** needs two colocated headsets, Photon and Quest 3 color passthrough, so a solo Quest 2 smoke test can't judge it.
+- **A "Fire" Training App:** LFS assets are gone, and it's Quest 3 Depth API.
+
+**Build them on Windows (no Docker; uses the Unity licence in Unity Hub):**
+
+```powershell
+powershell -ExecutionPolicy Bypass -File factory\build_local.ps1          # the 3 above
+powershell -ExecutionPolicy Bypass -File factory\build_local.ps1 -Ids 2024-heavr -SkipSmoke
+```
+
+The script does the following:
+1. **Prepare:** clones the repo, pulls LFS, injects the kit.
+2. **Editor:** installs the exact editor with Android SDK/NDK/JDK through Unity Hub's CLI if it's missing (`-AllowNewerPatch` uses an installed editor of the same minor version instead).
+3. **Build:** runs PortRecipe in batch mode.
+4. **Smoke test:** on the USB-connected Quest.
+5. **Triage:** writes `data/port_status.json` and `TRIAGE.md`.
+
+It was dry-run on Linux pwsh 7.4 with a stub editor to check the argument passing; it has not run on Windows yet.
 
 ## Recipes
 
@@ -89,11 +131,12 @@ python -m rhm.factory triage
 
 ## Verified vs not
 
-- ✅ **Python logic:** 53 pytest tests cover ranking and quotas, the version resolver, injection (strip, add, upgrade, keep existing loader), logcat verdicts and triage.
+- ✅ **Python logic:** pytest covers ranking and quotas, the version resolver, injection (strip, add, upgrade, keep existing loader), logcat verdicts and triage.
 - ✅ **Real queue:** generated from live registry and Docker Hub data.
 - ✅ **Real injection:** run on two actual wave-1 repos (sparse checkouts). BattleFish was left untouched apart from the kit. Paw Pals had visionOS stripped, OpenXR + Meta OpenXR added, and AR Foundation and core-utils raised.
 - ✅ **Kit runtime:** compiles against UnityEngine reference assemblies at C# 7.3.
 - ✅ **XR API names:** every reflection target in `PortRecipe` was checked against XR Management 4.4.0, OpenXR 1.13.2 and Meta OpenXR 1.0.1 package source.
-- ❌ **No Unity build has run yet.** That needs a Unity license and Docker, neither of which this sandbox has.
+- ✅ **Prepared for real (2026-10-09):** BattleFish, CAREGIVR and Memory Tree were cloned, LFS-checked, injected and inspected (scene lists, loaders). The whole wave was LFS-surveyed.
+- ❌ **No Unity build has run yet.** That needs a Unity licence, which the sandbox doesn't have. Use `build_local.ps1` on the PC.
 - ❌ **No smoke test has run yet.** That needs a Quest 2.
 - **Not built:** the luminance-to-alpha pass for additive-display ports. It needs a per-pipeline full-screen render pass, so it's left as a triage step.

@@ -14,6 +14,7 @@ import argparse
 import datetime as dt
 import hashlib
 import json
+import os
 import re
 import shutil
 import statistics
@@ -29,6 +30,7 @@ KIT = ROOT / "kit" / "com.realityhack.museum-kit"
 FACTORY = ROOT / "factory"
 QUEUE_JSON = ROOT / "data" / "port_queue.json"
 STATUS_JSON = ROOT / "data" / "port_status.json"
+BLOCKED_JSON = FACTORY / "blocked.json"
 MUSEUM_PACKAGE = "world.realityhack.museum"
 
 # ---------------------------------------------------------------- recipes
@@ -78,8 +80,17 @@ def package_id(p: dict) -> str:
     return f"world.realityhack.p{p['year']}.{slug[:40]}"
 
 
-def is_candidate(p: dict) -> bool:
+def blocked() -> dict[str, str]:
+    """factory/blocked.json: projects that can't be rebuilt from their repo (e.g. LFS objects gone), with reasons."""
+    if not BLOCKED_JSON.exists():
+        return {}
+    return {k: v for k, v in json.loads(BLOCKED_JSON.read_text(encoding="utf-8")).items() if not k.startswith("_")}
+
+
+def is_candidate(p: dict, skip: dict[str, str] | None = None) -> bool:
     r = p.get("repo") or {}
+    if skip and p["id"] in skip:
+        return False
     return bool(r.get("exists") and not r.get("empty") and r.get("manifest_paths") and r.get("unity_version")
                 and p["license_gate"] in ("ok", "ok-copyleft")
                 and p["fidelity"] in ("Native", "Ported", "Ported-reduced", "Simulated"))
@@ -95,14 +106,18 @@ def project_path(manifest_paths: list[str]) -> str:
 def rank_key(p: dict, scores: dict[str, dict] | None = None) -> tuple:
     s = (scores or {}).get(p["id"], {})
     ease = RECIPES[recipe_for(p)][1] + (2 if p["fidelity"] == "Simulated" else 0)
-    return (-(s.get("bayes_score") or 0), not p["winner"], ease, tuple(-x for x in unity_minor(p["repo"]["unity_version"])), p["title"].lower())
+    # Quest 2 is the minimum target: Quest 3-only features (Depth API etc.) port as reduced, so they rank after
+    # every full Quest 2 port with the same rating and prize status.
+    q3 = p.get("requirement_tier") == "quest3"
+    return (-(s.get("bayes_score") or 0), not p["winner"], q3, ease, tuple(-x for x in unity_minor(p["repo"]["unity_version"])), p["title"].lower())
 
 
 def select_wave(projects: list[dict], size: int = 20, scores: dict | None = None,
                 quotas: dict[str, int] | None = None) -> list[dict]:
     """Top projects by score/winner/ease, with small per-recipe quotas so wave 1 exercises every recipe."""
     quotas = quotas if quotas is not None else {"openxr": 3, "passthrough": 3}
-    cands = sorted((p for p in projects if is_candidate(p)), key=lambda p: rank_key(p, scores))
+    skip = blocked()
+    cands = sorted((p for p in projects if is_candidate(p, skip)), key=lambda p: rank_key(p, scores))
     picked, ids = [], set()
     for recipe, n in quotas.items():
         for p in [c for c in cands if recipe_for(c) == recipe][:n]:
@@ -156,6 +171,16 @@ class Resolver:
             return None
         best = max(tags, key=lambda t: version_key(t.split("-")[1]))
         return f"unityci/editor:{best}"
+
+    RELEASES = "https://services.api.unity.com/unity/editor/release/v1/releases"
+
+    def changeset(self, unity: str) -> str | None:
+        """Short revision for this editor version; Unity Hub's CLI needs it to install anything but the newest patches."""
+        doc = self.http.get_json(f"{self.RELEASES}?version={unity}&limit=1") or {}
+        for r in doc.get("results", []):
+            if r.get("version") == unity:
+                return r.get("shortRevision")
+        return None
 
 
 def xr_packages(recipe: str, unity: str, res: Resolver) -> dict[str, str]:
@@ -213,6 +238,7 @@ def queue_entry(p: dict, rank: int, res: Resolver | None) -> dict:
         "project_path": project_path(p["repo"]["manifest_paths"]),
         "unity_version": unity,
         "image": res.image(unity) if res else None,
+        "changeset": res.changeset(unity) if res else None,
         "add_packages": (add := xr_packages(recipe, unity, res) if res else {}),
         "min_versions": min_versions(add, res) if res else {},
         "package_id": package_id(p),
@@ -229,7 +255,7 @@ def write_queue(size: int, offline: bool = False) -> list[dict]:
     wave = select_wave(doc["projects"], size, scores_from_env())
     res = None if offline else Resolver()
     entries = [queue_entry(p, i + 1, res) for i, p in enumerate(wave)]
-    QUEUE_JSON.write_text(json.dumps({"generated_at": _now(), "wave": 1, "entries": entries}, indent=2) + "\n")
+    QUEUE_JSON.write_text(json.dumps({"generated_at": _now(), "wave": 1, "entries": entries}, indent=2) + "\n", encoding="utf-8")
     FACTORY.mkdir(exist_ok=True)
     L = ["# Port queue: wave 1", "",
          f"{len(entries)} projects. Ranked by Bayesian rating (none yet) → prize winner → ease (native < OpenXR swap < passthrough "
@@ -238,7 +264,7 @@ def write_queue(size: int, offline: bool = False) -> list[dict]:
     for e in entries:
         L.append(f"| {e['rank']} | {'**' if e['winner'] else ''}{e['title']}{'**' if e['winner'] else ''} | {e['year']} | "
                  f"{e['platform']} → `{e['recipe']}` | {e['unity_version']} | `{(e['image'] or 'none').split(':')[-1]}` | `{e['package_id']}` |")
-    (FACTORY / "QUEUE.md").write_text("\n".join(L) + "\n")
+    (FACTORY / "QUEUE.md").write_text("\n".join(L) + "\n", encoding="utf-8")
     return entries
 
 
@@ -246,6 +272,95 @@ def write_queue(size: int, offline: bool = False) -> list[dict]:
 
 def _git(*args, cwd=None):
     return subprocess.run(["git", *args], cwd=cwd, check=True, capture_output=True, text=True)
+
+
+def uses_lfs(repo_dir: Path) -> bool:
+    attrs = repo_dir / ".gitattributes"
+    return attrs.exists() and "filter=lfs" in attrs.read_text(encoding="utf-8", errors="replace")
+
+
+# LFS files an Android build never reads: docs, archives, desktop-only native plugins.
+LFS_IRRELEVANT = re.compile(r"(\.pdf|\.zip|\.bundle)$|/Documentation|Plugins/(Linux|Windows|x86_64|macOS|OSX)/", re.I)
+
+
+def lfs_missing(repo_dir: Path) -> list[str]:
+    """LFS-tracked files still holding a pointer after a pull, ignoring ones an Android build doesn't use."""
+    out = subprocess.run(["git", "lfs", "ls-files"], cwd=repo_dir, capture_output=True, text=True).stdout
+    # "<oid> - path" = pointer only, "<oid> * path" = content present
+    missing = [m.group(1) for m in re.finditer(r"^[0-9a-f]+ - (.+)$", out, re.M)]
+    return [f for f in missing if not LFS_IRRELEVANT.search(f)]
+
+
+def lfs_pull(repo_dir: Path) -> None:
+    """A plain clone leaves LFS files as pointers when git-lfs isn't set up for the user; fetch them explicitly.
+    Hosts that lost the objects (several 2024 Codeberg mirrors) fail the pull; that's fatal only if the build needs them."""
+    if not uses_lfs(repo_dir):
+        return
+    _git("lfs", "install", "--local", cwd=repo_dir)
+    subprocess.run(["git", "lfs", "pull"], cwd=repo_dir, capture_output=True, text=True)
+    missing = lfs_missing(repo_dir)
+    if missing:
+        raise RuntimeError(f"Git LFS: {len(missing)} file(s) missing on the host, e.g. {missing[0]}. "
+                           f"Add the project to factory/blocked.json.")
+
+
+LFS_OK_JSON = FACTORY / "lfs_ok.json"
+
+
+INCONCLUSIVE = "inconclusive"
+
+
+def lfs_check_repo(url: str, scratch: Path) -> str | None:
+    """Clone without LFS content, then pull it. Returns None if the build has everything, INCONCLUSIVE if this
+    machine was refused access (e.g. a sandbox git proxy), else the reason it can't be built."""
+    d = scratch / "lfscheck"
+    shutil.rmtree(d, ignore_errors=True)
+    env = {**os.environ, "GIT_LFS_SKIP_SMUDGE": "1"}
+    try:
+        subprocess.run(["git", "clone", "-q", "--depth", "1", url, str(d)], env=env, check=True, capture_output=True,
+                       timeout=1800)
+        if not uses_lfs(d):
+            return None
+        pull = subprocess.run(["git", "lfs", "pull"], cwd=d, capture_output=True, text=True, timeout=3600)
+        if "access denied by the git proxy" in pull.stderr or "403" in pull.stderr:
+            return INCONCLUSIVE   # this machine can't reach the LFS server; says nothing about the host
+        total = len(subprocess.run(["git", "lfs", "ls-files"], cwd=d, capture_output=True, text=True).stdout.splitlines())
+        missing = lfs_missing(d)
+        return f"Git LFS: {len(missing)} of {total} objects missing on the host, e.g. {missing[0]}" if missing else None
+    except subprocess.TimeoutExpired:
+        return None   # slow host, not proof of loss; prepare will catch it
+    finally:
+        shutil.rmtree(d, ignore_errors=True)
+
+
+def lfs_check_wave(size: int, scratch: Path) -> tuple[list[str], list[str]]:
+    """Walk candidates in rank order until `size` pass; failures go to blocked.json, passes to lfs_ok.json."""
+    doc = json.loads((ROOT / "data" / "projects.json").read_text(encoding="utf-8"))
+    ok = set(json.loads(LFS_OK_JSON.read_text(encoding="utf-8"))) if LFS_OK_JSON.exists() else set()
+    raw = json.loads(BLOCKED_JSON.read_text(encoding="utf-8")) if BLOCKED_JSON.exists() else {}
+    passed, newly_blocked, unverified = [], [], set()
+    while True:
+        wave = select_wave(doc["projects"], size)
+        todo = [p for p in wave if p["id"] not in ok and p["id"] not in unverified]
+        if not todo:
+            break
+        for p in todo:
+            reason = lfs_check_repo(p["repo"]["url"], scratch)
+            if reason == INCONCLUSIVE:
+                print(f"  ?       {p['id']}: LFS server refused this machine; check from a normal network")
+                unverified.add(p["id"])   # don't block on our own access problem; prepare re-checks before a build
+                continue
+            if reason:
+                raw[p["id"]] = reason
+                newly_blocked.append(p["id"])
+                BLOCKED_JSON.write_text(json.dumps(raw, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+                print(f"  blocked {p['id']}: {reason}")
+                break   # the wave changes; re-select
+            ok.add(p["id"])
+            passed.append(p["id"])
+            LFS_OK_JSON.write_text(json.dumps(sorted(ok), indent=1) + "\n", encoding="utf-8")
+            print(f"  ok      {p['id']}")
+    return passed, newly_blocked
 
 
 def inject(project_dir: Path, entry: dict, embed_kit: bool = True) -> dict:
@@ -312,12 +427,13 @@ def prepare(entry: dict, work: Path) -> Path:
     repo_dir = work / entry["id"]
     if not repo_dir.exists():
         _git("clone", "--depth", "1", entry["repo_url"], str(repo_dir))
+    lfs_pull(repo_dir)
     commit = _git("rev-parse", "HEAD", cwd=repo_dir).stdout.strip()
     project = (repo_dir / entry["project_path"]).resolve()
     changes = inject(project, entry)
     out = work / "_out" / entry["id"]
     out.mkdir(parents=True, exist_ok=True)
-    (out / "prepare.json").write_text(json.dumps({"commit": commit, "project": str(project), **changes}, indent=2))
+    (out / "prepare.json").write_text(json.dumps({"commit": commit, "project": str(project), **changes}, indent=2), encoding="utf-8")
     return project
 
 
@@ -357,7 +473,8 @@ def smoke(entry: dict, apk: Path, seconds: int = 60, adb: str = "adb") -> dict:
     out = FACTORY / "reports" / entry["id"]
     out.mkdir(parents=True, exist_ok=True)
     pkg = entry["package_id"]
-    run = lambda *a, **k: subprocess.run([adb, *a], capture_output=True, text=True, **k)
+    # logcat is UTF-8 whatever the PC's code page (Windows defaults to cp1252)
+    run = lambda *a, **k: subprocess.run([adb, *a], capture_output=True, text=True, encoding="utf-8", errors="replace", **k)
     run("logcat", "-c")
     inst = run("install", "-r", "-g", str(apk))
     if inst.returncode != 0:
@@ -367,21 +484,21 @@ def smoke(entry: dict, apk: Path, seconds: int = 60, adb: str = "adb") -> dict:
         time.sleep(seconds)
         alive = bool(run("shell", "pidof", pkg).stdout.strip())
         log = run("logcat", "-d").stdout
-        (out / "logcat.txt").write_text(log)
+        (out / "logcat.txt").write_text(log, encoding="utf-8")
         with open(out / "screenshot.png", "wb") as f:
             f.write(subprocess.run([adb, "exec-out", "screencap", "-p"], capture_output=True).stdout)
         res = analyze_logcat(log, alive)
         run("shell", "am", "force-stop", pkg)
     res.update({"id": entry["id"], "apk": str(apk), "apk_sha256": hashlib.sha256(apk.read_bytes()).hexdigest(),
                 "apk_bytes": apk.stat().st_size, "tested_at": _now()})
-    (out / "smoke.json").write_text(json.dumps(res, indent=2))
+    (out / "smoke.json").write_text(json.dumps(res, indent=2), encoding="utf-8")
     return res
 
 
 # ---------------------------------------------------------------- triage
 
 def triage(work: Path | None = None) -> dict:
-    queue = json.loads(QUEUE_JSON.read_text())["entries"]
+    queue = json.loads(QUEUE_JSON.read_text(encoding="utf-8"))["entries"]
     status = {}
     for e in queue:
         build = _load(work / "_out" / e["id"] / "build-report.json") if work else None
@@ -397,18 +514,18 @@ def triage(work: Path | None = None) -> dict:
                            "apk_sha256": (sm or {}).get("apk_sha256"), "apk_bytes": (sm or {}).get("apk_bytes"),
                            "fps_median": (sm or {}).get("fps_median"),
                            "manual_steps": e["manual_steps"]}
-    STATUS_JSON.write_text(json.dumps({"generated_at": _now(), "ports": status}, indent=2) + "\n")
+    STATUS_JSON.write_text(json.dumps({"generated_at": _now(), "ports": status}, indent=2) + "\n", encoding="utf-8")
     L = ["# Port triage", "", "| # | project | recipe | state | FPS | manual steps |", "|---:|---|---|---|---:|---|"]
     for e in queue:
         s = status[e["id"]]
         L.append(f"| {e['rank']} | {e['title']} | `{e['recipe']}` | {s['state']} | {s['fps_median'] or ''} | "
                  f"{'<br>'.join(e['manual_steps']) or '—'} |")
-    (FACTORY / "TRIAGE.md").write_text("\n".join(L) + "\n")
+    (FACTORY / "TRIAGE.md").write_text("\n".join(L) + "\n", encoding="utf-8")
     return status
 
 
 def _load(p: Path):
-    return json.loads(p.read_text()) if p and p.exists() else None
+    return json.loads(p.read_text(encoding="utf-8")) if p and p.exists() else None
 
 
 def _now() -> str:
@@ -416,7 +533,7 @@ def _now() -> str:
 
 
 def _entry(pid: str) -> dict:
-    for e in json.loads(QUEUE_JSON.read_text())["entries"]:
+    for e in json.loads(QUEUE_JSON.read_text(encoding="utf-8"))["entries"]:
         if e["id"] == pid:
             return e
     sys.exit(f"{pid} is not in {QUEUE_JSON}; run `python -m rhm.factory queue` first")
@@ -427,7 +544,10 @@ def main(argv=None) -> None:
     sub = ap.add_subparsers(dest="cmd", required=True)
     q = sub.add_parser("queue"); q.add_argument("--size", type=int, default=20); q.add_argument("--offline", action="store_true")
     p = sub.add_parser("prepare"); p.add_argument("id"); p.add_argument("--work", type=Path, default=ROOT / "factory" / "work")
-    s = sub.add_parser("smoke"); s.add_argument("id"); s.add_argument("--apk", type=Path, required=True); s.add_argument("--seconds", type=int, default=60)
+    s = sub.add_parser("smoke"); s.add_argument("id"); s.add_argument("--apk", type=Path, required=True); s.add_argument("--seconds", type=int, default=60); s.add_argument("--adb", default="adb")
+    lc = sub.add_parser("lfscheck", help="block candidates whose Git LFS assets are gone, until the wave is full")
+    lc.add_argument("--size", type=int, default=20)
+    lc.add_argument("--scratch", type=Path, default=ROOT / "factory" / "work")
     t = sub.add_parser("triage"); t.add_argument("--work", type=Path, default=ROOT / "factory" / "work")
     a = ap.parse_args(argv)
     if a.cmd == "queue":
@@ -438,7 +558,11 @@ def main(argv=None) -> None:
         project = prepare(e, a.work)
         print(build_command(e, project, a.work / "_out" / e["id"]))
     elif a.cmd == "smoke":
-        print(json.dumps(smoke(_entry(a.id), a.apk, a.seconds), indent=2))
+        print(json.dumps(smoke(_entry(a.id), a.apk, a.seconds, a.adb), indent=2))
+    elif a.cmd == "lfscheck":
+        a.scratch.mkdir(parents=True, exist_ok=True)
+        passed, newly = lfs_check_wave(a.size, a.scratch)
+        print(f"{len(passed)} newly verified, {len(newly)} blocked; rerun `queue` to rewrite the wave", file=sys.stderr)
     elif a.cmd == "triage":
         st = triage(a.work)
         print(f"{sum(v['state'] == 'ready' for v in st.values())}/{len(st)} ready -> {STATUS_JSON}", file=sys.stderr)

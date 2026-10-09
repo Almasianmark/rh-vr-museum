@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-04T11:59:07+00:00",
+  "generated_at": "2026-10-09T00:52:40+00:00",
   "wave": 1,
   "entries": [
     {
@@ -15,6 +15,7 @@
       "project_path": ".",
       "unity_version": "6000.3.2f1",
       "image": "unityci/editor:ubuntu-6000.3.2f1-android-3",
+      "changeset": "a9779f353c9b",
       "add_packages": {
         "com.unity.xr.management": "4.7.0",
         "com.unity.xr.openxr": "1.18.0"
@@ -51,6 +52,7 @@
       "project_path": ".",
       "unity_version": "6000.0.33f1",
       "image": "unityci/editor:ubuntu-6000.0.33f1-android-3",
+      "changeset": "433b0a79340b",
       "add_packages": {
         "com.unity.xr.management": "4.7.0",
         "com.unity.xr.openxr": "1.18.0"
@@ -87,6 +89,7 @@
       "project_path": ".",
       "unity_version": "6000.0.34f1",
       "image": "unityci/editor:ubuntu-6000.0.34f1-android-3",
+      "changeset": "5ab2d9ed9190",
       "add_packages": {
         "com.unity.xr.management": "4.7.0",
         "com.unity.xr.openxr": "1.18.0"
@@ -112,82 +115,6 @@
     },
     {
       "rank": 4,
-      "id": "2024-a-fire-training-app",
-      "title": "A \"Fire\" Training App",
-      "year": 2024,
-      "winner": true,
-      "platform": "quest",
-      "fidelity": "Ported-reduced",
-      "recipe": "native",
-      "repo_url": "https://codeberg.org/reality-hack-2024/TABLE_32",
-      "project_path": ".",
-      "unity_version": "2022.3.18f1",
-      "image": "unityci/editor:ubuntu-2022.3.18f1-android-3",
-      "add_packages": {
-        "com.unity.xr.management": "4.7.0",
-        "com.unity.xr.openxr": "1.17.1"
-      },
-      "min_versions": {
-        "com.unity.xr.management": "4.7.0",
-        "com.unity.xr.openxr": "1.17.1",
-        "com.unity.xr.core-utils": "2.3.0",
-        "com.unity.xr.legacyinputhelpers": "2.1.11",
-        "com.unity.inputsystem": "1.6.3"
-      },
-      "package_id": "world.realityhack.p2024.a_fire_training_app",
-      "license": "MIT",
-      "team": [
-        "Jack English",
-        "Chase Johnson",
-        "D.J. Figueroa",
-        "Ian Morrill",
-        "Samuel Wiggins"
-      ],
-      "extra_hardware": [],
-      "manual_steps": [
-        "Quest-3-only feature in use: gate it or provide a Quest 2 fallback."
-      ]
-    },
-    {
-      "rank": 5,
-      "id": "2024-beesper",
-      "title": "Beesper",
-      "year": 2024,
-      "winner": true,
-      "platform": "quest",
-      "fidelity": "Native",
-      "recipe": "native",
-      "repo_url": "https://codeberg.org/reality-hack-2024/TABLE_105",
-      "project_path": ".",
-      "unity_version": "2022.3.12f1",
-      "image": "unityci/editor:ubuntu-2022.3.12f1-android-3",
-      "add_packages": {
-        "com.unity.xr.management": "4.7.0",
-        "com.unity.xr.openxr": "1.17.1"
-      },
-      "min_versions": {
-        "com.unity.xr.management": "4.7.0",
-        "com.unity.xr.openxr": "1.17.1",
-        "com.unity.xr.core-utils": "2.3.0",
-        "com.unity.xr.legacyinputhelpers": "2.1.11",
-        "com.unity.inputsystem": "1.6.3"
-      },
-      "package_id": "world.realityhack.p2024.beesper",
-      "license": "MIT",
-      "team": [
-        "Linnette Martinez",
-        "ke wang",
-        "leon kipkoech",
-        "Jingfei Huang",
-        "John Luis Estrada"
-      ],
-      "extra_hardware": [
-        "ultraleap"
-      ],
-      "manual_steps": []
-    },
-    {
-      "rank": 6,
       "id": "2025-caregivr-tzmqkg",
       "title": "CAREGIVR",
       "year": 2025,
@@ -199,6 +126,7 @@
       "project_path": ".",
       "unity_version": "2022.3.19f1",
       "image": "unityci/editor:ubuntu-2022.3.19f1-android-3",
+      "changeset": "244b723c30a6",
       "add_packages": {
         "com.unity.xr.management": "4.7.0",
         "com.unity.xr.openxr": "1.17.1"
@@ -223,7 +151,7 @@
       "manual_steps": []
     },
     {
-      "rank": 7,
+      "rank": 5,
       "id": "2025-gaze-groove",
       "title": "Gaze Groove",
       "year": 2025,
@@ -235,6 +163,7 @@
       "project_path": ".",
       "unity_version": "2022.3.56f1",
       "image": "unityci/editor:ubuntu-2022.3.56f1-android-3",
+      "changeset": "dd0c98481d00",
       "add_packages": {
         "com.unity.xr.management": "4.7.0",
         "com.unity.xr.openxr": "1.17.1"
@@ -259,7 +188,7 @@
       "manual_steps": []
     },
     {
-      "rank": 8,
+      "rank": 6,
       "id": "2024-heavr",
       "title": "HeaVR",
       "year": 2024,
@@ -271,6 +200,7 @@
       "project_path": "Unity_VR_MIT_Hackathon_Hardware",
       "unity_version": "2022.3.10f1",
       "image": "unityci/editor:ubuntu-2022.3.10f1-android-3",
+      "changeset": "ff3792e53c62",
       "add_packages": {
         "com.unity.xr.management": "4.7.0",
         "com.unity.xr.openxr": "1.17.1"
@@ -295,7 +225,7 @@
       "manual_steps": []
     },
     {
-      "rank": 9,
+      "rank": 7,
       "id": "2024-legacy-q9dmvf",
       "title": "Legacy",
       "year": 2024,
@@ -307,6 +237,7 @@
       "project_path": ".",
       "unity_version": "2022.3.18f1",
       "image": "unityci/editor:ubuntu-2022.3.18f1-android-3",
+      "changeset": "d29bea25151d",
       "add_packages": {
         "com.unity.xr.management": "4.7.0",
         "com.unity.xr.openxr": "1.17.1"
@@ -331,7 +262,7 @@
       "manual_steps": []
     },
     {
-      "rank": 10,
+      "rank": 8,
       "id": "2026-ourlife",
       "title": "OurLife : A Second Brain for Those Who Need It Most",
       "year": 2026,
@@ -343,6 +274,7 @@
       "project_path": "Memory Visualizer (Quest)/Query-Streamer",
       "unity_version": "2022.3.62f3",
       "image": "unityci/editor:ubuntu-2022.3.62f3-android-3",
+      "changeset": "96770f904ca7",
       "add_packages": {
         "com.unity.xr.management": "4.7.0",
         "com.unity.xr.openxr": "1.17.1"
@@ -367,7 +299,7 @@
       "manual_steps": []
     },
     {
-      "rank": 11,
+      "rank": 9,
       "id": "2025-chase-against-time",
       "title": "Race Against Time",
       "year": 2025,
@@ -379,6 +311,7 @@
       "project_path": ".",
       "unity_version": "2022.3.44f1",
       "image": "unityci/editor:ubuntu-2022.3.44f1-android-3",
+      "changeset": "c3ae09b9f03c",
       "add_packages": {
         "com.unity.xr.management": "4.7.0",
         "com.unity.xr.openxr": "1.17.1"
@@ -403,43 +336,7 @@
       "manual_steps": []
     },
     {
-      "rank": 12,
-      "id": "2024-c-r-a-s-h-critical-runway-assistance-for-safe-handling",
-      "title": "SKYWARD",
-      "year": 2024,
-      "winner": true,
-      "platform": "quest",
-      "fidelity": "Native",
-      "recipe": "native",
-      "repo_url": "https://codeberg.org/reality-hack-2024/TABLE_58",
-      "project_path": ".",
-      "unity_version": "2022.3.18f1",
-      "image": "unityci/editor:ubuntu-2022.3.18f1-android-3",
-      "add_packages": {
-        "com.unity.xr.management": "4.7.0",
-        "com.unity.xr.openxr": "1.17.1"
-      },
-      "min_versions": {
-        "com.unity.xr.management": "4.7.0",
-        "com.unity.xr.openxr": "1.17.1",
-        "com.unity.xr.core-utils": "2.3.0",
-        "com.unity.xr.legacyinputhelpers": "2.1.11",
-        "com.unity.inputsystem": "1.6.3"
-      },
-      "package_id": "world.realityhack.p2024.skyward",
-      "license": "MIT",
-      "team": [
-        "Steph Ng",
-        "Binh Minh Herbst",
-        "Rylan Pozniak Daniels",
-        "Arthur Bouffard",
-        "Pratik Suketu Shah"
-      ],
-      "extra_hardware": [],
-      "manual_steps": []
-    },
-    {
-      "rank": 13,
+      "rank": 10,
       "id": "2024-snaider",
       "title": "snAIder",
       "year": 2024,
@@ -451,6 +348,7 @@
       "project_path": ".",
       "unity_version": "2022.3.18f1",
       "image": "unityci/editor:ubuntu-2022.3.18f1-android-3",
+      "changeset": "d29bea25151d",
       "add_packages": {
         "com.unity.xr.management": "4.7.0",
         "com.unity.xr.openxr": "1.17.1"
@@ -475,7 +373,7 @@
       "manual_steps": []
     },
     {
-      "rank": 14,
+      "rank": 11,
       "id": "2024-talk-to-me-a8ow0x",
       "title": "Talk to Me",
       "year": 2024,
@@ -487,6 +385,7 @@
       "project_path": ".",
       "unity_version": "2022.3.7f1",
       "image": "unityci/editor:ubuntu-2022.3.7f1-android-3",
+      "changeset": "b16b3b16c7a0",
       "add_packages": {
         "com.unity.xr.management": "4.7.0",
         "com.unity.xr.openxr": "1.17.1"
@@ -511,6 +410,116 @@
       "manual_steps": []
     },
     {
+      "rank": 12,
+      "id": "2023-memento-mori-f0ze8n",
+      "title": "Memento Mori",
+      "year": 2023,
+      "winner": true,
+      "platform": "quest",
+      "fidelity": "Native",
+      "recipe": "native",
+      "repo_url": "https://github.com/krispatl/Memento-Reality-Hack-23",
+      "project_path": "MementoMori",
+      "unity_version": "2022.2.0b14",
+      "image": "unityci/editor:ubuntu-2022.2.13f1-android-3",
+      "changeset": "0220fa099330",
+      "add_packages": {
+        "com.unity.xr.management": "4.5.2",
+        "com.unity.xr.openxr": "1.15.1"
+      },
+      "min_versions": {
+        "com.unity.xr.management": "4.5.2",
+        "com.unity.xr.openxr": "1.15.1",
+        "com.unity.xr.core-utils": "2.3.0",
+        "com.unity.xr.legacyinputhelpers": "2.1.11",
+        "com.unity.inputsystem": "1.6.3"
+      },
+      "package_id": "world.realityhack.p2023.memento_mori",
+      "license": "MIT",
+      "team": [
+        "Beatrice Saelee",
+        "Warren Reid",
+        "Kris Pilcher",
+        "Daniel Trujillo"
+      ],
+      "extra_hardware": [],
+      "manual_steps": []
+    },
+    {
+      "rank": 13,
+      "id": "2023-failtopia",
+      "title": "Failtopia",
+      "year": 2023,
+      "winner": true,
+      "platform": "quest",
+      "fidelity": "Native",
+      "recipe": "native",
+      "repo_url": "https://github.com/Reality-Hack-2023/REPO-025",
+      "project_path": ".",
+      "unity_version": "2021.3.11f1",
+      "image": "unityci/editor:ubuntu-2021.3.11f1-android-3",
+      "changeset": "0a5ca18544bf",
+      "add_packages": {
+        "com.unity.xr.management": "4.5.2",
+        "com.unity.xr.openxr": "1.15.1"
+      },
+      "min_versions": {
+        "com.unity.xr.management": "4.5.2",
+        "com.unity.xr.openxr": "1.15.1",
+        "com.unity.xr.core-utils": "2.3.0",
+        "com.unity.xr.legacyinputhelpers": "2.1.11",
+        "com.unity.inputsystem": "1.6.3"
+      },
+      "package_id": "world.realityhack.p2023.failtopia",
+      "license": "MIT",
+      "team": [
+        "Sara Rutz",
+        "Nicolette Damianou",
+        "Lucy Yao",
+        "Emil Rofors",
+        "Kabeer Andrabi"
+      ],
+      "extra_hardware": [],
+      "manual_steps": []
+    },
+    {
+      "rank": 14,
+      "id": "2023-freemixr",
+      "title": "freemixr",
+      "year": 2023,
+      "winner": true,
+      "platform": "quest",
+      "fidelity": "Native",
+      "recipe": "native",
+      "repo_url": "https://github.com/FreebirdRealityHacks/FreebirdEditor",
+      "project_path": ".",
+      "unity_version": "2021.3.16f1",
+      "image": "unityci/editor:ubuntu-2021.3.16f1-android-3",
+      "changeset": "4016570cf34f",
+      "add_packages": {
+        "com.unity.xr.management": "4.5.2",
+        "com.unity.xr.openxr": "1.15.1"
+      },
+      "min_versions": {
+        "com.unity.xr.management": "4.5.2",
+        "com.unity.xr.openxr": "1.15.1",
+        "com.unity.xr.core-utils": "2.3.0",
+        "com.unity.xr.legacyinputhelpers": "2.1.11",
+        "com.unity.inputsystem": "1.6.3"
+      },
+      "package_id": "world.realityhack.p2023.freemixr",
+      "license": "MIT",
+      "team": [
+        "Ramanpreet N.",
+        "Rui Jie Wang",
+        "Paige Sun",
+        "Lucas Wozniak",
+        "Junah Park"
+      ],
+      "extra_hardware": [],
+      "manual_steps": []
+    },
+    {
       "rank": 15,
       "id": "2026-dream-field-gateways",
       "title": "Dream Field Gateways",
@@ -523,6 +532,7 @@
       "project_path": "Dream Field Gateways",
       "unity_version": "6000.3.5f1",
       "image": "unityci/editor:ubuntu-6000.3.5f1-android-3",
+      "changeset": "a1ec4b2f2d19",
       "add_packages": {
         "com.unity.xr.management": "4.7.0",
         "com.unity.xr.openxr": "1.18.0"
@@ -560,6 +570,7 @@
       "project_path": ".",
       "unity_version": "6000.3.4f1",
       "image": "unityci/editor:ubuntu-6000.3.4f1-android-3",
+      "changeset": "fdd3b8998ec4",
       "add_packages": {
         "com.unity.xr.management": "4.7.0",
         "com.unity.xr.openxr": "1.18.0"
@@ -599,6 +610,7 @@
       "project_path": ".",
       "unity_version": "2022.3.20f1",
       "image": "unityci/editor:ubuntu-2022.3.20f1-android-3",
+      "changeset": "61c2feb0970d",
       "add_packages": {
         "com.unity.xr.management": "4.7.0",
         "com.unity.xr.openxr": "1.17.1"
@@ -637,6 +649,7 @@
       "project_path": ".",
       "unity_version": "6000.0.34f1",
       "image": "unityci/editor:ubuntu-6000.0.34f1-android-3",
+      "changeset": "5ab2d9ed9190",
       "add_packages": {
         "com.unity.xr.management": "4.7.0",
         "com.unity.xr.openxr": "1.18.0",
@@ -673,52 +686,6 @@
     },
     {
       "rank": 19,
-      "id": "2024-geoquest-ar",
-      "title": "GEOQUEST AR",
-      "year": 2024,
-      "winner": true,
-      "platform": "ar-glasses",
-      "fidelity": "Ported",
-      "recipe": "passthrough",
-      "repo_url": "https://codeberg.org/reality-hack-2024/TABLE_89",
-      "project_path": ".",
-      "unity_version": "2022.3.18f1",
-      "image": "unityci/editor:ubuntu-2022.3.18f1-android-3",
-      "add_packages": {
-        "com.unity.xr.management": "4.7.0",
-        "com.unity.xr.openxr": "1.17.1",
-        "com.unity.xr.arfoundation": "5.2.2",
-        "com.unity.xr.meta-openxr": "1.0.4"
-      },
-      "min_versions": {
-        "com.unity.xr.management": "4.7.0",
-        "com.unity.xr.openxr": "1.17.1",
-        "com.unity.xr.arfoundation": "5.2.2",
-        "com.unity.xr.meta-openxr": "1.0.4",
-        "com.unity.xr.core-utils": "2.3.0",
-        "com.unity.xr.legacyinputhelpers": "2.1.11",
-        "com.unity.inputsystem": "1.6.3",
-        "com.unity.mathematics": "1.2.5",
-        "com.unity.editorcoroutines": "1.0.0"
-      },
-      "package_id": "world.realityhack.p2024.geoquest_ar",
-      "license": "MIT",
-      "team": [
-        "Seri Park",
-        "Saul Pena Gamero",
-        "Dhruv Sabharwal",
-        "Oren Nelson",
-        "Shuang Bi"
-      ],
-      "extra_hardware": [],
-      "manual_steps": [
-        "Replace the AR/HMD rig with an XR Origin; map screen taps / air-taps to trigger or pinch.",
-        "Check content reads well on passthrough (Quest 2 passthrough is grayscale).",
-        "Image/marker tracking: add a hand-placed anchor (no camera access on Quest 2)."
-      ]
-    },
-    {
-      "rank": 20,
       "id": "2023-avatar-room",
       "title": "Avatar Room",
       "year": 2023,
@@ -730,6 +697,7 @@
       "project_path": "arapp",
       "unity_version": "2021.3.16f1",
       "image": "unityci/editor:ubuntu-2021.3.16f1-android-3",
+      "changeset": "4016570cf34f",
       "add_packages": {
         "com.unity.xr.management": "4.5.2",
         "com.unity.xr.openxr": "1.15.1",
@@ -756,6 +724,50 @@
         "Amritpal Chera",
         "Genggeng Wu",
         "yixuan liu design"
+      ],
+      "extra_hardware": [],
+      "manual_steps": [
+        "Replace the AR/HMD rig with an XR Origin; map screen taps / air-taps to trigger or pinch.",
+        "Check content reads well on passthrough (Quest 2 passthrough is grayscale).",
+        "Image/marker tracking: add a hand-placed anchor (no camera access on Quest 2)."
+      ]
+    },
+    {
+      "rank": 20,
+      "id": "2023-stone-soup-qlsd6u",
+      "title": "Stone Soup",
+      "year": 2023,
+      "winner": true,
+      "platform": "ar-glasses",
+      "fidelity": "Ported",
+      "recipe": "passthrough",
+      "repo_url": "https://github.com/Reality-Hack-2023/StoneSoup",
+      "project_path": ".",
+      "unity_version": "2020.3.35f1",
+      "image": "unityci/editor:ubuntu-2020.3.35f1-android-3",
+      "changeset": "18e4db7a9996",
+      "add_packages": {
+        "com.unity.xr.management": "4.5.1",
+        "com.unity.xr.openxr": "1.8.2",
+        "com.unity.xr.arfoundation": "4.2.10"
+      },
+      "min_versions": {
+        "com.unity.xr.management": "4.5.1",
+        "com.unity.xr.openxr": "1.8.2",
+        "com.unity.xr.arfoundation": "4.2.10",
+        "com.unity.xr.core-utils": "2.2.1",
+        "com.unity.xr.legacyinputhelpers": "2.1.11",
+        "com.unity.inputsystem": "1.4.4",
+        "com.unity.xr.arsubsystems": "4.2.10"
+      },
+      "package_id": "world.realityhack.p2023.stone_soup",
+      "license": "MIT",
+      "team": [
+        "Maryam Kamel",
+        "Nick Kaufmann",
+        "Simian He",
+        "Dulce Baerga",
+        "Marques Anderson"
       ],
       "extra_hardware": [],
       "manual_steps": [

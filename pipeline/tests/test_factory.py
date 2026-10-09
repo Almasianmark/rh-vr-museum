@@ -147,3 +147,38 @@ def test_triage_states(tmp_path, monkeypatch):
     st = f.triage(None)
     assert st["2024-proj-1"]["state"] == "ready" and st["2024-proj-1"]["apk_sha256"] == "ab"
     assert st["2024-b"]["state"] == "triage:build-Failed"
+
+
+def test_quest3_only_ranks_after_quest2_and_blocked_are_skipped(monkeypatch):
+    ps = [P(1, requirement_tier="quest3", unity="6000.0.1f1"), P(2, requirement_tier="quest2"), P(3)]
+    monkeypatch.setattr(f, "blocked", lambda: {"2024-proj-3": "LFS missing"})
+    ids = [p["id"] for p in f.select_wave(ps, size=5, quotas={})]
+    assert ids == ["2024-proj-2", "2024-proj-1"]          # newer Unity no longer lifts a Quest 3-only port
+
+
+def _git_repo(tmp_path, files):
+    import subprocess
+    d = tmp_path / "r"
+    d.mkdir()
+    subprocess.run(["git", "init", "-q", str(d)], check=True)
+    for name, data in files.items():
+        p = d / name
+        p.parent.mkdir(parents=True, exist_ok=True)
+        p.write_text(data)
+    return d
+
+
+def test_lfs_missing_ignores_files_android_builds_skip(tmp_path, monkeypatch):
+    listing = ("1111111111 - Assets/Models/tree.fbx\n"
+               "2222222222 * Assets/Audio/ok.wav\n"
+               "3333333333 - Assets/Simple FX Kit/Documentation - FX.pdf\n"
+               "4444444444 - Packages/tflite/Plugins/Linux/arm64/lib.so\n"
+               "5555555555 * Assets/UI/Button - Circular BG.png\n")
+    monkeypatch.setattr(f.subprocess, "run", lambda *a, **k: type("R", (), {"stdout": listing, "returncode": 0})())
+    assert f.lfs_missing(tmp_path) == ["Assets/Models/tree.fbx"]
+
+
+def test_uses_lfs(tmp_path):
+    assert not f.uses_lfs(_git_repo(tmp_path, {"a.txt": "x"}))
+    (tmp_path / "r" / ".gitattributes").write_text("*.fbx filter=lfs diff=lfs merge=lfs -text\n")
+    assert f.uses_lfs(tmp_path / "r")
