@@ -117,8 +117,8 @@ Remove the switch once the numbers are in: keep the winning fixes as plain setti
 
 ## Not yet tested
 
-- Supabase ratings: no project created, `supabaseUrl` / `supabaseAnonKey` are empty, so star bars show snapshot numbers only.
-- Port factory: wave 1 (20 projects) is queued in `factory/QUEUE.md`; no port has been built or smoke-tested.
+- **Supabase ratings: hosted project not created yet.** Everything else is ready and was verified against a real local Supabase stack (`supabase/smoke.py`: all checks pass with publishable and legacy anon keys). Create the project in the dashboard, then run `python supabase/setup.py ...`; see `supabase/README.md`. Headsets pick it up from `museum.json`, with no rebuild.
+- **Port factory: no Unity build yet.** First ports are BattleFish, CAREGIVR and Memory Tree, prepared and inspected in the cloud. Build them on the PC with `factory\build_local.ps1` (see `factory/README.md`). 11 of the 2024 Codeberg repos lost their Git LFS assets and are in `factory/blocked.json`.
 - Install/zone system and `companion/rh_companion.py`: no ported APK exists to install, so only the simulated editor path has run.
 - `MuseumReturn` relaunch round trip.
 

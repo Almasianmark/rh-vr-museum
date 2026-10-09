@@ -19,24 +19,64 @@
 
 ## Set up (about 10 minutes)
 
-1. Create a project at supabase.com.
-2. Authentication → Sign In / Providers → **Allow anonymous sign-ins: on**.
-3. Apply the migration, using either:
-   - `supabase link --project-ref <ref> && supabase db push` (Supabase CLI, run from the repo root), or
-   - pasting the SQL file into the SQL Editor.
-4. Load the projects:
-   ```bash
-   cd pipeline
-   export SUPABASE_URL=https://<ref>.supabase.co
-   export SUPABASE_SERVICE_ROLE_KEY=...   # Project Settings → API. Server-side only, never in the client.
-   python -m rhm.supabase_sync push      # upserts all 444 projects; rerun after each pipeline build
-   ```
-5. In Unity, on the **Museum Bootstrap** object, set `supabaseUrl` and `supabaseAnonKey`. The anon key is public by design; RLS and the RPC grants are what protect the data.
-6. Optional: order paintings by score inside each device group:
-   ```bash
-   SUPABASE_URL=... SUPABASE_ANON_KEY=... python -m rhm.layout   # rewrites data/museum.json
-   python -m rhm.supabase_sync scores                             # top-25 leaderboard in the terminal
-   ```
+**On supabase.com (dashboard):**
+1. **New project.** Any name and region; save the database password somewhere.
+2. **SQL Editor → New query:** paste all of `migrations/20261004000000_ratings.sql` and **Run**.
+3. **Authentication → Sign In / Providers → Allow anonymous sign-ins: on.** Save.
+4. **Project Settings → API Keys:** copy the **Publishable key** (`sb_publishable_…`) and the **Secret key** (`sb_secret_…`). The legacy `anon` / `service_role` keys work too. Also copy the project URL (`https://<ref>.supabase.co`).
+
+**On the PC (repo root):**
+```bash
+pip install -r pipeline/requirements.txt
+python supabase/setup.py --url https://<ref>.supabase.co --key sb_publishable_... --service-key sb_secret_...
+git add data/backend.json data/museum.json && git commit -m "Ratings backend" && git push
+```
+
+`setup.py` does the following:
+1. Checks the migration.
+2. Loads the 444 projects using the secret key. The key is used only for this call and is never written anywhere.
+3. Writes `data/backend.json` with the URL and the publishable key.
+4. Rebuilds `data/museum.json` with a `"ratings"` block.
+5. Runs `smoke.py`.
+
+Installed museums turn ratings on the next time they fetch `museum.json` from `main`, with no rebuild. Inspector values on **Museum Bootstrap** (`supabaseUrl`, `supabaseAnonKey`) still override, if you want a test backend.
+
+**Alternative: Supabase CLI.** `config.toml` is committed with anonymous sign-ins on:
+1. `supabase link --project-ref <ref>`
+2. `supabase db push`
+3. `supabase config push`
+4. Then run `setup.py` as above.
+
+After each pipeline rebuild, rerun `python -m rhm.supabase_sync push` (with `SUPABASE_URL` / `SUPABASE_SERVICE_ROLE_KEY`) to add new projects. Scores order paintings automatically, because `layout.py` reads `data/backend.json`.
+
+## Live check (`smoke.py`)
+
+```bash
+python supabase/smoke.py --url https://<ref>.supabase.co --key sb_publishable_...
+```
+
+It makes the same HTTP calls as `RatingsClient.cs`, with the same headers:
+- anonymous sign-up and token refresh
+- `project_scores`
+- `rate_project` twice (the second vote must replace the first)
+- reading your own votes
+- RLS (the key alone can read no votes and can't rate)
+- `clear_rating`, which leaves no trace
+
+It refuses a secret key.
+
+**Verified 2026-10-09** against a real local Supabase stack (CLI 2.54, Postgres 17, GoTrue, PostgREST, Kong) with this migration and `config.toml`:
+- all checks pass with both the publishable key and the legacy anon JWT
+- `setup.py` ran end to end, including the "migration not applied" path
+- `supabase_sync push` works with the new `sb_secret_` key
+
+To run the stack locally:
+
+```bash
+supabase start -x realtime,storage-api,imgproxy,studio,edge-runtime,logflare,vector,supavisor,postgres-meta,mailpit
+```
+
+Realtime is disabled in `config.toml` because the museum doesn't use it.
 
 ## Tests
 

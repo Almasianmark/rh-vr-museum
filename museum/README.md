@@ -68,7 +68,7 @@ Native/ported projects go to the theater until build-order step 5 (APK install a
   - The vote shows immediately and syncs within about 1 s.
   - Offline votes are queued in `PlayerPrefs` and retried.
 - **Top-rated board:** on the lobby's south wall (behind spawn), showing the top 10 by Bayesian average.
-- **Setup:** set `supabaseUrl` and `supabaseAnonKey` on **Museum Bootstrap**. If they're empty, ratings are off and the bars show the snapshot numbers from `museum.json`.
+- **Setup:** `supabase/setup.py` writes the backend into `museum.json` (`"ratings": {url, key}`), so installed builds turn ratings on without a rebuild. `supabaseUrl` / `supabaseAnonKey` on **Museum Bootstrap** override it. With neither set, ratings are off and the bars show the snapshot numbers from `museum.json`.
 - Backend setup is in `supabase/README.md`.
 
 ## Installs & zones (phase 5)

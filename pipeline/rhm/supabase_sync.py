@@ -54,8 +54,22 @@ def fetch_scores(url: str, key: str, prior_weight: float = 5, session=requests) 
     return {row["project_id"]: row for row in r.json()}
 
 
+BACKEND_JSON = Path(__file__).resolve().parents[2] / "data" / "backend.json"
+
+
+def backend() -> dict | None:
+    """data/backend.json: {"url", "key"} of the public ratings backend (written by supabase/setup.py)."""
+    if not BACKEND_JSON.exists():
+        return None
+    b = json.loads(BACKEND_JSON.read_text(encoding="utf-8"))
+    return {"url": b["url"], "key": b["key"]} if b.get("url") and b.get("key") else None
+
+
 def scores_from_env() -> dict[str, dict] | None:
+    """Live scores from SUPABASE_URL/SUPABASE_ANON_KEY, else from data/backend.json; None when neither is set."""
     url, key = os.environ.get("SUPABASE_URL"), os.environ.get("SUPABASE_ANON_KEY")
+    if not (url and key) and backend():
+        url, key = backend()["url"], backend()["key"]
     if not (url and key):
         return None
     try:

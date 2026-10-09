@@ -110,3 +110,12 @@ def test_display_text_strips_emoji_keeps_cjk():
     assert display_text("茶道 XR ☕️") == "茶道 XR"
     assert display_text("🇺🇸 Flag") == "Flag"
     assert display_text(None) == ""
+
+
+def test_ratings_block_only_when_backend_configured(tmp_path, monkeypatch):
+    from rhm import layout, supabase_sync
+    doc = {"generated_at": "x", "projects": []}
+    monkeypatch.setattr(supabase_sync, "BACKEND_JSON", tmp_path / "backend.json")
+    assert "ratings" not in layout.museum_doc(doc, scores={}, apps={})
+    (tmp_path / "backend.json").write_text('{"url": "https://abc.supabase.co", "key": "sb_publishable_x"}')
+    assert layout.museum_doc(doc, scores={}, apps={})["ratings"] == {"url": "https://abc.supabase.co", "key": "sb_publishable_x"}

@@ -11,6 +11,13 @@ namespace RHMuseum
     // so the pipeline can add fields without breaking older builds.
 
     [Serializable]
+    public class RatingsConfig
+    {
+        public string url;
+        public string key;   // anon (legacy JWT) or publishable key: public by design, RLS guards the data
+    }
+
+    [Serializable]
     public class MuseumDoc
     {
         public int schema_version;
@@ -18,6 +25,8 @@ namespace RHMuseum
         public int max_per_exhibit;
         public List<Wing> wings = new List<Wing>();
         public List<ProjectInfo> projects = new List<ProjectInfo>();
+        /// <summary>Ratings backend (data/backend.json). Ships in museum.json so ratings turn on without a rebuild.</summary>
+        public RatingsConfig ratings;
 
         [NonSerialized] Dictionary<string, ProjectInfo> _byId;
 

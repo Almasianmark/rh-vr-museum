@@ -19,10 +19,10 @@ namespace RHMuseum
         public float wingActivationMargin = 20f;
         public int maxConcurrentDownloads = 2;
 
-        [Header("Ratings (Supabase). Empty = ratings off")]
-        [Tooltip("https://<project-ref>.supabase.co")]
+        [Header("Ratings (Supabase). Empty = use museum.json's \"ratings\" block (data/backend.json)")]
+        [Tooltip("https://<project-ref>.supabase.co. Overrides museum.json.")]
         public string supabaseUrl = "";
-        [Tooltip("The project's anon (public) key. Never put the service-role key in the client.")]
+        [Tooltip("Anon or publishable key. Overrides museum.json. Never the service-role / secret key.")]
         public string supabaseAnonKey = "";
 
         MuseumDoc _doc;
@@ -40,7 +40,6 @@ namespace RHMuseum
             QualitySettings.vSyncCount = 0;
             Application.targetFrameRate = 72;
 
-            RatingsClient.Create(supabaseUrl, supabaseAnonKey);   // null when not configured
             FontFallback.Install();   // before any text is laid out
             _rig = PlayerRig.Create(Vector3.zero, 0);
             _fader = ScreenFader.Attach(_rig.Head);
@@ -50,6 +49,12 @@ namespace RHMuseum
             yield return MuseumDataLoader.Load(remoteMuseumUrl, (doc, src) => { _doc = doc; source = src; });
             if (_doc == null) yield break;
             Debug.Log($"[RHMuseum] museum.json from {source}: {_doc.projects.Count} projects, generated {_doc.generated_at}");
+
+            // Inspector values win; otherwise museum.json carries the backend. Null client = ratings off.
+            string rUrl = !string.IsNullOrEmpty(supabaseUrl) ? supabaseUrl : _doc.ratings?.url;
+            string rKey = !string.IsNullOrEmpty(supabaseAnonKey) ? supabaseAnonKey : _doc.ratings?.key;
+            var ratings = RatingsClient.Create(rUrl, rKey);
+            Debug.Log(ratings != null ? $"[RHMuseum] ratings: {rUrl}" : "[RHMuseum] ratings off (no backend configured)");
 
             var root = new GameObject("Museum").transform;
             _builder = new MuseumBuilder(_doc, root);

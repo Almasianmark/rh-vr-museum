@@ -205,12 +205,16 @@ def museum_doc(doc: dict, cap: int = MAX_PER_EXHIBIT, scores: dict[str, dict] | 
             "rating_count": int(scores.get(p["id"], {}).get("rating_count") or 0),
             "avg_stars": float(scores.get(p["id"], {}).get("avg_stars") or 0),
         })
-    return {
+    from .supabase_sync import backend
+    out = {
         "schema_version": 1,
         "generated_at": doc["generated_at"],
         **layout,
         "projects": projects,
     }
+    if backend():
+        out["ratings"] = backend()   # public URL + anon/publishable key; the client turns ratings on from this
+    return out
 
 
 def write_museum(doc: dict, path, cap: int = MAX_PER_EXHIBIT, scores: dict[str, dict] | None = None) -> dict:
