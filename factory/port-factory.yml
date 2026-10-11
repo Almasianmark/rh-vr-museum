@@ -27,7 +27,11 @@ jobs:
           import json, os
           entries = json.load(open("data/port_queue.json"))["entries"]
           want = {i.strip() for i in os.environ.get("IDS", "").split(",") if i.strip()}
-          rows = [{"id": e["id"], "image": e["image"]} for e in entries if e["image"] and (not want or e["id"] in want)]
+          import re
+          # Ids and images come from scraped data and end up in shell steps, so only plain tokens get through.
+          safe = re.compile(r"^[A-Za-z0-9_.:/-]+$")
+          rows = [{"id": e["id"], "image": e["image"]} for e in entries
+                  if e["image"] and (not want or e["id"] in want) and safe.match(e["id"]) and safe.match(e["image"])]
           print("matrix=" + json.dumps(rows))
           PY
 
@@ -50,9 +54,11 @@ jobs:
           python-version: "3.11"
       - run: pip install -r pipeline/requirements.txt
       - name: Clone + inject kit
+        env:
+          MATRIX_ID: ${{ matrix.id }}
         run: |
           mkdir -p work
-          (cd pipeline && python -m rhm.factory prepare "${{ matrix.id }}" --work ../work) > work/build_cmd.sh
+          (cd pipeline && python -m rhm.factory prepare "$MATRIX_ID" --work ../work) > work/build_cmd.sh
           cat work/build_cmd.sh
       - name: Build APK (GameCI ${{ matrix.image }})
         env:
