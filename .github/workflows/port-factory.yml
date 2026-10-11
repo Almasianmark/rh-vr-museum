@@ -1,0 +1,71 @@
+# Port factory: build queued Reality Hack projects for Quest in GameCI containers.
+# Needs repo secrets UNITY_LICENSE (Personal .ulf contents) or UNITY_SERIAL + UNITY_EMAIL + UNITY_PASSWORD.
+# Smoke tests need a real Quest 2 over adb, so they run locally: python -m rhm.factory smoke <id> --apk app.apk
+name: port-factory
+
+on:
+  workflow_dispatch:
+    inputs:
+      ids:
+        description: "Comma-separated project ids from data/port_queue.json (empty = whole wave)"
+        required: false
+        default: ""
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.plan.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: plan
+        env:
+          IDS: ${{ inputs.ids }}
+        run: |
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import json, os
+          entries = json.load(open("data/port_queue.json"))["entries"]
+          want = {i.strip() for i in os.environ.get("IDS", "").split(",") if i.strip()}
+          rows = [{"id": e["id"], "image": e["image"]} for e in entries if e["image"] and (not want or e["id"] in want)]
+          print("matrix=" + json.dumps(rows))
+          PY
+
+  build:
+    needs: plan
+    if: needs.plan.outputs.matrix != '[]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        include: ${{ fromJson(needs.plan.outputs.matrix) }}
+    steps:
+      - name: Free disk for the Unity image
+        run: sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL && df -h /
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r pipeline/requirements.txt
+      - name: Clone + inject kit
+        run: |
+          mkdir -p work
+          (cd pipeline && python -m rhm.factory prepare "${{ matrix.id }}" --work ../work) > work/build_cmd.sh
+          cat work/build_cmd.sh
+      - name: Build APK (GameCI ${{ matrix.image }})
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        run: bash work/build_cmd.sh
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: port-${{ matrix.id }}
+          path: |
+            work/_out/${{ matrix.id }}/*.apk
+            work/_out/${{ matrix.id }}/*.json
+            work/_out/${{ matrix.id }}/*.log
+          if-no-files-found: warn
