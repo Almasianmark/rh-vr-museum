@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Build one prepared port inside a GameCI Unity image.
 #   factory/docker_build.sh IMAGE PROJECT_DIR OUT_DIR PACKAGE_ID TITLE RECIPE
-# License (one of), both returned after the build:
+# License (one of):
 #   UNITY_LICENSE + UNITY_EMAIL + UNITY_PASSWORD  Personal: .ulf contents; the serial is read from it
 #   UNITY_SERIAL + UNITY_EMAIL + UNITY_PASSWORD   Plus/Pro seat
 # A .ulf on its own does not work: it is bound to the machine that created it ("Machine bindings don't match").
@@ -26,22 +26,23 @@ unity-editor -batchmode -nographics -quit -logFile /tmp/activate.log \
   || { echo "Unity licence activation failed:" >&2; grep -iE "licens|error" /tmp/activate.log | tail -30 >&2; exit 70; }
 # Meta XR SDK does not compile on the Linux editor as shipped (run 38111085760, SDK 83.0.1 from packages.unity.com):
 #  - OVRPlugin treats every editor but Windows/macOS as an unsupported platform, and some of those stubs are broken.
-#    Counting the Linux editor as supported compiles the same code path the teams built with.
+#    Counting the Linux editor as supported compiles the same code path the teams built with. Every platform
+#    guard in those files needs it, not only the first: the native declarations sit behind a second one.
 #  - The audio package still says PhysicMaterial, which Unity 6 only fixes through an interactive API-update prompt.
 # Packages have to be downloaded before they can be patched, hence the extra resolve pass.
 if grep -qs "com.meta.xr.sdk" /project/Packages/manifest.json /project/Packages/packages-lock.json; then
   unity-editor -batchmode -nographics -quit -logFile /out/resolve.log -projectPath /project -buildTarget Android
   grep -rlZ --include=*.cs "define OVRPLUGIN_UNSUPPORTED_PLATFORM" /project/Library/PackageCache 2>/dev/null \
-    | xargs -0 -r sed -i "/^#if !(UNITY_EDITOR_WIN/{N;/OVRPLUGIN_UNSUPPORTED_PLATFORM/s/^#if !(/#if !(UNITY_EDITOR_LINUX || /}"
+    | xargs -0 -r sed -i "/^[[:space:]]*#\(if\|elif\)/s/UNITY_EDITOR_WIN/UNITY_EDITOR_WIN || UNITY_EDITOR_LINUX/"
   if grep -qs "^m_EditorVersion: 6000" /project/ProjectSettings/ProjectVersion.txt; then
     grep -rlZ --include=*.cs "PhysicMaterial" /project/Library/PackageCache/com.meta.xr.sdk.audio* 2>/dev/null \
       | xargs -0 -r sed -i "s/\bPhysicMaterial\b/PhysicsMaterial/g"
   fi
-  echo "Meta XR SDK Linux fixups: $(grep -rl --include=*.cs "UNITY_EDITOR_LINUX || UNITY_EDITOR_WIN" /project/Library/PackageCache 2>/dev/null | wc -l) file(s) patched"
+  echo "Meta XR SDK Linux fixups: $(grep -rl --include=*.cs "UNITY_EDITOR_WIN || UNITY_EDITOR_LINUX" /project/Library/PackageCache 2>/dev/null | wc -l) file(s) patched"
 fi
 unity-editor -batchmode -nographics -quit -logFile /out/unity.log -projectPath /project -buildTarget Android \
   -executeMethod RealityHack.MuseumKit.Editor.PortRecipe.Run \
   -rhOutput /out/app.apk -rhPackageId "$RH_PACKAGE" -rhProductName "$RH_TITLE" -rhRecipe "$RH_RECIPE"
-code=$?
-unity-editor -batchmode -nographics -quit -returnlicense -username "$UNITY_EMAIL" -password "$UNITY_PASSWORD" || true
-exit $code'
+# No -returnlicense: every GameCI container reports the same machine id, so returning the licence from one
+# build revokes it for the builds still running in parallel (BattleFish, run 38113170675).
+exit $?'
