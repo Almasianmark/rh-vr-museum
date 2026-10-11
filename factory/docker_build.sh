@@ -34,6 +34,9 @@ if grep -qs "com.meta.xr.sdk" /project/Packages/manifest.json /project/Packages/
   unity-editor -batchmode -nographics -quit -logFile /out/resolve.log -projectPath /project -buildTarget Android
   grep -rlZ --include=*.cs "define OVRPLUGIN_UNSUPPORTED_PLATFORM" /project/Library/PackageCache 2>/dev/null \
     | xargs -0 -r sed -i "/^[[:space:]]*#\(if\|elif\)/s/UNITY_EDITOR_WIN/UNITY_EDITOR_WIN || UNITY_EDITOR_LINUX/"
+  # The simulator installer declares a variable for Windows and macOS only; let Linux take the macOS branch.
+  find /project/Library/PackageCache -path "*MetaXRSimulator/Installer.cs" -print0 2>/dev/null \
+    | xargs -0 -r sed -i "s/^#elif UNITY_EDITOR_OSX/#else/"
   if grep -qs "^m_EditorVersion: 6000" /project/ProjectSettings/ProjectVersion.txt; then
     grep -rlZ --include=*.cs "PhysicMaterial" /project/Library/PackageCache/com.meta.xr.sdk.audio* 2>/dev/null \
       | xargs -0 -r sed -i "s/\bPhysicMaterial\b/PhysicsMaterial/g"
