@@ -103,7 +103,7 @@ Every port also gets:
 cd pipeline && python -m rhm.factory prepare 2026-battlefish --work ../factory/work
 
 # 2. Build in GameCI. Needs Docker + a Unity license:
-#    UNITY_LICENSE=<.ulf contents>  or  UNITY_SERIAL + UNITY_EMAIL + UNITY_PASSWORD
+#    UNITY_EMAIL + UNITY_PASSWORD, plus UNITY_LICENSE=<.ulf contents> or UNITY_SERIAL
 bash ../factory/docker_build.sh <image> <project> <out> <package_id> <title> <recipe>   # (the printed command)
 
 # 3. Smoke test on a Quest 2 in developer mode, connected over USB:

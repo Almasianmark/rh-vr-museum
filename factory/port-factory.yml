@@ -1,6 +1,6 @@
 # Copy to .github/workflows/port-factory.yml to enable.
 # Port factory: build queued Reality Hack projects for Quest in GameCI containers.
-# Needs repo secrets UNITY_LICENSE (Personal .ulf contents) or UNITY_SERIAL + UNITY_EMAIL + UNITY_PASSWORD.
+# Needs repo secrets UNITY_EMAIL + UNITY_PASSWORD, plus UNITY_LICENSE (Personal .ulf contents) or UNITY_SERIAL.
 # Smoke tests need a real Quest 2 over adb, so they run locally: python -m rhm.factory smoke <id> --apk app.apk
 name: port-factory
 
