@@ -1,0 +1,14 @@
+{
+  "verdict": "pass",
+  "alive_after_60s": true,
+  "crash": false,
+  "anr": false,
+  "fps_median": 72.0,
+  "fps_samples": 88,
+  "unity_exceptions": 0,
+  "id": "2025-caregivr-tzmqkg",
+  "apk": "C:\\Users\\almas\\AppData\\Local\\Temp\\claude\\C--Users-almas\\830a9737-1299-4771-b856-12c94f2d1272\\scratchpad\\run2\\port-2025-caregivr-tzmqkg\\app.apk",
+  "apk_sha256": "19180d5daf3b85aa19c260c5b9ad9ac7a122d746a63097feb7e6bc404b6a5216",
+  "apk_bytes": 151489190,
+  "tested_at": "2026-10-12T01:49:50+00:00"
+}

@@ -1,0 +1,14 @@
+{
+  "verdict": "pass",
+  "alive_after_60s": true,
+  "crash": false,
+  "anr": false,
+  "fps_median": 72,
+  "fps_samples": 78,
+  "unity_exceptions": 0,
+  "id": "2026-memory-tree-i2lsr9",
+  "apk": "C:\\Users\\almas\\AppData\\Local\\Temp\\claude\\C--Users-almas\\830a9737-1299-4771-b856-12c94f2d1272\\scratchpad\\run5\\port-2026-memory-tree-i2lsr9\\app.apk",
+  "apk_sha256": "7742ad14e81d84d7a0beff407c92e48114ebf225d7d9ea0951e590975f835459",
+  "apk_bytes": 87322984,
+  "tested_at": "2026-10-12T01:48:28+00:00"
+}

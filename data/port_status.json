@@ -1,0 +1,206 @@
+{
+  "generated_at": "2026-10-12T01:50:35+00:00",
+  "ports": {
+    "2026-memory-tree-i2lsr9": {
+      "state": "ready",
+      "package_id": "world.realityhack.p2026.memory_tree",
+      "recipe": "native",
+      "apk_sha256": "7742ad14e81d84d7a0beff407c92e48114ebf225d7d9ea0951e590975f835459",
+      "apk_bytes": 87322984,
+      "fps_median": 72,
+      "manual_steps": []
+    },
+    "2026-battlefish": {
+      "state": "ready",
+      "package_id": "world.realityhack.p2026.battlefish",
+      "recipe": "native",
+      "apk_sha256": "82b0d6ef267d2a4d567f7ac878efc12092eaf47c1cc0a83943cab6abad575140",
+      "apk_bytes": 85403457,
+      "fps_median": 72,
+      "manual_steps": []
+    },
+    "2025-onbook-6ek87a": {
+      "state": "queued",
+      "package_id": "world.realityhack.p2025.onbook",
+      "recipe": "native",
+      "apk_sha256": null,
+      "apk_bytes": null,
+      "fps_median": null,
+      "manual_steps": []
+    },
+    "2025-caregivr-tzmqkg": {
+      "state": "ready",
+      "package_id": "world.realityhack.p2025.caregivr",
+      "recipe": "native",
+      "apk_sha256": "19180d5daf3b85aa19c260c5b9ad9ac7a122d746a63097feb7e6bc404b6a5216",
+      "apk_bytes": 151489190,
+      "fps_median": 72.0,
+      "manual_steps": []
+    },
+    "2025-gaze-groove": {
+      "state": "queued",
+      "package_id": "world.realityhack.p2025.gaze_groove",
+      "recipe": "native",
+      "apk_sha256": null,
+      "apk_bytes": null,
+      "fps_median": null,
+      "manual_steps": []
+    },
+    "2024-heavr": {
+      "state": "queued",
+      "package_id": "world.realityhack.p2024.heavr",
+      "recipe": "native",
+      "apk_sha256": null,
+      "apk_bytes": null,
+      "fps_median": null,
+      "manual_steps": []
+    },
+    "2024-legacy-q9dmvf": {
+      "state": "queued",
+      "package_id": "world.realityhack.p2024.legacy",
+      "recipe": "native",
+      "apk_sha256": null,
+      "apk_bytes": null,
+      "fps_median": null,
+      "manual_steps": []
+    },
+    "2026-ourlife": {
+      "state": "queued",
+      "package_id": "world.realityhack.p2026.ourlife",
+      "recipe": "native",
+      "apk_sha256": null,
+      "apk_bytes": null,
+      "fps_median": null,
+      "manual_steps": []
+    },
+    "2025-chase-against-time": {
+      "state": "queued",
+      "package_id": "world.realityhack.p2025.race_against_time",
+      "recipe": "native",
+      "apk_sha256": null,
+      "apk_bytes": null,
+      "fps_median": null,
+      "manual_steps": []
+    },
+    "2024-snaider": {
+      "state": "queued",
+      "package_id": "world.realityhack.p2024.snaider",
+      "recipe": "native",
+      "apk_sha256": null,
+      "apk_bytes": null,
+      "fps_median": null,
+      "manual_steps": []
+    },
+    "2024-talk-to-me-a8ow0x": {
+      "state": "queued",
+      "package_id": "world.realityhack.p2024.talk_to_me",
+      "recipe": "native",
+      "apk_sha256": null,
+      "apk_bytes": null,
+      "fps_median": null,
+      "manual_steps": []
+    },
+    "2023-memento-mori-f0ze8n": {
+      "state": "queued",
+      "package_id": "world.realityhack.p2023.memento_mori",
+      "recipe": "native",
+      "apk_sha256": null,
+      "apk_bytes": null,
+      "fps_median": null,
+      "manual_steps": []
+    },
+    "2023-failtopia": {
+      "state": "queued",
+      "package_id": "world.realityhack.p2023.failtopia",
+      "recipe": "native",
+      "apk_sha256": null,
+      "apk_bytes": null,
+      "fps_median": null,
+      "manual_steps": []
+    },
+    "2023-freemixr": {
+      "state": "queued",
+      "package_id": "world.realityhack.p2023.freemixr",
+      "recipe": "native",
+      "apk_sha256": null,
+      "apk_bytes": null,
+      "fps_median": null,
+      "manual_steps": []
+    },
+    "2026-dream-field-gateways": {
+      "state": "queued",
+      "package_id": "world.realityhack.p2026.dream_field_gateways",
+      "recipe": "openxr",
+      "apk_sha256": null,
+      "apk_bytes": null,
+      "fps_median": null,
+      "manual_steps": [
+        "Check the camera rig follows the headset (SteamVR/WMR rigs may need swapping for an XR Origin).",
+        "Mobile perf pass if FPS < 65: URP mobile settings, no post-processing, fixed foveation."
+      ]
+    },
+    "2026-love-hate-and-robot": {
+      "state": "queued",
+      "package_id": "world.realityhack.p2026.love_hate_and_robot",
+      "recipe": "openxr",
+      "apk_sha256": null,
+      "apk_bytes": null,
+      "fps_median": null,
+      "manual_steps": [
+        "Check the camera rig follows the headset (SteamVR/WMR rigs may need swapping for an XR Origin).",
+        "Mobile perf pass if FPS < 65: URP mobile settings, no post-processing, fixed foveation."
+      ]
+    },
+    "2026-forget-me-not-90me1k": {
+      "state": "queued",
+      "package_id": "world.realityhack.p2026.forget_me_not",
+      "recipe": "openxr",
+      "apk_sha256": null,
+      "apk_bytes": null,
+      "fps_median": null,
+      "manual_steps": [
+        "Check the camera rig follows the headset (SteamVR/WMR rigs may need swapping for an XR Origin).",
+        "Mobile perf pass if FPS < 65: URP mobile settings, no post-processing, fixed foveation."
+      ]
+    },
+    "2025-paw-pals-connect": {
+      "state": "queued",
+      "package_id": "world.realityhack.p2025.paw_pals_connect",
+      "recipe": "passthrough",
+      "apk_sha256": null,
+      "apk_bytes": null,
+      "fps_median": null,
+      "manual_steps": [
+        "Replace the AR/HMD rig with an XR Origin; map screen taps / air-taps to trigger or pinch.",
+        "Check content reads well on passthrough (Quest 2 passthrough is grayscale).",
+        "Image/marker tracking: add a hand-placed anchor (no camera access on Quest 2)."
+      ]
+    },
+    "2023-avatar-room": {
+      "state": "queued",
+      "package_id": "world.realityhack.p2023.avatar_room",
+      "recipe": "passthrough",
+      "apk_sha256": null,
+      "apk_bytes": null,
+      "fps_median": null,
+      "manual_steps": [
+        "Replace the AR/HMD rig with an XR Origin; map screen taps / air-taps to trigger or pinch.",
+        "Check content reads well on passthrough (Quest 2 passthrough is grayscale).",
+        "Image/marker tracking: add a hand-placed anchor (no camera access on Quest 2)."
+      ]
+    },
+    "2023-stone-soup-qlsd6u": {
+      "state": "queued",
+      "package_id": "world.realityhack.p2023.stone_soup",
+      "recipe": "passthrough",
+      "apk_sha256": null,
+      "apk_bytes": null,
+      "fps_median": null,
+      "manual_steps": [
+        "Replace the AR/HMD rig with an XR Origin; map screen taps / air-taps to trigger or pinch.",
+        "Check content reads well on passthrough (Quest 2 passthrough is grayscale).",
+        "Image/marker tracking: add a hand-placed anchor (no camera access on Quest 2)."
+      ]
+    }
+  }
+}

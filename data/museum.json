@@ -9698,10 +9698,17 @@
    "repo_url": "https://github.com/stevenharmongames/Dula",
    "license_gate": "ok",
    "launch": {
-    "kind": "theater",
-    "url": "https://www.youtube.com/watch?v=Gd6z94Sl1wY"
+    "kind": "app",
+    "url": ""
    },
-   "app": null,
+   "app": {
+    "package": "world.realityhack.p2025.caregivr",
+    "apk_url": "https://github.com/Almasianmark/rh-vr-museum/releases/download/ports-wave1/world.realityhack.p2025.caregivr.apk",
+    "sha256": "19180d5daf3b85aa19c260c5b9ad9ac7a122d746a63097feb7e6bc404b6a5216",
+    "bytes": 151489190,
+    "recipe": "native",
+    "tested": true
+   },
    "rating_count": 0,
    "avg_stars": 0.0
   },
@@ -11986,10 +11993,17 @@
    "repo_url": "https://github.com/NickKauf/MemoryTree",
    "license_gate": "ok",
    "launch": {
-    "kind": "theater",
-    "url": "https://www.youtube.com/watch?v=nR-7ZbG6jVI"
+    "kind": "app",
+    "url": ""
    },
-   "app": null,
+   "app": {
+    "package": "world.realityhack.p2026.memory_tree",
+    "apk_url": "https://github.com/Almasianmark/rh-vr-museum/releases/download/ports-wave1/world.realityhack.p2026.memory_tree.apk",
+    "sha256": "7742ad14e81d84d7a0beff407c92e48114ebf225d7d9ea0951e590975f835459",
+    "bytes": 87322984,
+    "recipe": "native",
+    "tested": true
+   },
    "rating_count": 0,
    "avg_stars": 0.0
   },
@@ -12137,10 +12151,17 @@
    "repo_url": "https://github.com/CadeXR/RealityObscura",
    "license_gate": "ok",
    "launch": {
-    "kind": "theater",
-    "url": "https://www.youtube.com/watch?v=yCGzJed4RcQ"
+    "kind": "app",
+    "url": ""
    },
-   "app": null,
+   "app": {
+    "package": "world.realityhack.p2026.battlefish",
+    "apk_url": "https://github.com/Almasianmark/rh-vr-museum/releases/download/ports-wave1/world.realityhack.p2026.battlefish.apk",
+    "sha256": "82b0d6ef267d2a4d567f7ac878efc12092eaf47c1cc0a83943cab6abad575140",
+    "bytes": 85403457,
+    "recipe": "native",
+    "tested": true
+   },
    "rating_count": 0,
    "avg_stars": 0.0
   },

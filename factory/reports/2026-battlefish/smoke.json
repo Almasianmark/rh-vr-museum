@@ -1,0 +1,14 @@
+{
+  "verdict": "pass",
+  "alive_after_60s": true,
+  "crash": false,
+  "anr": false,
+  "fps_median": 72,
+  "fps_samples": 70,
+  "unity_exceptions": 2,
+  "id": "2026-battlefish",
+  "apk": "C:\\Users\\almas\\AppData\\Local\\Temp\\claude\\C--Users-almas\\830a9737-1299-4771-b856-12c94f2d1272\\scratchpad\\run5\\port-2026-battlefish\\app.apk",
+  "apk_sha256": "82b0d6ef267d2a4d567f7ac878efc12092eaf47c1cc0a83943cab6abad575140",
+  "apk_bytes": 85403457,
+  "tested_at": "2026-10-12T01:47:12+00:00"
+}
